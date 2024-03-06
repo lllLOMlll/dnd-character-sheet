@@ -1,4 +1,5 @@
 using CharacterSheetDnD.Data;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,16 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// I added this for the Google external login setup
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Add known networks and proxies here if applicable
+    // options.KnownProxies.Add(IPAddress.Parse("..."));
+    // options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("..."), ...));
+});
 
 var app = builder.Build();
 
@@ -34,6 +45,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Place the UseForwardedHeaders call before other middleware that might consume the updated fields
+app.UseForwardedHeaders();
 
 app.MapControllerRoute(
     name: "default",
