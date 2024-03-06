@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterSheetDnD", "CharacterSheetDnD.csproj", "{32A8F669-DE66-4C93-8B6F-984BA3BA444F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32A8F669-DE66-4C93-8B6F-984BA3BA444F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A8F669-DE66-4C93-8B6F-984BA3BA444F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A8F669-DE66-4C93-8B6F-984BA3BA444F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A8F669-DE66-4C93-8B6F-984BA3BA444F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41A77779-A6C9-4369-AC7B-3FF5F97F640B}
+	EndGlobalSection
+EndGlobal
