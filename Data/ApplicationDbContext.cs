@@ -13,5 +13,6 @@ namespace CharacterSheetDnD.Data
 
         // Adding Classes to the database (Migration)
         public DbSet<Character> Characters { get; set; }
+        public DbSet<CharacterClass> CharacterClasses { get; set; }
     }
 }
