@@ -11,8 +11,29 @@ namespace CharacterSheetDnD.Data
         {
         }
 
-        // Adding Classes to the database (Migration)
+        // Adding DbSet to each of my Class (Migration)
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterClass> CharacterClasses { get; set; }
+        public DbSet<CharacterStatistic> CharacterStatistics { get; set; }
+
+
+        // Configuring the relations between the table
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure one-to-one relationship between Character and CharacterStatistic
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.CharacterStatistic) 
+                .WithOne(cs => cs.Character)
+                .HasForeignKey<CharacterStatistic>(cs => cs.CharacterID); 
+
+            // Configure the one-to-many relationship between Character and CharacterClass
+            modelBuilder.Entity<CharacterClass>()
+                .HasOne(cc => cc.Character)
+                .WithMany(c => c.CharacterClasses)
+                .HasForeignKey(cc => cc.CharacterID); 
+        }
+
     }
 }

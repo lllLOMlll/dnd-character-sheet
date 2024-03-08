@@ -55,16 +55,16 @@ namespace CharacterSheetDnD.Models
         [Url]
         public string AvatarUrl { get; set; } = string.Empty;
 
-        //// Navigation properties
-        //public virtual ICollection<CharacterClass> CharacterClasses { get; set; }
-        //public virtual CharacterStatistics CharacterStatistics { get; set; }
-        //// Add other navigation properties as needed
+        // Navigation properties
+        public virtual ICollection<CharacterClass> CharacterClasses { get; set; }
+        public virtual CharacterStatistic CharacterStatistic { get; set; }
+        // Add other navigation properties as needed
 
-        //// Constructor to initialize the collections
-        //public Character()
-        //{
-        //    this.CharacterClasses = new HashSet<CharacterClass>();
-        //    // Initialize other collections here
-        //}
+        // Constructor to initialize the collections
+        public Character()
+        {
+            this.CharacterClasses = new HashSet<CharacterClass>();
+            // Initialize other collections here
+        }
     }
 }
