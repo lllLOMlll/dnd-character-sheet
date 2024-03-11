@@ -15,6 +15,7 @@ namespace CharacterSheetDnD.Data
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterClass> CharacterClasses { get; set; }
         public DbSet<CharacterStatistic> CharacterStatistics { get; set; }
+        public DbSet<CharacterHealth> CharacterHealths { get; set; }
 
 
         // Configuring the relations between the table
@@ -32,7 +33,13 @@ namespace CharacterSheetDnD.Data
             modelBuilder.Entity<CharacterClass>()
                 .HasOne(cc => cc.Character)
                 .WithMany(c => c.CharacterClasses)
-                .HasForeignKey(cc => cc.CharacterID); 
+                .HasForeignKey(cc => cc.CharacterID);
+
+            // Configure one-to-one relationship between Character and CharacterHealth
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.CharacterHealth)
+                .WithOne(ch => ch.Character)
+                .HasForeignKey<CharacterHealth>(ch => ch.CharacterID);
         }
 
     }

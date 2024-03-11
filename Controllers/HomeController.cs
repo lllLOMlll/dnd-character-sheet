@@ -1,4 +1,5 @@
 using CharacterSheetDnD.Models;
+using CharacterSheetDnD.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -27,6 +28,22 @@ namespace CharacterSheetDnD.Controllers
         public IActionResult CharacterSelection()
         {
             return View();
+        }
+
+        [Route("Home/character-creation")]
+        public IActionResult CharacterCreation()
+        {
+            var viewModel = new CharacterCreationViewModel
+            {
+                // Initialiaze all the Models I need
+                Character = new Character(),
+                CharacterClass = new CharacterClass(),
+                CharacterStatistic = new CharacterStatistic(),
+                //CharacterHealth = new CharacterHealth()
+            };
+
+
+            return View(viewModel);
         }
 
 
