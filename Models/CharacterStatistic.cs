@@ -23,6 +23,6 @@ namespace CharacterSheetDnD.Models
         public int CharacterID { get; set; }
 
         // Navigation property back to the Character
-        public virtual Character Character { get; set; }
+        public virtual Character? Character { get; set; }
     }
 }

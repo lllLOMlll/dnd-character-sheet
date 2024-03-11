@@ -57,7 +57,7 @@ namespace CharacterSheetDnD.Models
 
         // Navigation properties
         public virtual ICollection<CharacterClass> CharacterClasses { get; set; }
-        public virtual CharacterStatistic CharacterStatistic { get; set; }
+        public virtual CharacterStatistic? CharacterStatistic { get; set; }
         // Add other navigation properties as needed
 
         // Constructor to initialize the collections
