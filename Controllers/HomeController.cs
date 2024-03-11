@@ -23,6 +23,13 @@ namespace CharacterSheetDnD.Controllers
             return View();
         }
 
+        [Route("Home/character-selection")]
+        public IActionResult CharacterSelection()
+        {
+            return View();
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
