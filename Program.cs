@@ -1,5 +1,6 @@
 using CharacterSheetDnD.Data;
 using CharacterSheetDnD.Models;
+using CharacterSheetDnD.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,15 +26,18 @@ builder.Services.AddAuthentication()
        options.ClientSecret = googleAuthNSection["ClientSecret"];
    });
 
+// I added this to be able to populate scroll down list of classes (Druid, Wizard, Bard, etc.)
+builder.Services.AddScoped<IClassService, ClassService>();
+
 // I added this for the Google external login setup
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =
         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-    // Add known networks and proxies here if applicable
-    // options.KnownProxies.Add(IPAddress.Parse("..."));
-    // options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("..."), ...));
 });
+
+
+
 
 var app = builder.Build();
 
