@@ -64,7 +64,9 @@ namespace CharacterSheetDnD.Controllers
                 _context.CharacterStatistics.Add(characterStatistic);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("CharacterSelection", "Home");
+                // Redirect to the MyCharacter action in MyCharacterController, passing CharacterID
+                return RedirectToAction("MyCharacter", "MyCharacter", new { id = character.CharacterID });
+
 
             }
 
