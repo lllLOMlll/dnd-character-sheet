@@ -8,10 +8,8 @@ namespace CharacterSheetDnD.Models
         [Key]
         public int HealthID { get; set; }
 
-        [Required]
         public int MaximumHitPoints { get; set; }
 
-        [Required]
         public int CurrentHitPoints { get; set; }
 
         public int TemporaryHitPoints { get; set; }

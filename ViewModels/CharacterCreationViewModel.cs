@@ -1,27 +1,28 @@
-﻿using CharacterSheetDnD.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-
-namespace CharacterSheetDnD.ViewModels
+﻿namespace CharacterSheetDnD.ViewModels
 {
     public class CharacterCreationViewModel
     {
-        public Character Character { get; set; }
-        public List<ClassLevelViewModel> CharacterClasses { get; set; } = new List<ClassLevelViewModel>();
-        public CharacterClass CharacterClass { get; set; }
-        public CharacterStatistic CharacterStatistic { get; set; }
-        public CharacterHealth CharacterHealth { get; set; }
+        // From Character.cs (Models)
+        public string Name { get; set; }
+        public string Race { get; set; }
+        // From CharacterClass.cs (Models)
+        public string Class { get; set; }
+        public int Level { get; set; } = 1;
+        // From CharacterStatistic.cs (Models)
+        public int Strength { get; set; }
 
-        // For displaying available classes in a dropdown
-        public IEnumerable<SelectListItem> AvailableClasses { get; set; }
+        public int Dexterity { get; set; }
 
-        // To capture the selected class
-        public string SelectedClass { get; set; }
+        public int Constitution { get; set; }
 
-        public class ClassLevelViewModel
-        {
-            public string ClassName { get; set; }
-            public int Level { get; set; }
-        }
+        public int Intelligence { get; set; }
+
+        public int Wisdom { get; set; }
+
+        public int Charisma { get; set; }
+
+
+
     }
 }
+

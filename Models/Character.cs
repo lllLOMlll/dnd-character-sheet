@@ -7,7 +7,7 @@ namespace CharacterSheetDnD.Models
         [Key]
         public int CharacterID { get; set; }
 
-        [Required(ErrorMessage ="Character name is required."), StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
+        [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Name { get; set; } = string.Empty;
 
         [StringLength(200)]
@@ -16,7 +16,7 @@ namespace CharacterSheetDnD.Models
         [StringLength(100)]
         public string PlayerName { get; set; } = string.Empty;
 
-        [Required, StringLength(50)]
+        [StringLength(50)]
         public string Race { get; set; } = string.Empty;
 
         [StringLength(50)]
@@ -40,7 +40,8 @@ namespace CharacterSheetDnD.Models
 
         [StringLength(50)]
         public string Height { get; set; } = string.Empty;
-
+        
+        [StringLength(50)]
         public string Weight { get; set; } = string.Empty;
 
         [StringLength(50)]

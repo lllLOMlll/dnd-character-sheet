@@ -8,7 +8,7 @@ namespace CharacterSheetDnD.Models
         [Key]
         public int CharacterClassId { get; set; } 
 
-        [Required, StringLength(50)]
+        [StringLength(50)]
         public string Class { get; set; } = string.Empty;
 
         [StringLength(50)]

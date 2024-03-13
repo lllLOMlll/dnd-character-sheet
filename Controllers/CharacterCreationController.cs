@@ -1,58 +1,76 @@
-﻿using CharacterSheetDnD.Models;
-using CharacterSheetDnD.Services;
+﻿using CharacterSheetDnD.Data;
+using CharacterSheetDnD.Models;
 using CharacterSheetDnD.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Drawing.Text;
-using System.Linq;
-using static CharacterSheetDnD.ViewModels.CharacterCreationViewModel;
-
+using Microsoft.Identity.Client;
+using System.Threading.Tasks;
 
 namespace CharacterSheetDnD.Controllers
 {
     public class CharacterCreationController : Controller
     {
+        private readonly ApplicationDbContext _context;
 
-        private readonly IClassService _classService;
-
-        // Inject IClassService through the controller's constructor
-        public CharacterCreationController(IClassService classService)
+        public CharacterCreationController(ApplicationDbContext context)
         {
-            _classService = classService;
+            _context = context;
         }
 
+        [HttpGet]
         [Route("Home/character-creation")]
         public IActionResult CharacterCreation()
         {
-            var viewModel = new CharacterCreationViewModel
-            {
-                Character = new Character(),
-                CharacterClasses = new List<ClassLevelViewModel> { new ClassLevelViewModel() }, // Ensure there's at least one entry
-                CharacterClass = new CharacterClass(),
-                CharacterStatistic = new CharacterStatistic(),
-                CharacterHealth = new CharacterHealth(),
-                AvailableClasses = _classService.GetAvailableClasses()
-                    .Select(c => new SelectListItem { Value = c, Text = c })
-            };
-
+            var viewModel = new CharacterCreationViewModel();
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult CharacterCreation(CharacterCreationViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveCharacter(CharacterCreationViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                // Save the character to the database
-                // Redirect to the newly created character page
+                var character = new Character
+                {
+                    Name = viewModel.Name,
+                    Race = viewModel.Race,
+                    // Assuming you initialize related collections in the Character constructor
+                };
 
-                return RedirectToAction("Index", "Home"); // Adjust as needed
+                _context.Characters.Add(character);
+                await _context.SaveChangesAsync();
+
+                var characterClass = new CharacterClass
+                {
+                    Class = viewModel.Class,
+                    Level = viewModel.Level,
+                    CharacterID = character.CharacterID // EF Core should have filled this in after SaveChangesAsync
+                };
+
+                _context.CharacterClasses.Add(characterClass);
+                await _context.SaveChangesAsync();
+    
+                var characterStatistic = new CharacterStatistic
+                {
+                    Strength = viewModel.Strength,
+                    Dexterity = viewModel.Dexterity,
+                    Constitution = viewModel.Constitution,
+                    Intelligence = viewModel.Intelligence,
+                    Wisdom = viewModel.Wisdom,
+                    Charisma = viewModel.Charisma,
+                    CharacterID = character.CharacterID
+                };
+
+                _context.CharacterStatistics.Add(characterStatistic);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("CharacterSelection", "Home");
+
             }
 
-            // If we're here, something went wrong
-            return View(model);
+            // If we got this far, something failed; redisplay form
+            return View("CharacterCreation", viewModel);
         }
 
-        // Other character-related actions can be added here
     }
 }

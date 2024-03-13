@@ -26,6 +26,8 @@ builder.Services.AddAuthentication()
        options.ClientSecret = googleAuthNSection["ClientSecret"];
    });
 
+
+
 // I added this to be able to populate scroll down list of classes (Druid, Wizard, Bard, etc.)
 builder.Services.AddScoped<IClassService, ClassService>();
 
@@ -35,8 +37,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders =
         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
-
-
 
 
 var app = builder.Build();
