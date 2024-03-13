@@ -1,6 +1,7 @@
 ﻿using CharacterSheetDnD.Data;
 using CharacterSheetDnD.Models;
 using CharacterSheetDnD.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace CharacterSheetDnD.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("Home/character-creation")]
         public IActionResult CharacterCreation()
         {

@@ -1,5 +1,6 @@
 using CharacterSheetDnD.Models;
 using CharacterSheetDnD.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -25,6 +26,7 @@ namespace CharacterSheetDnD.Controllers
         }
 
         [Route("Home/character-selection")]
+        [Authorize]
         public IActionResult CharacterSelection()
         {
             return View();

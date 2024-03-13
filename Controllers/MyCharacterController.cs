@@ -1,6 +1,7 @@
 using CharacterSheetDnD.Data;
 using CharacterSheetDnD.Models;
 using CharacterSheetDnD.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace CharacterSheetDnD.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("my-character/{id}")]
         public async Task<IActionResult> MyCharacter(int id)
         {
