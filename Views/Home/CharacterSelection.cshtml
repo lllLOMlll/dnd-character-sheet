@@ -1,19 +1,29 @@
-﻿@{
+﻿@model IEnumerable<CharacterSheetDnD.Models.Character>
+
+@{
     ViewData["Title"] = "Character Selection";
 }
 
 <div class="text-center">
-    <h1 class="display-4">WhizSheet</h1>
-    <p>Character Selection</p>
+    <h1 class="display-4">Create or Choose your Character</h1>
+    
+    <h5 class="mt-4">Select a character</h5>
+    @foreach (var character in Model)
+    {
+        <a asp-controller="MyCharacter" asp-action="MyCharacter" asp-route-id="@character.CharacterID" class="btn btn-secondary btn-large mb-3">
+            <b>@character.Name.ToUpper() </b> 
+            <br />
+            @character.Race
+            @foreach (var charClass in character.CharacterClasses)
+            {
+                <text> / @charClass.Class - Level @charClass.Level</text>
+            }
+        </a>
+        <br>
+    }
 
-    <div class="d-grid gap-2 d-md-block">
+    <h5 class="mt-4">Create a character</h5>
+    <div class="d-grid gap-2 d-md-block mt-3">
         <a asp-controller="CharacterCreation" asp-action="CharacterCreation" class="btn btn-primary btn-large">Create a new Character</a>
-        <br>
-        <br>
-        <button type="button" class="btn btn-secondary btn-large">Select your Character</button>
     </div>
-  
 </div>
-
-
-

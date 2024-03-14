@@ -2,6 +2,7 @@
 using CharacterSheetDnD.Models;
 using CharacterSheetDnD.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace CharacterSheetDnD.Controllers
 {
     public class CharacterCreationController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public CharacterCreationController(ApplicationDbContext context)
+        public CharacterCreationController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -32,15 +35,19 @@ namespace CharacterSheetDnD.Controllers
         {
             if (ModelState.IsValid)
             {
+                // I need this to track wich Character(s) belongs to wich User
+                var userId = _userManager.GetUserId(User);
+
                 var character = new Character
                 {
                     Name = viewModel.Name,
                     Race = viewModel.Race,
-                    // Assuming you initialize related collections in the Character constructor
+                    UserId = userId              
                 };
 
                 _context.Characters.Add(character);
                 await _context.SaveChangesAsync();
+
 
                 var characterClass = new CharacterClass
                 {
@@ -48,6 +55,8 @@ namespace CharacterSheetDnD.Controllers
                     Level = viewModel.Level,
                     CharacterID = character.CharacterID // EF Core should have filled this in after SaveChangesAsync
                 };
+
+
 
                 _context.CharacterClasses.Add(characterClass);
                 await _context.SaveChangesAsync();
