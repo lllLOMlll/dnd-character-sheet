@@ -5,12 +5,20 @@
       "PackagePath": "staticwebassets\\CharacterSheetDnD.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\css\\character-creation.css",
+      "PackagePath": "staticwebassets\\css\\character-creation.css"
+    },
+    {
       "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\images\\home.webp",
+      "PackagePath": "staticwebassets\\images\\home.webp"
     },
     {
       "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\js\\site.js",
@@ -243,6 +251,10 @@
     {
       "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\louis\\OneDrive\\Documents\\Code\\Projects\\Dungeons_and_Dragons\\CharacterSheetDnD\\wwwroot\\major_black_and_white.png",
+      "PackagePath": "staticwebassets\\major_black_and_white.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CharacterSheetDnD.Microsoft.AspNetCore.StaticWebAssets.props",

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using CharacterSheetDnD.Controllers;
 
 namespace CharacterSheetDnD.Areas.Identity.Pages.Account
 {
@@ -104,7 +105,10 @@ namespace CharacterSheetDnD.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/character-selection");
+            returnUrl ??= Url.Action(nameof(HomeController.CharacterSelection), "Home");
+
+
+            //returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -116,7 +120,8 @@ namespace CharacterSheetDnD.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    // redirect to /character-selection or Home
+                    return LocalRedirect(returnUrl ?? Url.Action("CharacterSelection", "Home"));
                 }
                 if (result.RequiresTwoFactor)
                 {

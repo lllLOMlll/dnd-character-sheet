@@ -1,0 +1,128 @@
+# ========================================================
+# General Visual Studio and .NET Core/ASP.NET Core ignores
+# ========================================================
+
+# IDE - Visual Studio Code
+.vscode/
+.history/
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet Packages (Do not ignore if using PackageReference in csproj files)
+# **/[Pp]ackages/*
+# !**/[Pp]ackages/build/
+*.nupkg
+*.snupkg
+
+# ReSharper & Rider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Windows detritus
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# ========================================================
+# Files and directories to explicitly include
+# ========================================================
+# Note: These files were previously ignored by mistake but are necessary for CI/CD
+# and should not be ignored:
+# *.csproj
+# *.vbproj
+# *.sln
+# *.config (Consider excluding if contains sensitive data, use environment variables instead)
+# *.pubxml (Only if it doesn't contain sensitive data, consider using Azure secrets for deployment)
+
+# ========================================================
+# Environment variables and secrets
+# ========================================================
+.env
+.env.test
+.env.*.local
+
+# ========================================================
+# Dependency directories (for projects using Node.js)
+# ========================================================
+node_modules/
+
+# ========================================================
+# Misc files to ignore
+# ========================================================
+*.log
+*.tmp
+*.TMP
+*.cache
+*.bak
+*.swp
+*.lock
+
+# ========================================================
+# Compiled source #
+# ========================================================
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# ========================================================
+# Package and build artifacts
+# ========================================================
+*.nupkg
+*.snupkg
+*.tgz
+*.zip
+*.msi
+*.msp
+*.msm
+
+# ========================================================
+# Coverage and test results
+# ========================================================
+coverage/
+*.lcov
+.nyc_output
+TestResult.xml
+*.VisualState.xml
+nunit-*.xml
+
+# ========================================================
+# Project-specific additions
+# ========================================================
+# Add here any other file types or paths specific to your project

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterSheetDnD.Models
 {
@@ -55,6 +56,14 @@ namespace CharacterSheetDnD.Models
 
         [Url]
         public string AvatarUrl { get; set; } = string.Empty;
+
+        // Foreign for ASP.NET Core Identity User
+        public string UserId {  get; set; }
+        // Navigation property to the Identity User
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser User { get; set; }
+
+
 
         // Navigation properties
         public virtual ICollection<CharacterClass> CharacterClasses { get; set; }

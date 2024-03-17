@@ -26,8 +26,32 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\louis\OneDrive\Documents\Code\Projects\Dungeons_and_Dragons\CharacterSheetDnD
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Areas/Identity/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Areas/Identity/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Views/CharacterCreation/CharacterCreation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhcmFjdGVyQ3JlYXRpb25cQ2hhcmFjdGVyQ3JlYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Views/Home/CharacterSelection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDaGFyYWN0ZXJTZWxlY3Rpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Views/Home/Index.cshtml]
@@ -36,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Views/MyCharacter/MyCharacter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXlDaGFyYWN0ZXJcTXlDaGFyYWN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/louis/OneDrive/Documents/Code/Projects/Dungeons_and_Dragons/CharacterSheetDnD/Views/Shared/Error.cshtml]
