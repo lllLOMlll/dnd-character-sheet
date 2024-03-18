@@ -21,6 +21,8 @@
 
         public int Charisma { get; set; }
 
+        public int MaximumHitPoints { get; set; }
+
 
 
     }

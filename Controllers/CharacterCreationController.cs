@@ -56,11 +56,18 @@ namespace CharacterSheetDnD.Controllers
                     CharacterID = character.CharacterID // EF Core should have filled this in after SaveChangesAsync
                 };
 
-
-
                 _context.CharacterClasses.Add(characterClass);
                 await _context.SaveChangesAsync();
-    
+
+                var characterHealth = new CharacterHealth
+                { 
+                    MaximumHitPoints = viewModel.MaximumHitPoints,
+                    CharacterID = character.CharacterID
+                };
+
+                _context.CharacterHealths.Add(characterHealth);
+                await _context.SaveChangesAsync();
+
                 var characterStatistic = new CharacterStatistic
                 {
                     Strength = viewModel.Strength,
