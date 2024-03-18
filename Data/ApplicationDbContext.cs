@@ -27,19 +27,23 @@ namespace CharacterSheetDnD.Data
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.CharacterStatistic) 
                 .WithOne(cs => cs.Character)
-                .HasForeignKey<CharacterStatistic>(cs => cs.CharacterID); 
+                .HasForeignKey<CharacterStatistic>(cs => cs.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure the one-to-many relationship between Character and CharacterClass
             modelBuilder.Entity<CharacterClass>()
                 .HasOne(cc => cc.Character)
                 .WithMany(c => c.CharacterClasses)
-                .HasForeignKey(cc => cc.CharacterID);
+                .HasForeignKey(cc => cc.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure one-to-one relationship between Character and CharacterHealth
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.CharacterHealth)
                 .WithOne(ch => ch.Character)
-                .HasForeignKey<CharacterHealth>(ch => ch.CharacterID);
+                .HasForeignKey<CharacterHealth>(ch => ch.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade);
+                
         }
 
     }

@@ -6,23 +6,40 @@
 
 <div class="text-center">
     <h1 class="display-4">Create or Choose your Character</h1>
-    
     <h5 class="mt-4">Select a character</h5>
     @foreach (var character in Model)
     {
-        <a asp-controller="MyCharacter" asp-action="MyCharacter" asp-route-id="@character.CharacterID" class="btn btn-secondary btn-large mb-3">
-            <b>@character.Name.ToUpper() </b> 
+        <div>
+            <a asp-controller="MyCharacter" asp-action="MyCharacter" asp-route-id="@character.CharacterID" class="btn btn-secondary btn-large mb-3">
+                <b>@character.Name.ToUpper()</b>
+                <br />
+                @character.Race
+                @foreach (var charClass in character.CharacterClasses)
+                {
+                    <text> / @charClass.Class - Level @charClass.Level</text>
+                }
+            </a>
             <br />
-            @character.Race
-            @foreach (var charClass in character.CharacterClasses)
-            {
-                <text> / @charClass.Class - Level @charClass.Level</text>
-            }
-        </a>
-        <br>
+            <a href="javascript:void(0);" onclick="confirmDeletion('@character.CharacterID', '@character.Name')" class="btn btn-danger btn-sm mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="black" d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" /></svg>
+            </a>
+
+        </div>
     }
 
-    <h5 class="mt-4">Create a character</h5>
+
+    <script>
+        function confirmDeletion(characterId, characterName) {
+            if (confirm('Do you really want to delete the character "' + characterName + '"?')) {
+                window.location.href = '/DeleteCharacter/DeleteCharacter?id=' + characterId;
+
+            }
+        }
+    </script>
+
+
+
+    <h5 class="mt-4 text-uppercase">Create a character</h5>
     <div class="d-grid gap-2 d-md-block mt-3">
         <a asp-controller="CharacterCreation" asp-action="CharacterCreation" class="btn btn-primary btn-large">Create a new Character</a>
     </div>
