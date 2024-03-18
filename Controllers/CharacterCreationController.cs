@@ -35,10 +35,26 @@ namespace CharacterSheetDnD.Controllers
 
         private IEnumerable<SelectListItem> GetAvailableClasses()
         {
-            // This method would fetch available classes from a database or any other source
-            // For demonstration, it's hard-coded
-            var classes = new List<string> { "Bard", "Cleric", "Paladin", "Wizard" };
-            return classes.Select(c => new SelectListItem(c, c));
+            var classes = new List<SelectListItem>
+            {
+                // Default selection
+                new SelectListItem { Text = "Select a class", Value = "" },
+                
+                new SelectListItem { Text = "Barbarian", Value = "Barbarian" },
+                new SelectListItem { Text = "Bard", Value = "Bard" },
+                new SelectListItem { Text = "Cleric", Value = "Cleric" },
+                new SelectListItem { Text = "Druid", Value = "Druid" },
+                new SelectListItem { Text = "Fighter", Value = "Fighter" },
+                new SelectListItem { Text = "Monk", Value = "Monk" },
+                new SelectListItem { Text = "Paladin", Value = "Paladin" },
+                new SelectListItem { Text = "Ranger", Value = "Ranger" },
+                new SelectListItem { Text = "Rogue", Value = "Rogue" },
+                new SelectListItem { Text = "Sorcerer", Value = "Sorcerer" },
+                new SelectListItem { Text = "Warlock", Value = "Warlock" },
+                new SelectListItem { Text = "Wizard", Value = "Wizard" }
+            };
+
+            return classes;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
