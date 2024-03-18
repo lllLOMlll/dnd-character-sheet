@@ -19,8 +19,30 @@
         <h1 class="display-4">My Character</h1>
         <h3>Let the adventure begin!</h3>
     </div>
-    <p>Character Name : @Model.Name </p>
-    <p>Character Dexterity : @Model.Dexterity </p>
+    <p><b>Name : </b>@Model.Name </p>
+    <p><b>Race : </b>@Model.Race </p>
+    <p><b>Character Class(es): </b></p>
+    <ul>
+        @foreach (var characterClass in Model.CharacterClasses)
+        {
+            <li>@characterClass.Class - Level @characterClass.Level</li>
+        }
+    </ul>
+    <p><b>Strength : </b>@Model.Strength</p>
+    <p><b>Dexterity : </b>@Model.Dexterity</p>
+    <p><b>Constitution : </b>@Model.Constitution </p>
+    <p><b>Intelligence : </b>@Model.Intelligence </p>
+    <p><b>Wisdom : </b>@Model.Wisdom </p>
+    <p><b>Charisma : </b>@Model.Charisma</p>
+    <p><b>Maximum Hit Point: </b>@Model.MaximumHitPoints</p>
+
+    <br />
+    <!-- Only displaying the level-->
+    <p><b>Level: </b> 
+        @foreach(var characterLevel in Model.CharacterClasses)
+        @characterLevel.Level
+        </p>
+   
 </div>
 
 
