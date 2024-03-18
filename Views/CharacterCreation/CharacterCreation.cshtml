@@ -32,9 +32,10 @@
             <!-- CLASS -->
             <div class="col-md-6">
                 <label asp-for="Class" class="form-label">Class: </label>
-                <input asp-for="Class" class="form-control" />
+                <select asp-for="Class" asp-items="Model.AvailableClasses" class="form-control"></select>
                 <span asp-validation-for="Class" class="text-danger"></span>
             </div>
+
 
             <!-- LEVEL -->
             <div class="col-md-6">

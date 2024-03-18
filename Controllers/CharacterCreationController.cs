@@ -4,6 +4,7 @@ using CharacterSheetDnD.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Identity.Client;
 using System.Threading.Tasks;
 
@@ -25,14 +26,32 @@ namespace CharacterSheetDnD.Controllers
         [Route("Home/character-creation")]
         public IActionResult CharacterCreation()
         {
-            var viewModel = new CharacterCreationViewModel();
+            var viewModel = new CharacterCreationViewModel
+            {
+                AvailableClasses = GetAvailableClasses()
+            };
             return View(viewModel);
         }
 
+        private IEnumerable<SelectListItem> GetAvailableClasses()
+        {
+            // This method would fetch available classes from a database or any other source
+            // For demonstration, it's hard-coded
+            var classes = new List<string> { "Bard", "Cleric", "Paladin", "Wizard" };
+            return classes.Select(c => new SelectListItem(c, c));
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveCharacter(CharacterCreationViewModel viewModel)
         {
+            ModelState.Remove("AvailableClasses");
+
+            if (!ModelState.IsValid)
+            {
+                viewModel.AvailableClasses = GetAvailableClasses();
+                return View("CharacterCreation", viewModel);
+            }
+            
             if (ModelState.IsValid)
             {
                 // I need this to track wich Character(s) belongs to wich User
@@ -82,7 +101,7 @@ namespace CharacterSheetDnD.Controllers
                 _context.CharacterStatistics.Add(characterStatistic);
                 await _context.SaveChangesAsync();
 
-                // Redirect to the MyCharacter action in MyCharacterController, passing CharacterID
+                // SUCCESS - Redirect to the MyCharacter action in MyCharacterController, passing CharacterID
                 return RedirectToAction("MyCharacter", "MyCharacter", new { id = character.CharacterID });
 
 
