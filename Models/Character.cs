@@ -23,6 +23,8 @@ namespace CharacterSheetDnD.Models
         [StringLength(50)]
         public string Alignment { get; set; } = string.Empty;
 
+        public string Deity { get; set; }
+
         public int ExperiencePoints { get; set; } = 0;
 
         [StringLength(500)]
@@ -38,6 +40,8 @@ namespace CharacterSheetDnD.Models
         public string Flaws { get; set; } = string.Empty;
 
         public int? Age { get; set; }
+
+        public string Size { get; set; } = string.Empty;
 
         [StringLength(50)]
         public string Height { get; set; } = string.Empty;
