@@ -127,6 +127,10 @@ namespace CharacterSheetDnD.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("Deity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ExperiencePoints")
                         .HasColumnType("int");
 
@@ -174,6 +178,10 @@ namespace CharacterSheetDnD.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Skin")
                         .IsRequired()
