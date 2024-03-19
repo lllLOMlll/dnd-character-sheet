@@ -1,22 +1,22 @@
 # ========================================================
-# General Visual Studio and .NET Core/ASP.NET Core ignores
+# General Exclusions for Visual Studio and .NET Core/ASP.NET Core
 # ========================================================
 
-# IDE - Visual Studio Code
+# IDE - Visual Studio Code specifics
 .vscode/
 .history/
 
-# Visual Studio
+# Visual Studio specific files and state information
 .vs/
 *.user
 *.userosscache
 *.suo
 *.sln.docstates
 
-# Rider
+# JetBrains Rider IDE specific files
 .idea/
 
-# Build results
+# Compiled binary and build output directories
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -31,18 +31,18 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
-# NuGet Packages (Do not ignore if using PackageReference in csproj files)
+# NuGet packages (uncomment if not using PackageReference and relying on packages.config)
 # **/[Pp]ackages/*
 # !**/[Pp]ackages/build/
 *.nupkg
 *.snupkg
 
-# ReSharper & Rider
+# ReSharper & JetBrains Rider optimization/cache files
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
-# Windows detritus
+# OS generated files (Windows)
 Thumbs.db
 ehthumbs.db
 Desktop.ini
@@ -54,34 +54,36 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-# Windows shortcuts
+# Shortcut files
 *.lnk
 
 # ========================================================
-# Files and directories to explicitly include
+# Files to Include (Important for CI/CD and Project Configuration)
 # ========================================================
-# Note: These files were previously ignored by mistake but are necessary for CI/CD
-# and should not be ignored:
-# *.csproj
-# *.vbproj
-# *.sln
-# *.config (Consider excluding if contains sensitive data, use environment variables instead)
-# *.pubxml (Only if it doesn't contain sensitive data, consider using Azure secrets for deployment)
+
+# Project and solution files
+*.csproj
+*.vbproj
+*.sln
+
+# Configuration files (be cautious with sensitive data)
+*.config 
+# *.pubxml (include only if free of sensitive data, prefer Azure secrets)
 
 # ========================================================
-# Environment variables and secrets
+# Environment Specifics and Secrets
 # ========================================================
 .env
 .env.test
 .env.*.local
 
 # ========================================================
-# Dependency directories (for projects using Node.js)
+# Node.js dependencies directory
 # ========================================================
 node_modules/
 
 # ========================================================
-# Misc files to ignore
+# Miscellaneous Files to Ignore
 # ========================================================
 *.log
 *.tmp
@@ -92,7 +94,7 @@ node_modules/
 *.lock
 
 # ========================================================
-# Compiled source #
+# Compiled Sources & Build Artifacts
 # ========================================================
 *.com
 *.class
@@ -102,10 +104,8 @@ node_modules/
 *.so
 
 # ========================================================
-# Package and build artifacts
+# Packaging and Build Output
 # ========================================================
-*.nupkg
-*.snupkg
 *.tgz
 *.zip
 *.msi
@@ -113,7 +113,7 @@ node_modules/
 *.msm
 
 # ========================================================
-# Coverage and test results
+# Test Coverage and Results
 # ========================================================
 coverage/
 *.lcov
@@ -123,6 +123,6 @@ TestResult.xml
 nunit-*.xml
 
 # ========================================================
-# Project-specific additions
+# Project-Specific Additions
 # ========================================================
-# Add here any other file types or paths specific to your project
+# Tailor this section for any additional exclusions specific to your project.
