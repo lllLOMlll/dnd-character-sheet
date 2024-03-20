@@ -22,12 +22,16 @@
     <p><b>Name : </b>@Model.Name </p>
     <p><b>Race : </b>@Model.Race </p>
     <p><b>Character Class(es): </b></p>
-    <ul>
-        @foreach (var characterClass in Model.CharacterClasses)
-        {
-            <li>@characterClass.Class - Level @characterClass.Level</li>
-        }
-    </ul>
+    @if (Model.CharacterClasses != null)
+    {
+        <ul>
+            @foreach (var characterClass in Model.CharacterClasses)
+            {
+                <li>@characterClass.Class - Level @characterClass.Level</li>
+            }
+        </ul>
+    }
+
     <p><b>Strength : </b>@Model.Strength</p>
     <p><b>Dexterity : </b>@Model.Dexterity</p>
     <p><b>Constitution : </b>@Model.Constitution </p>

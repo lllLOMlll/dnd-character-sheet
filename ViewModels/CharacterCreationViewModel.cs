@@ -8,16 +8,16 @@ namespace CharacterSheetDnD.ViewModels
     {
         // From Character.cs (Models)
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
-        public string Race { get; set; }
+        public string? Race { get; set; }
         // From CharacterClass.cs (Models)
         [Required (ErrorMessage = "Class is required")]
-        public string Class { get; set; }
+        public string? Class { get; set; }
         // I need that for the dropdown of classes (Bard, Clerir, Paladin, Wizard, etc.)
         // [BindNever] because I had a validation problem. I was not able to save a new character. 'AvailableClasses' should not be binded with the Model
         [BindNever] 
-        public IEnumerable<SelectListItem> AvailableClasses { get; set; }
+        public IEnumerable<SelectListItem>? AvailableClasses { get; set; }
         [Required]
         [Range(1, 20, ErrorMessage = "Level must be between 1 and 20")]
         public int Level { get; set; } = 1;

@@ -23,7 +23,7 @@ namespace CharacterSheetDnD.Models
         [StringLength(50)]
         public string Alignment { get; set; } = string.Empty;
 
-        public string Deity { get; set; }
+        public string Deity { get; set; } = string.Empty;
 
         public int ExperiencePoints { get; set; } = 0;
 
@@ -62,10 +62,10 @@ namespace CharacterSheetDnD.Models
         public string AvatarUrl { get; set; } = string.Empty;
 
         // Foreign for ASP.NET Core Identity User
-        public string UserId {  get; set; }
+        public string? UserId {  get; set; }
         // Navigation property to the Identity User
         [ForeignKey("UserId")]
-        public virtual ApplicationUser User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
 
 
