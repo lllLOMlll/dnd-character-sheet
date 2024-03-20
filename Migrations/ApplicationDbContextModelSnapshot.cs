@@ -189,7 +189,6 @@ namespace CharacterSheetDnD.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Weight")
@@ -441,9 +440,7 @@ namespace CharacterSheetDnD.Migrations
                 {
                     b.HasOne("CharacterSheetDnD.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
