@@ -27,6 +27,10 @@ namespace CharacterSheetDnD.Controllers
 
             _context.Characters.Remove(character);
             await _context.SaveChangesAsync();
+
+            // Set a TempData Success message
+            TempData["SuccessMessage"] = "Character successfully deleted!";
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -35,7 +39,7 @@ namespace CharacterSheetDnD.Controllers
         public async Task<IActionResult> DisplayDeleteCharacter()
         {
             var characters = await _context.Characters.ToListAsync();
-            return View("DeleteCharacter", characters); // Specify the view name if it's not matching the action name
+            return View("DeleteCharacter", characters); 
         }
     }
 }

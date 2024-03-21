@@ -2,6 +2,15 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+<!-- Succes message-->
+@if(TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <div class="text-center">
     <h1 class="display-4">WhizSheet</h1>
     <p>Create a free interactive character sheet for Dungeons and Dragons, the world's greatest roleplaying game!</p>
