@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CharacterSheetDnD.Models.Character>
+
+@{
+    ViewData["Title"] = "Character Selection";
+}
+
+<div class="text-center">
+    <h1 class="display-4 mb-3">Delete a Character</h1>
+ 
+    <div class="d-flex flex-column align-items-center">
+        <table class="table w-50">
+            <tbody>
+                @foreach (var character in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@character.Name.ToUpper()</strong><br />
+                            @character.Race
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" onclick="confirmDeletion('@character.CharacterID', '@character.Name')" class="btn btn-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14zM6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" />
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+    <script>
+        function confirmDeletion(characterId, characterName) {
+            if (confirm('Do you really want to delete the character "' + characterName + '"?')) {
+                window.location.href = '/DeleteCharacter/DeleteCharacter?id=' + characterId;
+
+            }
+        }
+    </script>
+
+
+</div>

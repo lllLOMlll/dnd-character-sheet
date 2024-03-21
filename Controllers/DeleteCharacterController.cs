@@ -1,5 +1,8 @@
-﻿using CharacterSheetDnD.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using CharacterSheetDnD.Data;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CharacterSheetDnD.Controllers
 {
@@ -12,6 +15,8 @@ namespace CharacterSheetDnD.Controllers
             _context = context;
         }
 
+        // This method is for the deletion operation, which you already have
+        
         public async Task<IActionResult> DeleteCharacter(int id)
         {
             var character = await _context.Characters.FindAsync(id);
@@ -22,8 +27,15 @@ namespace CharacterSheetDnD.Controllers
 
             _context.Characters.Remove(character);
             await _context.SaveChangesAsync();
-
             return RedirectToAction("Index", "Home");
+        }
+
+        [Route("delete-character")]
+        [Authorize]
+        public async Task<IActionResult> DisplayDeleteCharacter()
+        {
+            var characters = await _context.Characters.ToListAsync();
+            return View("DeleteCharacter", characters); // Specify the view name if it's not matching the action name
         }
     }
 }
