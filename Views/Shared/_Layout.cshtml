@@ -33,9 +33,10 @@
                                     Character
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Select</a></li>
-                                    <li><a class="dropdown-item" href="#">Create</a></li>
-                                    <li><a class="dropdown-item" href="#">Delete</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="SelectCharacter" asp-action="DisplaySelectCharacter">Select</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="CreateCharacter" asp-action="DisplayCreateCharacter">Create</a></li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="DeleteCharacter" asp-action="DisplayDeleteCharacter">Delete</a>
+
                                 </ul>
                             </li>
                         }

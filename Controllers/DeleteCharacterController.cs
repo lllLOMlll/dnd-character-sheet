@@ -15,8 +15,14 @@ namespace CharacterSheetDnD.Controllers
             _context = context;
         }
 
-        // This method is for the deletion operation, which you already have
-        
+        [Route("delete-character")]
+        [Authorize]
+        public async Task<IActionResult> DisplayDeleteCharacter()
+        {
+            var characters = await _context.Characters.ToListAsync();
+            return View("DeleteCharacter", characters);
+        }
+
         public async Task<IActionResult> DeleteCharacter(int id)
         {
             var character = await _context.Characters.FindAsync(id);
@@ -34,12 +40,6 @@ namespace CharacterSheetDnD.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Route("delete-character")]
-        [Authorize]
-        public async Task<IActionResult> DisplayDeleteCharacter()
-        {
-            var characters = await _context.Characters.ToListAsync();
-            return View("DeleteCharacter", characters); 
-        }
+       
     }
 }

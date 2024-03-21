@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace CharacterSheetDnD.Controllers
 {
-    public class CharacterCreationController : Controller
+    public class CreateCharacterController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public CharacterCreationController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public CreateCharacterController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -23,14 +23,14 @@ namespace CharacterSheetDnD.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("Home/character-creation")]
-        public IActionResult CharacterCreation()
+        [Route("character-creation")]
+        public IActionResult DisplayCreateCharacter()
         {
             var viewModel = new CharacterCreationViewModel
             {
                 AvailableClasses = GetAvailableClasses()
             };
-            return View(viewModel);
+            return View("CreateCharacter", viewModel);
         }
 
         private IEnumerable<SelectListItem> GetAvailableClasses()
@@ -65,7 +65,7 @@ namespace CharacterSheetDnD.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.AvailableClasses = GetAvailableClasses();
-                return View("CharacterCreation", viewModel);
+                return View("CreateCharacter", viewModel);
             }
             
             if (ModelState.IsValid)
@@ -124,7 +124,7 @@ namespace CharacterSheetDnD.Controllers
             }
 
             // If we got this far, something failed; redisplay form
-            return View("CharacterCreation", viewModel);
+            return View("CreateCharacter", viewModel);
         }
 
     }
