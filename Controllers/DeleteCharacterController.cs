@@ -3,6 +3,7 @@ using CharacterSheetDnD.Data;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CharacterSheetDnD.Controllers
 {
@@ -19,7 +20,11 @@ namespace CharacterSheetDnD.Controllers
         [Authorize]
         public async Task<IActionResult> DisplayDeleteCharacter()
         {
-            var characters = await _context.Characters.ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                
+            var characters = await _context.Characters
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
             return View("DeleteCharacter", characters);
         }
 

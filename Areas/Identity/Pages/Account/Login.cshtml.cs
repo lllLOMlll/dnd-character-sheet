@@ -105,7 +105,7 @@ namespace CharacterSheetDnD.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Action(nameof(HomeController.CharacterSelection), "Home");
+            returnUrl ??= Url.Action(nameof(HomeController.Index), "Home");
 
 
             //returnUrl ??= Url.Content("~/");
@@ -120,8 +120,10 @@ namespace CharacterSheetDnD.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    // redirect to /character-selection or Home
-                    return LocalRedirect(returnUrl ?? Url.Action("CharacterSelection", "Home"));
+                  
+                    returnUrl = Url.Action(nameof(HomeController.Index), "Home");
+                    return LocalRedirect(returnUrl);
+
                 }
                 if (result.RequiresTwoFactor)
                 {

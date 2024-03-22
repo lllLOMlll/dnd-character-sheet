@@ -20,7 +20,11 @@ namespace CharacterSheetDnD.Controllers
         [Authorize]
         public async Task<IActionResult> DisplaySelectCharacter()
         {
-            var characters = await _context.Characters.ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            var characters = await _context.Characters
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
             return View("SelectCharacter", characters);
         }
 

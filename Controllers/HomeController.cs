@@ -31,9 +31,9 @@ namespace CharacterSheetDnD.Controllers
             return View();
         }
 
-        [Route("Home/character-selection")]
+       
         [Authorize]
-        public async Task<IActionResult> CharacterSelection()
+        public async Task<IActionResult> DisplayHomePage()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             var characters = await _context.Characters
@@ -41,7 +41,7 @@ namespace CharacterSheetDnD.Controllers
                                 .Include(c => c.CharacterClasses)
                                 .ToListAsync();
 
-            return View(characters); 
+            return View("Index", characters); 
         }
 
 
