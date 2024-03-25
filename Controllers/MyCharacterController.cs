@@ -39,6 +39,7 @@ namespace CharacterSheetDnD.Controllers
             {
                 Name = character.Name,
                 // Map other Character properties as necessary
+                CharacterID = character.CharacterID,
                 Background = character.Background,
                 PlayerName = character.PlayerName,
                 Race = character.Race,
@@ -77,5 +78,28 @@ namespace CharacterSheetDnD.Controllers
 
             return View(viewModel);
         }
-    }
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> SaveStrength(int id, int strength)
+		{
+			var characterStatistic = await _context.CharacterStatistics
+				.FirstOrDefaultAsync(c => c.CharacterID == id);
+
+			if (characterStatistic == null)
+			{
+				return NotFound();
+			}
+
+			characterStatistic.Strength = strength;
+			_context.Update(characterStatistic);
+			await _context.SaveChangesAsync();
+
+			// Redirect back to the character view or another appropriate page
+			return RedirectToAction("MyCharacter", new { id = id });
+		}
+
+
+
+	}
 }
