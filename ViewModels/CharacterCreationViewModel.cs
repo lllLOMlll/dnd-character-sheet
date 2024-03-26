@@ -19,26 +19,26 @@ namespace CharacterSheetDnD.ViewModels
         [BindNever] 
         public IEnumerable<SelectListItem>? AvailableClasses { get; set; }
         [Required]
-        [Range(1, 20, ErrorMessage = "Level must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Level must be between 1 and 30")]
         public int Level { get; set; } = 1;
         // From CharacterStatistic.cs (Models)
         [Required]
-        [Range(1, 20, ErrorMessage = "Strength must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Strength must be between 1 and 30")]
         public int Strength { get; set; }
         [Required]
-        [Range(1, 20, ErrorMessage = "Dexterity must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Dexterity must be between 1 and 30")]
         public int Dexterity { get; set; }
         [Required]
-        [Range(1, 20, ErrorMessage = "Constitution must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Constitution must be between 1 and 30")]
         public int Constitution { get; set; }
         [Required]
-        [Range(1, 20, ErrorMessage = "Intelligence must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Intelligence must be between 1 and 30")]
         public int Intelligence { get; set; }
         [Required]
-        [Range(1, 20, ErrorMessage = "Wisdom must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Wisdom must be between 1 and 30")]
         public int Wisdom { get; set; }
         [Required]
-        [Range(1, 20, ErrorMessage = "Charisma must be between 1 and 20")]
+        [Range(1, 30, ErrorMessage = "Charisma must be between 1 and 30")]
         public int Charisma { get; set; }
         [Required]
         [Range(1, 425, ErrorMessage = "You hit points must be between 1 and 450. 450hp, really???")]
