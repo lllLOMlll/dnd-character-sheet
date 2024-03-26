@@ -29,7 +29,33 @@
 	</div>
 </div>
 
+<!--
+<form asp-controller="UpdateStatistic" asp-action="UpdateStrength" asp-route-id="@Model.CharacterID" method="post">
+@Html.AntiForgeryToken()
+	<input type="hidden" name="id" value="@Model.CharacterID" />
+	<div class="modal-body">
+		<label for="Strength" class="form-label mt-3">Strength</label>
+		<input id="Strength" name="strength" class="form-control mb-3" type="number" value="@Model.Strength" />
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		<button type="submit" class="btn btn-primary">Update Strength</button>
+	</div>
+</form>
 
+<form asp-controller="UpdateStatistic" asp-action="UpdateDexterity" asp-route-id="@Model.CharacterID" method="post">
+@Html.AntiForgeryToken()
+	<div class="modal-body">
+		<input type="hidden" name="id" value="@Model.CharacterID" />
+		<label for="Strength" class="form-label mt-3">Dexterity</label>
+		<input id="Dexterity" name="Dexterity" class="form-control mb-3" type="number" value="@Model.Dexterity" />
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		<button type="submit" class="btn btn-primary">Update Dexterity</button>
+	</div>
+</form>
+-->
 <!-- MAIN INFORMATION -->
 <div class="row">
 	<!-- Hit Points -->
@@ -46,12 +72,20 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						...
+						Update Hit Points
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					</div>
+					<form asp-controller="UpdateStatistic" asp-action="UpdateStrength" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+						<input type="hidden" name="id" value="@Model.CharacterID" />
+						<div class="modal-body">
+							<label for="Strength" class="form-label mt-3">Strength</label>
+							<input id="Strength" name="strength" class="form-control mb-3" type="number" value="@Model.Strength" />
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Update Strength</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -90,8 +124,234 @@
 
 
 
-
 <div class="accordion" id="accordionPanelsStayOpenExample">
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="panelsStayOpen-headingOne">
+			<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+				STATISTICS
+			</button>
+		</h2>
+		<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+			<div class="accordion-body">
+				<div class="row">
+
+					<!--Strength-->
+					<div class="col-md-4 text-center">
+						<p class="text-uppercase mb-1">Strength (+2)</p>
+						<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+						<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#HitPointsModal">@Model.Strength</button>					
+						<!-- Modal -->
+						<div class="modal fade" id="StrengthModal" tabindex="-1" aria-labelledby="StrengthModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="StrengthModalLabel">Edit Strength</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateStrength" asp-route-id="@Model.CharacterID" method="post">
+										@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
+										<div class="modal-body">
+											<label for="Strength" class="form-label mt-3">Strength</label>
+											<input id="Strength" name="strength" class="form-control mb-3" type="number" value="@Model.Strength" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Strength</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--Dexterity -->
+					<div class="col-md-4 text-center">
+						<p class="text-uppercase mb-1">Dexterity (+2)</p>
+						<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+						<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#DexterityModal">@Model.Dexterity</button>
+						<!-- Modal -->
+						<div class="modal fade" id="DexterityModal" tabindex="-1" aria-labelledby="DexterityModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="DexterityModalLabel">Edit Dexterity</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateDexterity" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
+										<div class="modal-body">
+											<label for="Dexterity" class="form-label mt-3">Dexterity</label>
+											<input id="Dexterity" name="dexterity" class="form-control mb-3" type="number" value="@Model.Dexterity" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Dexterity</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--Constitution-->
+					<div class="col-md-4 text-center">
+						<p class="text-uppercase mb-1">Constitution (+2)</p>
+						<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+						<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#ConstitutionModal">@Model.Constitution</button>
+						<!-- Modal -->
+						<div class="modal fade" id="ConstitutionModal" tabindex="-1" aria-labelledby="ConstitutionModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="ConstitutionModalLabel">Edit Constitution</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateConstitution" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
+										<div class="modal-body">
+											<label for="Constitution" class="form-label mt-3">Constitution</label>
+											<input id="Constitution" name="constitution" class="form-control mb-3" type="number" value="@Model.Constitution" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Constitution</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--Intelligence-->
+					<div class="col-md-4 text-center">
+						<p class="text-uppercase mb-1">Intelligence (+2)</p>
+						<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+						<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#IntelligenceModal">@Model.Intelligence</button>
+						<!-- Modal -->
+						<div class="modal fade" id="IntelligenceModal" tabindex="-1" aria-labelledby="IntelligenceModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="IntelligenceModalLabel">Edit Intelligence</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateIntelligence" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
+										<div class="modal-body">
+											<label for="Intelligence" class="form-label mt-3">Intelligence</label>
+											<input id="Intelligence" name="intelligence" class="form-control mb-3" type="number" value="@Model.Intelligence" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Intelligence</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--Wisdom-->
+					<div class="col-md-4 text-center">
+						<p class="text-uppercase mb-1">Wisdom (+2)</p>
+						<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+						<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#WisdomModal">@Model.Wisdom</button>
+						<!-- Modal -->
+						<div class="modal fade" id="WisdomModal" tabindex="-1" aria-labelledby="WisdomModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="WisdomModalLabel">Edit Wisdom</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateWisdom" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
+										<div class="modal-body">
+											<label for="Wisdom" class="form-label mt-3">Wisdom</label>
+											<input id="Wisdom" name="wisdom" class="form-control mb-3" type="number" value="@Model.Wisdom" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Wisdom</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--Charisma-->
+					<div class="col-md-4 text-center">
+						<p class="text-uppercase mb-1">Charisma (+2)</p>
+						<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+						<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#CharismaModal">@Model.Charisma</button>
+						<!-- Modal -->
+						<div class="modal fade" id="CharismaModal" tabindex="-1" aria-labelledby="CharismaModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="CharismaModalLabel">Edit Charisma</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateCharisma" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
+										<div class="modal-body">
+											<label for="Charisma" class="form-label mt-3">Charisma</label>
+											<input id="Charisma" name="charisma" class="form-control mb-3" type="number" value="@Model.Charisma" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Charisma</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+				Accordion Item #2
+			</button>
+		</h2>
+		<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+			<div class="accordion-body">
+				<strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+			</div>
+		</div>
+	</div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="panelsStayOpen-headingThree">
+			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+				Accordion Item #3
+			</button>
+		</h2>
+		<div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+			<div class="accordion-body">
+				<strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+@* <div class="accordion" id="accordionPanelsStayOpenExample">
 	<div class="accordion-item">
 		<!-- STATISTICS -->
 		<h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -102,7 +362,7 @@
 		<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
 			<div class="accordion-body">
 				<div class="row">
-					<!-- Strength Section with Modal Trigger -->
+					<!-- Strength -->
 					<div class="col-md-4 text-center">
 						<p>
 							<strong>Strength:</strong>
@@ -120,18 +380,20 @@
 										<h5 class="modal-title" id="StrengthModalLabel">Edit Strength</h5>
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
-
-									<form asp-action="SaveStrength" asp-controller="MyCharacter" method="post">
+									<form asp-controller="UpdateStatistic" asp-action="UpdateStrength" asp-route-id="@Model.CharacterID" method="post">
+					@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@Model.CharacterID" />
 										<div class="modal-body">
-											<input type="hidden" name="id" value="@Model.CharacterID" />
 											<label for="Strength" class="form-label mt-3">Strength</label>
-											<input id="Strength" name="Strength" class="form-control mb-3" type="number" value="@Model.Strength" />
+											<input id="Strength" name="strength" class="form-control mb-3" type="number" value="@Model.Strength" />
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-											<button type="submit" class="btn btn-primary">Save changes</button>
+											<button type="submit" class="btn btn-primary">Update Strength</button>
 										</div>
 									</form>
+
+
 
 								</div>
 							</div>
@@ -141,29 +403,61 @@
 
 					<!-- Dexterity -->
 					<div class="col-md-4 text-center">
-						<p><b>Dexterity : </b><button class="btn btn-secondary fw-bold">@Model.Dexterity</button> <b>(+2)</b></p>
+						<p>
+							<strong>Dexterity : </strong>
+							<button class="btn btn-secondary fw-bold" data-bs-toggle="modal" data-bs-target="#DexterityModal">
+					@Model.Dexterity
+							</button>
+							<strong>(+2)</strong>
+						</p>
+
+						<!-- Modal for Editing Dexterity -->
+						<div class="modal fade" id="DexterityModal" tabindex="-1" aria-labelledby="DexterityModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="DexterityModalLabel">Edit Strength</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<form asp-controller="UpdateStatistic" asp-action="UpdateDexterity" asp-route-id="@Model.CharacterID" method="post">
+					@Html.AntiForgeryToken()
+										<div class="modal-body">
+											<input type="hidden" name="id" value="@Model.CharacterID" />
+											<label for="Strength" class="form-label mt-3">Dexterity</label>
+											<input id="Dexterity" name="Dexterity" class="form-control mb-3" type="number" value="@Model.Dexterity" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Update Dexterity</button>
+										</div>
+									</form>
+
+
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<!-- Constitution -->
 					<div class="col-md-4 text-center">
-						<p><b>Constitution : </b><button class="btn btn-secondary fw-bold">@Model.Constitution</button> <b>(+2)</b> </p>
+						<p><strong>Constitution : </strong><button class="btn btn-secondary fw-bold">@Model.Constitution</button> <strong>(+2)</strong> </p>
 					</div>
 				</div>
 
 				<div class="row">
 					<!-- Intelligence -->
 					<div class="col-md-4 text-center">
-						<p><b>Intelligence : </b><button class="btn btn-secondary fw-bold">@Model.Intelligence</button> <b>(+2)</b> </p>
+						<p><strong>Intelligence : </strong><button class="btn btn-secondary fw-bold">@Model.Intelligence</button> <strong>(+2)</strong> </p>
 					</div>
 
 					<!-- Wisdom -->
 					<div class="col-md-4 text-center">
-						<p><b>Wisdom : </b><button class="btn btn-secondary fw-bold">@Model.Wisdom</button> <b>(+2)</b> </p>
+						<p><strong>Wisdom : </strong><button class="btn btn-secondary fw-bold">@Model.Wisdom</button> <strong>(+2)</strong> </p>
 					</div>
 
 					<!-- Charisma -->
 					<div class="col-md-4 text-center">
-						<p><b>Charisma : </b><button class="btn btn-secondary fw-bold">@Model.Charisma</button> <b>(+2)</p>
+						<p><strong>Charisma : </strong><button class="btn btn-secondary fw-bold">@Model.Charisma</button> <strong>(+2)</p>
 					</div>
 
 
@@ -201,49 +495,12 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<p><b>Name : </b>@Model.Name </p>
-<p><b>Race : </b>@Model.Race </p>
-<p><b>Character Class(es): </b></p>
-					@if (Model.CharacterClasses != null)
-					{
-	<ul>
-							@foreach (var characterClass in Model.CharacterClasses)
-							{
-			<li>@characterClass.Class - Level @characterClass.Level</li>
-							}
-	</ul>
-					}
-
-<p><b>Strength : </b>@Model.Strength</p>
-<p><b>Dexterity : </b>@Model.Dexterity</p>
-<p><b>Constitution : </b>@Model.Constitution </p>
-<p><b>Intelligence : </b>@Model.Intelligence </p>
-<p><b>Wisdom : </b>@Model.Wisdom </p>
-<p><b>Charisma : </b>@Model.Charisma</p>
-<p><b>Maximum Hit Point: </b>@Model.MaximumHitPoints</p>
-
-<br />
-<!-- Only displaying the level-->
-<p>
-	<b>Level: </b>
-					@foreach (var characterLevel in Model.CharacterClasses)
-						@characterLevel.Level
+</div> *@
 
 
 
 
-
-
-</p>
-
-</div>
-
-
-
-
-					@section Scripts {
+@section Scripts {
 	<script>
 		window.addEventListener('DOMContentLoaded', (event) => {
 			setTimeout(function () {
@@ -252,7 +509,7 @@
 			}, 2000); // 2000 milliseconds = 2 seconds
 		});
 	</script>
-					}
+}
 
 <style>
 	.spinner {

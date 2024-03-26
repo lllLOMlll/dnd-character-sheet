@@ -40,7 +40,7 @@
         public int CurrentHitPoints { get; set; }
         public int TemporaryHitPoints { get; set; }
 
-        // CHARACTERCLASS
+        // CHARACTERSTATISTICS
         public int Strength { get; set; }
         public int Dexterity { get; set; }
         public int Constitution { get; set; }

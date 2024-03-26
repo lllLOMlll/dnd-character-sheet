@@ -22,7 +22,7 @@ namespace CharacterSheetDnD.Controllers
         [HttpGet]
         [Authorize]
         [Route("my-character/{id}")]
-        public async Task<IActionResult> MyCharacter(int id)
+        public async Task<IActionResult> DisplayCharacter(int id)
         {
             var character = await _context.Characters
                 .Include(c => c.CharacterClasses)
@@ -75,29 +75,9 @@ namespace CharacterSheetDnD.Controllers
                 Wisdom = character.CharacterStatistic?.Wisdom ?? 0,
                 Charisma = character.CharacterStatistic?.Charisma ?? 0,
             };
-
-            return View(viewModel);
+            // MyCharacter is the cshtml file 
+            return View("MyCharacter", viewModel);
         }
-
-		[HttpPost]
-		[Authorize]
-		public async Task<IActionResult> SaveStrength(int id, int strength)
-		{
-			var characterStatistic = await _context.CharacterStatistics
-				.FirstOrDefaultAsync(c => c.CharacterID == id);
-
-			if (characterStatistic == null)
-			{
-				return NotFound();
-			}
-
-			characterStatistic.Strength = strength;
-			_context.Update(characterStatistic);
-			await _context.SaveChangesAsync();
-
-			// Redirect back to the character view or another appropriate page
-			return RedirectToAction("MyCharacter", new { id = id });
-		}
 
 
 
