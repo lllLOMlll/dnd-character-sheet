@@ -77,6 +77,7 @@ namespace CharacterSheetDnD.Controllers
                 {
                     Name = viewModel.Name,
                     Race = viewModel.Race,
+                    Level = viewModel.Level,
                     UserId = userId              
                 };
 

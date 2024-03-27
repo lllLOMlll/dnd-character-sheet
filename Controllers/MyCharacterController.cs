@@ -38,7 +38,7 @@ namespace CharacterSheetDnD.Controllers
             var viewModel = new MyCharacterViewModel
             {
                 Name = character.Name,
-                // Map other Character properties as necessary
+                Level = character.Level,
                 CharacterID = character.CharacterID,
                 Background = character.Background,
                 PlayerName = character.PlayerName,

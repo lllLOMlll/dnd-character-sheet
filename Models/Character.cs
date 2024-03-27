@@ -10,7 +10,9 @@ namespace CharacterSheetDnD.Models
 
         [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Name { get; set; } = string.Empty;
-
+        // This the Character's Level (and not the class level)
+        public int Level { get; set; } = 0;
+        
         [StringLength(200)]
         public string Background { get; set; } = string.Empty;
 
