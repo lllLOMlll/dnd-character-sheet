@@ -32,11 +32,44 @@
 
 <!-- MAIN INFORMATION -->
 <div class="row">
-	<!-- Hit Points -->
+	<!-- Max Hit Points -->
+	<div class="col-md-4 text-center">
+		<p class="text-uppercase mb-0">Max Hit Points</p>
+		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
+		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#MaxHitPointsModal">@Model.MaximumHitPoints</button>
+		<!-- Modal -->
+		<div class="modal fade" id="MaxHitPointsModal" tabindex="-1" aria-labelledby="MaxHitPointsModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="MaxHitPointsModalLabel">Update Maximum Hit Points</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						Update Max Hit Points
+					</div>
+					<form asp-controller="HitPoints" asp-action="UpdateMaximumHitPoints" asp-route-id="@Model.CharacterID" method="post">
+						@Html.AntiForgeryToken()
+						<input type="hidden" name="id" value="@Model.CharacterID" />
+						<div class="modal-body">
+							<label for="MaximumHitPoints" class="form-label mt-3">Maximum Hit Points</label>
+							<input id="MaximumHitPoints" name="maximumHitPoints" class="form-control mb-3" type="number" value="@Model.MaximumHitPoints" />
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Update Maximum Hit Points</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Current Hit Points -->
 	<div class="col-md-4 text-center">
 		<p class="text-uppercase mb-0">Current Hit Points</p>
 		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M9 2H5v2H3v2H1v6h2v2h2v2h2v2h2v2h2v2h2v-2h2v-2h2v-2h2v-2h2v-2h2V6h-2V4h-2V2h-4v2h-2v2h-2V4H9zm0 2v2h2v2h2V6h2V4h4v2h2v6h-2v2h-2v2h-2v2h-2v2h-2v-2H9v-2H7v-2H5v-2H3V6h2V4z" /></svg>
-		<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#HitPointsModal">@Model.MaximumHitPoints</button>
+		<button class="btn btn-success fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#HitPointsModal">@Model.CurrentHitPoints</button>
 		<!-- Modal -->
 		<div class="modal fade" id="HitPointsModal" tabindex="-1" aria-labelledby="HitPointsModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -78,17 +111,15 @@
 		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 512 512"><path fill="black" d="M447.1 86.2C400.3 33.4 332.2 0 256 0C114.6 0 0 114.6 0 256h64c0-106.1 85.9-192 192-192c58.5 0 110.4 26.5 145.5 67.8L341.3 192H512V21.3zM256 448c-58.5 0-110.4-26.5-145.5-67.8l60.2-60.2H0v170.7l64.9-64.9c46.8 52.8 115 86.2 191.1 86.2c141.4 0 256-114.6 256-256h-64c0 106.1-85.9 192-192 192" /></svg>
 		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Dexterity</button>
 	</div>
-</div>
 
-<div class="row">
 	<!-- Speed-->
-	<div class="col-md-6 text-center">
+	<div class="col-md-4 text-center">
 		<p class="text-uppercase mb-0">Speed</p>
 		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 512 512"><path fill="black" d="M272.5 18.906c-12.775.17-26.23 2.553-40.344 7.594c-30.165 55.31-68.313 120.904-125.72 178.5c-21.19 21.26-39.23 44.94-52.28 68.313c1.294 6.312 4.984 11.65 10.72 17.406c10.992 11.032 30.86 21.618 54.593 33.25c46.313 22.695 107.284 50.39 146.374 108.467l195.625.032c-20.198-70.834-100.276-101.12-159.064-83.94c-.073.03-.145.066-.22.095c-1.61.633-3.27 1.138-4.967 1.563c-.024.005-.04.025-.064.03c-8.86 2.204-18.82 1.68-29.125-.406c-24.79-5.02-52.76-19.695-61.342-45.687c-28.615-86.673 16.65-179.742 78.156-223.28c23.064-16.328 49.06-25.848 74.47-24.47c.144.008.29.023.436.03c-24.19-22.74-53.33-37.95-87.25-37.5zm81.75 56c-19.213.01-39.414 7.59-58.625 21.188c-54.644 38.682-96.652 125.024-71.188 202.156c5.127 15.53 27.25 29.162 47.282 33.22c10.015 2.027 19.218 1.518 23.717-.283c2.25-.9 3.173-1.84 3.594-2.562c.422-.72.81-1.663.25-4.375c-9.08-44.167-2.743-84.61 22.533-114.47c23.586-27.863 62.753-45.462 117.406-50.686c-15.014-47.145-37.47-71.226-61.314-80.03c-6.407-2.368-13.032-3.706-19.812-4.064a73.352 73.352 0 0 0-3.844-.094zM43.78 294.22c-5.405 12.554-9.136 24.756-10.905 36.186c7.178 27.76 51.898 55.43 91.094 61.344c1.703-5.973 5.832-11.475 10.28-14.25c51.01 28.844 86.18 60.704 102 101h229.594c.697-9.613.44-18.712-.625-27.344l-204.314-.03h-5.125l-2.75-4.345c-35.405-55.575-93.93-82.58-141.78-106.03c-23.925-11.724-45.17-22.336-59.625-36.844c-2.978-2.99-5.618-6.225-7.844-9.687" /></svg>
 		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Dexterity</button>
 	</div>
 	<!-- Inspiration-->
-	<div class="col-md-6 text-center">
+	<div class="col-md-4 text-center">
 		<p class="text-uppercase mb-0">Inspiration</p>
 		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>
 		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Dexterity</button>
@@ -109,10 +140,11 @@
 					@await Html.PartialAsync("_Statistics", Model)
 	</div>
 
+	<!-- SKILLS -->
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
 			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-				Accordion Item #2
+				SKILLS
 			</button>
 		</h2>
 		<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
@@ -122,10 +154,11 @@
 		</div>
 	</div>
 
+	<!-- SAVING THROWS -->
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="panelsStayOpen-headingThree">
 			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-				Accordion Item #3
+				SAVING THROWS
 			</button>
 		</h2>
 		<div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
