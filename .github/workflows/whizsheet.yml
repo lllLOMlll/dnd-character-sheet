@@ -43,9 +43,10 @@ jobs:
 
     - name: Apply EF Core Migrations
       run: |
-        $env:ConnectionStrings__DefaultConnection="${{ secrets.AZURE_SQL_CONNECTION_STRING }}"
-        dotnet ef database update --project ${{ env.PROJECT_PATH }}
+        $connectionString = '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'.Replace('"', '\"')
+        dotnet ef database update --project ${{ env.PROJECT_PATH }} --connection "$connectionString"
       shell: pwsh
+
 
     - name: Publish
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --no-build --configuration ${{ env.CONFIGURATION }} --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
