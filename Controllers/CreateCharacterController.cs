@@ -97,6 +97,7 @@ namespace CharacterSheetDnD.Controllers
                 var characterHealth = new CharacterHealth
                 { 
                     MaximumHitPoints = viewModel.MaximumHitPoints,
+                    CurrentHitPoints = viewModel.MaximumHitPoints,
                     CharacterID = character.CharacterID
                 };
 
