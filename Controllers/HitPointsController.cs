@@ -18,7 +18,7 @@ namespace CharacterSheetDnD.Controllers
 		[HttpPost]
 		[Authorize]
 		[ValidateAntiForgeryToken]
-		[Route("my-character/update-maximum-hit-points")]
+		[Route("my-character/update-maximum-hit-points/{id}")]
 		public async Task<IActionResult> UpdateMaximumHitPoints(int id, int maximumHitPoints)
 		{
 			var character = await _context.Characters
@@ -41,5 +41,34 @@ namespace CharacterSheetDnD.Controllers
 
 			return RedirectToAction("DisplayCharacter", "MyCharacter", new { id = character.CharacterID });
 		}
+
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		[Route("my-character/update-current-hit-points/{id}")]
+		public async Task<IActionResult> UpdateCurrentHitPoints(int id, int currentHitPoints)
+		{
+
+			var character = await _context.Characters
+												.Include(c => c.CharacterHealth)
+												.SingleOrDefaultAsync(c => c.CharacterID == id);
+
+			if (character == null) 
+			{
+				return NotFound($"Character with ID {id} not found.");
+			}
+
+			if (character.CharacterHealth == null)
+			{
+				character.CharacterHealth = new CharacterHealth { CharacterID = id };
+			}
+
+			character.CharacterHealth.CurrentHitPoints = currentHitPoints;
+			await _context.SaveChangesAsync();
+
+			return RedirectToAction("DisplayCharacter", "MyCharacter", new { id = character.CharacterID });
+		}
+
+
 	}
 }
