@@ -119,7 +119,7 @@ namespace CharacterSheetDnD.Controllers
                 await _context.SaveChangesAsync();
 
                 // SUCCESS - Redirect to the MyCharacter action in MyCharacterController, passing CharacterID
-                return RedirectToAction("MyCharacter", "MyCharacter", new { id = character.CharacterID });
+                return RedirectToAction("DisplayCharacter", "MyCharacter", new { id = character.CharacterID });
 
 
             }
