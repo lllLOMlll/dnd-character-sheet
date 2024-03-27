@@ -37,10 +37,10 @@ jobs:
       run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build --verbosity normal
 
     - name: Apply EF Core Migrations
-      run: dotnet ef database update --project ${{ env.PROJECT_PATH }} --connection "${{ secrets.DEFAULT_CONNECTION }}"
+      run: dotnet ef database update --project ${{ env.PROJECT_PATH }} --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}"
       env:
         # Assuming DEFAULT_CONNECTION is the name of the secret containing your connection string
-        ConnectionStrings__DefaultConnection: ${{ secrets.DEFAULT_CONNECTION }}
+        ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
 
     - name: Publish
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --no-build --configuration ${{ env.CONFIGURATION }} --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
