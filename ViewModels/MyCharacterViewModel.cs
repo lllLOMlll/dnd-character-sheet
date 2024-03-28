@@ -49,8 +49,20 @@
         public int Wisdom { get; set; }
         public int Charisma { get; set; }
 
-        // Additional properties can be added here as needed
-    }
+        // SAVING THROWS
+        public class SavingThrowViewModel
+        {
+            public string? Name { get; set; }
+            public bool IsProficient { get; set; }
+            public int AbilityScoreModifier { get; set; } // Assumed existing property
+            public int Modifier => SavingThrowUtility.CalculateSavingThrowModifier(IsProficient, AbilityScoreModifier, ProficiencyBonus);
+            public static int ProficiencyBonus { get; set; } // This needs to be set somewhere relevant in your code
+        }
+        public List<SavingThrowViewModel> SavingThrows { get; set; } = new List<SavingThrowViewModel>();
+
+
+
+	}
 
 
 }
