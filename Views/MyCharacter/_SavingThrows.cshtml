@@ -27,6 +27,12 @@
 	var charismaModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Wisdom);
 }
 
+@{
+	bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 1 && st.IsProficient);
+	int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);   
+	var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);
+}
+
 
 
 <h2 class="accordion-header" id="panelsStayOpen-heading2">
@@ -39,9 +45,9 @@
 		<div class="row">
 			<!-- Strength Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Strength</p>
+				<p class="text-uppercase mb-1">Strength - IsProficient = @isProficientStrength, ProficiencyBonus = @proficiencyBonus, strengthSavingThrowModifier = @strengthSavingThrowModifier </p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#StrengthProficiencyModal">
-					@strengthModifier.ToString("+#;-#;+0")
+					@strengthSavingThrowModifier.ToString("+#;-#;+0")
 				</button>
 				<!-- Modal for Proficiency -->
 				<div class="modal fade" id="StrengthProficiencyModal" tabindex="-1" aria-labelledby="StrengthProficiencyModalLabel" aria-hidden="true">
@@ -51,11 +57,13 @@
 								<h5 class="modal-title" id="StrengthProficiencyModalLabel">Edit Strength Proficiency</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<form asp-controller="SavingThrow" asp-action="UpdateProficiencyStrength" asp-route-id="@Model.CharacterID" method="post">
+							<form asp-controller="SavingThrow" asp-action="UpdateStrengthProficiency" asp-route-id="@Model.CharacterID" method="post">
+								<input type="hidden" name="characterId" value="@Model.CharacterID" />
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="StrengthSavingThrowProficiencyCheckbox" @(Model.SavingThrows.FirstOrDefault(st => st.Name == "Strength")?.IsProficient == true ? "checked" : "")>
+										<input type="hidden" name="IsProficient" value="False" />
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="StrengthSavingThrowProficiencyCheckbox" value="True" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 1)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="StrengthSavingThrowProficiencyCheckbox">
 											Proficient in Strength Saving Throw
 										</label>
@@ -70,6 +78,7 @@
 					</div>
 				</div>
 			</div>
+
 
 
 			<!-- Dexterity Display -->
@@ -90,7 +99,7 @@
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="DexteritySavingThrowProficiencyCheckbox" @(Model.SavingThrows.FirstOrDefault(st => st.Name == "Dexterity")?.IsProficient == true ? "checked" : "")>
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="DexteritySavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 2)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="DexteritySavingThrowProficiencyCheckbox">
 											Proficient in Dexterity Saving Throw
 										</label>
@@ -126,7 +135,7 @@
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="ConstitutionSavingThrowProficiencyCheckbox" @(Model.SavingThrows.FirstOrDefault(st => st.Name == "Constitution")?.IsProficient == true ? "checked" : "")>
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="ConstitutionSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 3)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="ConstitutionSavingThrowProficiencyCheckbox">
 											Proficient in Constitution Saving Throw
 										</label>
@@ -162,7 +171,7 @@
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="IntelligenceSavingThrowProficiencyCheckbox" @(Model.SavingThrows.FirstOrDefault(st => st.Name == "Intelligence")?.IsProficient == true ? "checked" : "")>
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="IntelligenceSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 4)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="IntelligenceSavingThrowProficiencyCheckbox">
 											Proficient in Intelligence Saving Throw
 										</label>
@@ -198,7 +207,7 @@
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="WisdomSavingThrowProficiencyCheckbox" @(Model.SavingThrows.FirstOrDefault(st => st.Name == "Wisdom")?.IsProficient == true ? "checked" : "")>
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="WisdomSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 5)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="WisdomSavingThrowProficiencyCheckbox">
 											Proficient in Wisdom Saving Throw
 										</label>
@@ -233,7 +242,7 @@
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="CharismaSavingThrowProficiencyCheckbox" @(Model.SavingThrows.FirstOrDefault(st => st.Name == "Charisma")?.IsProficient == true ? "checked" : "")>
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="CharismaSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 6)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="CharismaSavingThrowProficiencyCheckbox">
 											Proficient in Charisma Saving Throw
 										</label>

@@ -24,13 +24,15 @@ namespace CharacterSheetDnD.Controllers
         [Route("my-character/{id}")]
         public async Task<IActionResult> DisplayCharacter(int id)
         {
-            var character = await _context.Characters
-                .Include(c => c.CharacterClasses)
-                .Include(c => c.CharacterHealth)
-                .Include(c => c.CharacterStatistic)
-                .FirstOrDefaultAsync(c => c.CharacterID == id);
+			var character = await _context.Characters
+		   .Include(c => c.CharacterClasses)
+		   .Include(c => c.CharacterHealth)
+		   .Include(c => c.CharacterStatistic)
+		   .Include(c => c.CharacterSavingThrows)
+			   .ThenInclude(cst => cst.SavingThrow)
+		   .FirstOrDefaultAsync(c => c.CharacterID == id);
 
-            if (character == null)
+			if (character == null)
             {
                 return NotFound();
             }
@@ -75,9 +77,24 @@ namespace CharacterSheetDnD.Controllers
                 Wisdom = character.CharacterStatistic?.Wisdom ?? 0,
                 Charisma = character.CharacterStatistic?.Charisma ?? 0,
             };
-            // MyCharacter is the cshtml file 
-            return View("MyCharacter", viewModel);
+
+			// Now, perform the operations that require awaiting or looping
+			var savingThrows = await _context.SavingThrows.ToListAsync();
+			foreach (var savingThrow in savingThrows)
+			{
+				var characterSavingThrow = character.CharacterSavingThrows
+					.FirstOrDefault(cst => cst.SavingThrowID == savingThrow.SavingThrowID);
+
+				viewModel.CharacterSavingThrows.Add(new CharacterSavingThrowViewModel
+				{
+					SavingThrowID = savingThrow.SavingThrowID,
+					IsProficient = characterSavingThrow?.IsProficient ?? false
+				});
+			}
+			// MyCharacter is the cshtml file 
+			return View("MyCharacter", viewModel);
         }
+
 
 
 
