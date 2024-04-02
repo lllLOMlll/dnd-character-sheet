@@ -39,6 +39,7 @@ namespace CharacterSheetDnD.Controllers
 
             var viewModel = new MyCharacterViewModel
             {
+                // Character
                 Name = character.Name,
                 Level = character.Level,
                 CharacterID = character.CharacterID,
@@ -59,6 +60,7 @@ namespace CharacterSheetDnD.Controllers
                 Hair = character.Hair,
                 AvatarUrl = character.AvatarUrl,
 
+                // Class
                 CharacterClasses = character.CharacterClasses.Select(cc => new CharacterClassViewModel
                 {
                     Class = cc.Class,
@@ -66,10 +68,12 @@ namespace CharacterSheetDnD.Controllers
                     Level = cc.Level
                 }).ToList(),
 
+                // Health
                 MaximumHitPoints = character.CharacterHealth?.MaximumHitPoints ?? 0,
                 CurrentHitPoints = character.CharacterHealth?.CurrentHitPoints ?? 0,
                 TemporaryHitPoints = character.CharacterHealth?.TemporaryHitPoints ?? 0,
 
+                // Statistic
                 Strength = character.CharacterStatistic?.Strength ?? 0,
                 Dexterity = character.CharacterStatistic?.Dexterity ?? 0,
                 Constitution = character.CharacterStatistic?.Constitution ?? 0,
@@ -78,7 +82,7 @@ namespace CharacterSheetDnD.Controllers
                 Charisma = character.CharacterStatistic?.Charisma ?? 0,
             };
 
-			// Now, perform the operations that require awaiting or looping
+			// Saving throws
 			var savingThrows = await _context.SavingThrows.ToListAsync();
 			foreach (var savingThrow in savingThrows)
 			{
@@ -91,7 +95,10 @@ namespace CharacterSheetDnD.Controllers
 					IsProficient = characterSavingThrow?.IsProficient ?? false
 				});
 			}
-			// MyCharacter is the cshtml file 
+			
+            
+            
+            // Return the view viewModel -> MyCharacterViewModel
 			return View("MyCharacter", viewModel);
         }
 
