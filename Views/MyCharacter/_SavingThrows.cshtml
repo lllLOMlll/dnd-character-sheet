@@ -28,11 +28,21 @@
 }
 
 @{
-	bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 1 && st.IsProficient);
-	int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);   
-	var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);
+    bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 1 && st.IsProficient);
+    bool isProficientDexterity = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 2 && st.IsProficient);
+    bool isProficientConstitution = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 3 && st.IsProficient);
+    bool isProficientIntelligence = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 4 && st.IsProficient);
+    bool isProficientWisdom = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 5 && st.IsProficient);
+    bool isProficientCharisma = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 6 && st.IsProficient);
+    int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);
+    
+    var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);
+    var dexteritySavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientDexterity, dexterityModifier, proficiencyBonus);
+    var constitutionSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientConstitution, constitutionModifier, proficiencyBonus);
+    var intelligenceSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientIntelligence, intelligenceModifier, proficiencyBonus);
+    var wisdomSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientWisdom, wisdomModifier, proficiencyBonus);
+    var charismaSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientCharisma, charismaModifier, proficiencyBonus);
 }
-
 
 
 <h2 class="accordion-header" id="panelsStayOpen-heading2">
@@ -45,7 +55,7 @@
 		<div class="row">
 			<!-- Strength Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Strength - IsProficient = @isProficientStrength, ProficiencyBonus = @proficiencyBonus, strengthSavingThrowModifier = @strengthSavingThrowModifier </p>
+				<p class="text-uppercase mb-1 @(isProficientStrength ? "fw-bold" : "")">Strength</p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#StrengthProficiencyModal">
 					@strengthSavingThrowModifier.ToString("+#;-#;+0")
 				</button>
@@ -79,13 +89,11 @@
 				</div>
 			</div>
 
-
-
 			<!-- Dexterity Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Dexterity</p>
+				<p class="text-uppercase mb-1 @(isProficientDexterity ? "fw-bold" : "")">Dexterity</p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#DexterityProficiencyModal">
-					@dexterityModifier.ToString("+#;-#;+0")
+					@dexteritySavingThrowModifier.ToString("+#;-#;+0")
 				</button>
 				<!-- Modal for Proficiency -->
 				<div class="modal fade" id="DexterityProficiencyModal" tabindex="-1" aria-labelledby="DexterityProficiencyModalLabel" aria-hidden="true">
@@ -95,11 +103,13 @@
 								<h5 class="modal-title" id="DexterityProficiencyModalLabel">Edit Dexterity Proficiency</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<form asp-controller="SavingThrow" asp-action="UpdateProficiencyDexterity" asp-route-id="@Model.CharacterID" method="post">
+							<form asp-controller="SavingThrow" asp-action="UpdateDexterityProficiency" asp-route-id="@Model.CharacterID" method="post">
+								<input type="hidden" name="characterId" value="@Model.CharacterID" />
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="DexteritySavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 2)?.IsProficient == true ? "checked" : "")>
+										<input type="hidden" name="IsProficient" value="False" />
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="DexteritySavingThrowProficiencyCheckbox" value="True" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 2)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="DexteritySavingThrowProficiencyCheckbox">
 											Proficient in Dexterity Saving Throw
 										</label>
@@ -115,13 +125,11 @@
 				</div>
 			</div>
 
-
-
 			<!-- Constitution Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Constitution</p>
+				<p class="text-uppercase mb-1 @(isProficientConstitution ? "fw-bold" : "")">Constitution</p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#ConstitutionProficiencyModal">
-					@constitutionModifier.ToString("+#;-#;+0")
+					@constitutionSavingThrowModifier.ToString("+#;-#;+0")
 				</button>
 				<!-- Modal for Proficiency -->
 				<div class="modal fade" id="ConstitutionProficiencyModal" tabindex="-1" aria-labelledby="ConstitutionProficiencyModalLabel" aria-hidden="true">
@@ -131,11 +139,13 @@
 								<h5 class="modal-title" id="ConstitutionProficiencyModalLabel">Edit Constitution Proficiency</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<form asp-controller="SavingThrow" asp-action="UpdateProficiencyConstitution" asp-route-id="@Model.CharacterID" method="post">
+							<form asp-controller="SavingThrow" asp-action="UpdateConstitutionProficiency" asp-route-id="@Model.CharacterID" method="post">
+								<input type="hidden" name="characterId" value="@Model.CharacterID" />
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="ConstitutionSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 3)?.IsProficient == true ? "checked" : "")>
+										<input type="hidden" name="IsProficient" value="False" />
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="ConstitutionSavingThrowProficiencyCheckbox" value="True" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 3)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="ConstitutionSavingThrowProficiencyCheckbox">
 											Proficient in Constitution Saving Throw
 										</label>
@@ -151,13 +161,11 @@
 				</div>
 			</div>
 
-
-
 			<!-- Intelligence Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Intelligence</p>
+				<p class="text-uppercase mb-1 @(isProficientIntelligence ? "fw-bold" : "")">Intelligence</p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#IntelligenceProficiencyModal">
-					@intelligenceModifier.ToString("+#;-#;+0")
+					@intelligenceSavingThrowModifier.ToString("+#;-#;+0")
 				</button>
 				<!-- Modal for Proficiency -->
 				<div class="modal fade" id="IntelligenceProficiencyModal" tabindex="-1" aria-labelledby="IntelligenceProficiencyModalLabel" aria-hidden="true">
@@ -167,11 +175,13 @@
 								<h5 class="modal-title" id="IntelligenceProficiencyModalLabel">Edit Intelligence Proficiency</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<form asp-controller="SavingThrow" asp-action="UpdateProficiencyIntelligence" asp-route-id="@Model.CharacterID" method="post">
+							<form asp-controller="SavingThrow" asp-action="UpdateIntelligenceProficiency" asp-route-id="@Model.CharacterID" method="post">
+								<input type="hidden" name="characterId" value="@Model.CharacterID" />
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="IntelligenceSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 4)?.IsProficient == true ? "checked" : "")>
+										<input type="hidden" name="IsProficient" value="False" />
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="IntelligenceSavingThrowProficiencyCheckbox" value="True" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 4)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="IntelligenceSavingThrowProficiencyCheckbox">
 											Proficient in Intelligence Saving Throw
 										</label>
@@ -187,13 +197,11 @@
 				</div>
 			</div>
 
-
-
 			<!-- Wisdom Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Wisdom</p>
+				<p class="text-uppercase mb-1 @(isProficientWisdom ? "fw-bold" : "")">Wisdom</p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#WisdomProficiencyModal">
-					@wisdomModifier.ToString("+#;-#;+0")
+					@wisdomSavingThrowModifier.ToString("+#;-#;+0")
 				</button>
 				<!-- Modal for Proficiency -->
 				<div class="modal fade" id="WisdomProficiencyModal" tabindex="-1" aria-labelledby="WisdomProficiencyModalLabel" aria-hidden="true">
@@ -203,11 +211,13 @@
 								<h5 class="modal-title" id="WisdomProficiencyModalLabel">Edit Wisdom Proficiency</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<form asp-controller="SavingThrow" asp-action="UpdateProficiencyWisdom" asp-route-id="@Model.CharacterID" method="post">
+							<form asp-controller="SavingThrow" asp-action="UpdateWisdomProficiency" asp-route-id="@Model.CharacterID" method="post">
+								<input type="hidden" name="characterId" value="@Model.CharacterID" />
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="WisdomSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 5)?.IsProficient == true ? "checked" : "")>
+										<input type="hidden" name="IsProficient" value="False" />
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="WisdomSavingThrowProficiencyCheckbox" value="True" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 5)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="WisdomSavingThrowProficiencyCheckbox">
 											Proficient in Wisdom Saving Throw
 										</label>
@@ -223,12 +233,11 @@
 				</div>
 			</div>
 
-
 			<!-- Charisma Display -->
 			<div class="col-md-4 text-center">
-				<p class="text-uppercase mb-1">Charisma</p>
+				<p class="text-uppercase mb-1 @(isProficientCharisma ? "fw-bold" : "")">Charisma</p>
 				<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#CharismaProficiencyModal">
-					@charismaModifier.ToString("+#;-#;+0")
+					@charismaSavingThrowModifier.ToString("+#;-#;+0")
 				</button>
 				<!-- Modal for Proficiency -->
 				<div class="modal fade" id="CharismaProficiencyModal" tabindex="-1" aria-labelledby="CharismaProficiencyModalLabel" aria-hidden="true">
@@ -238,11 +247,13 @@
 								<h5 class="modal-title" id="CharismaProficiencyModalLabel">Edit Charisma Proficiency</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<form asp-controller="SavingThrow" asp-action="UpdateProficiencyCharisma" asp-route-id="@Model.CharacterID" method="post">
+							<form asp-controller="SavingThrow" asp-action="UpdateCharismaProficiency" asp-route-id="@Model.CharacterID" method="post">
+								<input type="hidden" name="characterId" value="@Model.CharacterID" />
 								@Html.AntiForgeryToken()
 								<div class="modal-body">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="IsProficient" id="CharismaSavingThrowProficiencyCheckbox" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 6)?.IsProficient == true ? "checked" : "")>
+										<input type="hidden" name="IsProficient" value="False" />
+										<input class="form-check-input" type="checkbox" name="IsProficient" id="CharismaSavingThrowProficiencyCheckbox" value="True" @(Model.CharacterSavingThrows.FirstOrDefault(st => st.SavingThrowID == 6)?.IsProficient == true ? "checked" : "")>
 										<label class="form-check-label" for="CharismaSavingThrowProficiencyCheckbox">
 											Proficient in Charisma Saving Throw
 										</label>
@@ -257,6 +268,7 @@
 					</div>
 				</div>
 			</div>
+
 
 
 
