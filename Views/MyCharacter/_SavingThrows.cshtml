@@ -28,12 +28,12 @@
 }
 
 @{
-    bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 1 && st.IsProficient);
-    bool isProficientDexterity = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 2 && st.IsProficient);
-    bool isProficientConstitution = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 3 && st.IsProficient);
-    bool isProficientIntelligence = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 4 && st.IsProficient);
-    bool isProficientWisdom = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 5 && st.IsProficient);
-    bool isProficientCharisma = Model.CharacterSavingThrows.Any(st => st.SavingThrowID == 6 && st.IsProficient);
+    bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.Name == "Strength" && st.IsProficient);
+    bool isProficientDexterity = Model.CharacterSavingThrows.Any(st => st.Name == "Dexterity" && st.IsProficient);
+    bool isProficientConstitution = Model.CharacterSavingThrows.Any(st => st.Name == "Constitution" && st.IsProficient);
+    bool isProficientIntelligence = Model.CharacterSavingThrows.Any(st => st.Name == "Intelligence" && st.IsProficient);
+    bool isProficientWisdom = Model.CharacterSavingThrows.Any(st => st.Name == "Wisdom" && st.IsProficient);
+    bool isProficientCharisma = Model.CharacterSavingThrows.Any(st => st.Name == "Charisma" && st.IsProficient);
     int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);
     
     var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);

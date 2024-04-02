@@ -92,6 +92,7 @@ namespace CharacterSheetDnD.Controllers
 				viewModel.CharacterSavingThrows.Add(new CharacterSavingThrowViewModel
 				{
 					SavingThrowID = savingThrow.SavingThrowID,
+                    Name = savingThrow.Name,
 					IsProficient = characterSavingThrow?.IsProficient ?? false
 				});
 			}

@@ -55,6 +55,7 @@ namespace CharacterSheetDnD.ViewModels
 		public class CharacterSavingThrowViewModel
 		{
 			public int SavingThrowID { get; set; }
+			public string? Name { get; set; }
 
 			public bool IsProficient { get; set; }
 		}
