@@ -20,6 +20,10 @@ namespace CharacterSheetDnD.Data
 		public DbSet<SavingThrow> SavingThrows { get; set; }
 		public DbSet<CharacterSkill> CharacterSkills { get; set; }
 		public DbSet<Skill> Skills { get; set; }
+		public DbSet<CharacterEquipmentBase> CharacterEquipmentBases { get; set; }
+		public DbSet<Weapon> Weapons { get; set; }
+		public DbSet<Armor> Armors { get; set; }
+		public DbSet<MagicItem> MagicItems { get; set; }
 
 
 		// Configuring the relations between the table
@@ -71,6 +75,18 @@ namespace CharacterSheetDnD.Data
 				.HasOne(cs => cs.Skill)
 				.WithMany(s => s.CharacterSkills)
 				.HasForeignKey(cs => cs.SkillID)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Weapon>()
+				.HasBaseType<CharacterEquipmentBase>();
+
+			modelBuilder.Entity<Armor>()
+				.HasBaseType<CharacterEquipmentBase>();
+
+			modelBuilder.Entity<MagicItem>()
+				.HasOne(m => m.CharacterEquipmentBase)
+				.WithMany()
+				.HasForeignKey(m => m.EquipmentID)
 				.OnDelete(DeleteBehavior.Cascade);
 
 

@@ -1,0 +1,77 @@
+﻿@model CharacterSheetDnD.ViewModels.MyCharacterViewModel
+
+@using CharacterSheetDnD.Utilities
+
+
+
+
+
+	<h2 class="accordion-header" id="panelsStayOpen-heading2">
+	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEquipment" aria-expanded="false" aria-controls="panelsStayOpen-collapseEquipment">
+			EQUIPMENT
+		</button>
+	</h2>
+<div id="panelsStayOpen-collapseEquipment" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingEquipment">
+		<div class="accordion-body">
+			<div class="row">
+
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEquipmentModal">
+                Add New Equipment
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addEquipmentModal" tabindex="-1" aria-labelledby="addEquipmentModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addEquipmentModalLabel">Add New Equipment</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form asp-controller="Equipment" asp-action="AddEquipment" method="post">
+                            <div class="modal-body">
+                                <input type="hidden" name="CharacterID" value="@Model.CharacterID" />
+                                @Html.AntiForgeryToken()
+
+                                <div class="mb-3">
+                                    <label for="ItemName" class="form-label">Item Name</label>
+                                    <input type="text" class="form-control" id="ItemName" name="ItemName" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Quantity" class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" id="Quantity" name="Quantity" min="1" value="1" required>
+                                </div>
+
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="IsEquipped" name="IsEquipped">
+                                    <label class="form-check-label" for="IsEquipped">Is Equipped?</label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="ValueInGold" class="form-label">Value in Gold</label>
+                                    <input type="number" class="form-control" id="ValueInGold" name="ValueInGold" min="0" value="0" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add Equipment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+				
+
+
+
+			</div>
+		</div>
+	</div>

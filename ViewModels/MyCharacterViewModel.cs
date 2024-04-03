@@ -73,8 +73,52 @@ namespace CharacterSheetDnD.ViewModels
 		}
 		public List<CharacterSkillViewModel> CharacterSkills { get; set; }
 
-		
-		
+		// EQUIPMENT
+		public class EquipmentViewModel
+		{
+			public int EquipmentID { get; set; }
+			public string? ItemName { get; set; }
+			public string? Description { get; set; }
+			public int Quantity { get; set; }
+			public bool IsEquipped { get; set; }
+			public int ValueInGold { get; set; }
+		}
+		public List<EquipmentViewModel> Equipment { get; set; } = new List<EquipmentViewModel>();
+
+		// WEAPONS
+		public class WeaponViewModel
+		{
+			public int EquipmentID { get; set; }
+			public string? ItemName { get; set; }
+			public string? DamageDice { get; set; }
+			public string? DamageType { get; set; } // Enum as string for view purposes
+			public string? Properties { get; set; } // Enum flags as string for view purposes
+			public string? Range { get; set; }
+		}
+		public List<WeaponViewModel> Weapons { get; set; } = new List<WeaponViewModel>();
+
+		// ARMORS
+		public class ArmorViewModel
+		{
+			public int EquipmentID { get; set; }
+			public string? ItemName { get; set; }
+			public int ArmorClass { get; set; }
+			public bool StealthDisadvantage { get; set; }
+		}
+		public List<ArmorViewModel> Armors { get; set; } = new List<ArmorViewModel>();
+
+		// MAGIC ITEMS
+		public class MagicItemViewModel
+		{
+			public int MagicItemID { get; set; }
+			public string? EffectDescription { get; set; }
+			public string? EffectMechanics { get; set; }
+			public int? Charges { get; set; }
+			public string? RechargeRate { get; set; }
+			public string? LinkedEquipmentItemName { get; set; } // To show if linked to a specific item
+		}
+		public List<MagicItemViewModel> MagicItems { get; set; } = new List<MagicItemViewModel>();
+
 		// Constructor
 		public MyCharacterViewModel()
 		{
