@@ -5,65 +5,753 @@
 <!-- Create the Modifier for each Statisti using the CalculateModifier method of the AbilityScoreUtility class in Utilities-->
 @{
 	var strengthModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Strength);
-}
-
-@{
 	var dexterityModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity);
-}
-
-@{
 	var constitutionModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Constitution);
-}
-
-@{
 	var intelligenceModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Intelligence);
-}
-
-@{
 	var wisdomModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Wisdom);
+	var charismaModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Charisma);
 }
 
+<!-- Saving Throws -->
 @{
-	var charismaModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Wisdom);
+	bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.Name == "Strength" && st.IsProficient);
+	bool isProficientDexterity = Model.CharacterSavingThrows.Any(st => st.Name == "Dexterity" && st.IsProficient);
+	bool isProficientConstitution = Model.CharacterSavingThrows.Any(st => st.Name == "Constitution" && st.IsProficient);
+	bool isProficientIntelligence = Model.CharacterSavingThrows.Any(st => st.Name == "Intelligence" && st.IsProficient);
+	bool isProficientWisdom = Model.CharacterSavingThrows.Any(st => st.Name == "Wisdom" && st.IsProficient);
+	bool isProficientCharisma = Model.CharacterSavingThrows.Any(st => st.Name == "Charisma" && st.IsProficient);
+	int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);
+
+	var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);
+	var dexteritySavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientDexterity, dexterityModifier, proficiencyBonus);
+	var constitutionSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientConstitution, constitutionModifier, proficiencyBonus);
+	var intelligenceSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientIntelligence, intelligenceModifier, proficiencyBonus);
+	var wisdomSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientWisdom, wisdomModifier, proficiencyBonus);
+	var charismaSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientCharisma, charismaModifier, proficiencyBonus);
+
+
 }
 
+<!-- Skills -->
 @{
-    bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.Name == "Strength" && st.IsProficient);
-    bool isProficientDexterity = Model.CharacterSavingThrows.Any(st => st.Name == "Dexterity" && st.IsProficient);
-    bool isProficientConstitution = Model.CharacterSavingThrows.Any(st => st.Name == "Constitution" && st.IsProficient);
-    bool isProficientIntelligence = Model.CharacterSavingThrows.Any(st => st.Name == "Intelligence" && st.IsProficient);
-    bool isProficientWisdom = Model.CharacterSavingThrows.Any(st => st.Name == "Wisdom" && st.IsProficient);
-    bool isProficientCharisma = Model.CharacterSavingThrows.Any(st => st.Name == "Charisma" && st.IsProficient);
-    int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);
-    
-    var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);
-    var dexteritySavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientDexterity, dexterityModifier, proficiencyBonus);
-    var constitutionSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientConstitution, constitutionModifier, proficiencyBonus);
-    var intelligenceSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientIntelligence, intelligenceModifier, proficiencyBonus);
-    var wisdomSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientWisdom, wisdomModifier, proficiencyBonus);
-    var charismaSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientCharisma, charismaModifier, proficiencyBonus);
-
-	bool isProficientAcrobatics = Model.CharacterSkills.Any(s => s.SkillID == 1 && s.IsProficient);
+	bool isProficientAcrobatics = Model.CharacterSkills.Any(s => s.Name == "Acrobatics" && s.IsProficient);
+	bool isProficientAnimalHandling = Model.CharacterSkills.Any(s => s.Name == "Animal Handling" && s.IsProficient);
+	bool isProficientArcana = Model.CharacterSkills.Any(s => s.Name == "Arcana" && s.IsProficient);
+	bool isProficientAthletics = Model.CharacterSkills.Any(s => s.Name == "Athletics" && s.IsProficient);
+	bool isProficientDeception = Model.CharacterSkills.Any(s => s.Name == "Deception" && s.IsProficient);
+	bool isProficientHistory = Model.CharacterSkills.Any(s => s.Name == "History" && s.IsProficient);
+	bool isProficientInsight = Model.CharacterSkills.Any(s => s.Name == "Insight" && s.IsProficient);
+	bool isProficientIntimidation = Model.CharacterSkills.Any(s => s.Name == "Intimidation" && s.IsProficient);
+	bool isProficientInvestigation = Model.CharacterSkills.Any(s => s.Name == "Investigation" && s.IsProficient);
+	bool isProficientMedicine = Model.CharacterSkills.Any(s => s.Name == "Medicine" && s.IsProficient);
+	bool isProficientNature = Model.CharacterSkills.Any(s => s.Name == "Nature" && s.IsProficient);
+	bool isProficientPerception = Model.CharacterSkills.Any(s => s.Name == "Perception" && s.IsProficient);
+	bool isProficientPerformance = Model.CharacterSkills.Any(s => s.Name == "Performance" && s.IsProficient);
+	bool isProficientPersuasion = Model.CharacterSkills.Any(s => s.Name == "Persuasion" && s.IsProficient);
+	bool isProficientReligion = Model.CharacterSkills.Any(s => s.Name == "Religion" && s.IsProficient);
+	bool isProficientSleightOfHand = Model.CharacterSkills.Any(s => s.Name == "Sleight of Hand" && s.IsProficient);
+	bool isProficientStealth = Model.CharacterSkills.Any(s => s.Name == "Stealth" && s.IsProficient);
+	bool isProficientSurvival = Model.CharacterSkills.Any(s => s.Name == "Survival" && s.IsProficient);
 
 	var acrobaticsSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientAcrobatics, dexterityModifier, proficiencyBonus);
-}
+	var animalHandlingSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientAnimalHandling, wisdomModifier, proficiencyBonus);
+	var arcanaSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientArcana, intelligenceModifier, proficiencyBonus);
+	var athleticsSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientAthletics, strengthModifier, proficiencyBonus);
+	var deceptionSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientDeception, charismaModifier, proficiencyBonus);
+	var historySkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientHistory, intelligenceModifier, proficiencyBonus);
+	var insightSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientInsight, wisdomModifier, proficiencyBonus);
+	var intimidationSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientIntimidation, charismaModifier, proficiencyBonus);
+	var investigationSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientInvestigation, intelligenceModifier, proficiencyBonus);
+	var medicineSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientMedicine, wisdomModifier, proficiencyBonus);
+	var natureSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientNature, intelligenceModifier, proficiencyBonus);
+	var perceptionSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientPerception, wisdomModifier, proficiencyBonus);
+	var performanceSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientPerformance, charismaModifier, proficiencyBonus);
+	var persuasionSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientPersuasion, charismaModifier, proficiencyBonus);
+	var religionSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientReligion, intelligenceModifier, proficiencyBonus);
+	var sleightOfHandSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientSleightOfHand, dexterityModifier, proficiencyBonus);
+	var stealthSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientStealth, dexterityModifier, proficiencyBonus);
+	var survivalSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientSurvival, wisdomModifier, proficiencyBonus);
+	}
+
+
+	<h2 class="accordion-header" id="panelsStayOpen-heading2">
+		<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSkills" aria-expanded="false" aria-controls="panelsStayOpen-collapseSkills">
+			SKILLS
+		</button>
+	</h2>
+	<div id="panelsStayOpen-collapseSkills" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSkills">
+		<div class="accordion-body">
+			<div class="row">
+
+				<!-- Acrobatics Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientAcrobatics ? "fw-bold" : "")">Acrobatics (Dex)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#AcrobaticsProficiencyModal">
+						@acrobaticsSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Acrobatics -->
+					<div class="modal fade" id="AcrobaticsProficiencyModal" tabindex="-1" aria-labelledby="AcrobaticsProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="AcrobaticsProficiencyModalLabel">Edit Acrobatics Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Acrobatics" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="AcrobaticsProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Acrobatics")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="AcrobaticsProficiencyCheckbox">
+												Proficient in Acrobatics?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Animal Handling Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientAnimalHandling ? "fw-bold" : "")">Animal Handling (Wis)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#AnimalHandlingProficiencyModal">
+						@animalHandlingSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Animal Handling -->
+					<div class="modal fade" id="AnimalHandlingProficiencyModal" tabindex="-1" aria-labelledby="AnimalHandlingProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="AnimalHandlingProficiencyModalLabel">Edit Animal Handling Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Animal Handling" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="AnimalHandlingProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Animal Handling")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="AnimalHandlingProficiencyCheckbox">
+												Proficient in Animal Handling?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Arcana Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientArcana ? "fw-bold" : "")">Arcana (Int)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#ArcanaProficiencyModal">
+						@arcanaSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Arcana -->
+					<div class="modal fade" id="ArcanaProficiencyModal" tabindex="-1" aria-labelledby="ArcanaProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="ArcanaProficiencyModalLabel">Edit Arcana Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Arcana" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="ArcanaProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Arcana")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="ArcanaProficiencyCheckbox">
+												Proficient in Arcana?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Athletics Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientAthletics ? "fw-bold" : "")">Athletics (Str)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#AthleticsProficiencyModal">
+						@athleticsSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Athletics -->
+					<div class="modal fade" id="AthleticsProficiencyModal" tabindex="-1" aria-labelledby="AthleticsProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="AthleticsProficiencyModalLabel">Edit Athletics Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Athletics" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="AthleticsProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Athletics")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="AthleticsProficiencyCheckbox">
+												Proficient in Athletics?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Deception Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientDeception ? "fw-bold" : "")">Deception (Cha)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#DeceptionProficiencyModal">
+						@deceptionSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Deception -->
+					<div class="modal fade" id="DeceptionProficiencyModal" tabindex="-1" aria-labelledby="DeceptionProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="DeceptionProficiencyModalLabel">Edit Deception Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Deception" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="DeceptionProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Deception")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="DeceptionProficiencyCheckbox">
+												Proficient in Deception?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- History Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientHistory ? "fw-bold" : "")">History (Int)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#HistoryProficiencyModal">
+						@historySkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for History -->
+					<div class="modal fade" id="HistoryProficiencyModal" tabindex="-1" aria-labelledby="HistoryProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="HistoryProficiencyModalLabel">Edit History Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="History" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="HistoryProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "History")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="HistoryProficiencyCheckbox">
+												Proficient in History?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Insight Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientInsight ? "fw-bold" : "")">Insight (Wis)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#InsightProficiencyModal">
+						@insightSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Insight -->
+					<div class="modal fade" id="InsightProficiencyModal" tabindex="-1" aria-labelledby="InsightProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="InsightProficiencyModalLabel">Edit Insight Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Insight" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="InsightProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Insight")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="InsightProficiencyCheckbox">
+												Proficient in Insight?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Intimidation Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientIntimidation ? "fw-bold" : "")">Intimidation (Cha)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#IntimidationProficiencyModal">
+						@intimidationSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Intimidation -->
+					<div class="modal fade" id="IntimidationProficiencyModal" tabindex="-1" aria-labelledby="IntimidationProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="IntimidationProficiencyModalLabel">Edit Intimidation Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Intimidation" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="IntimidationProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Intimidation")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="IntimidationProficiencyCheckbox">
+												Proficient in Intimidation?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Investigation Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientInvestigation ? "fw-bold" : "")">Investigation (Int)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#InvestigationProficiencyModal">
+						@investigationSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Investigation -->
+					<div class="modal fade" id="InvestigationProficiencyModal" tabindex="-1" aria-labelledby="InvestigationProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="InvestigationProficiencyModalLabel">Edit Investigation Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Investigation" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="InvestigationProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Investigation")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="InvestigationProficiencyCheckbox">
+												Proficient in Investigation?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Medicine Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientMedicine ? "fw-bold" : "")">Medicine (Wis)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#MedicineProficiencyModal">
+						@medicineSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Medicine -->
+					<div class="modal fade" id="MedicineProficiencyModal" tabindex="-1" aria-labelledby="MedicineProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="MedicineProficiencyModalLabel">Edit Medicine Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Medicine" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="MedicineProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Medicine")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="MedicineProficiencyCheckbox">
+												Proficient in Medicine?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Nature Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientNature ? "fw-bold" : "")">Nature (Int)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#NatureProficiencyModal">
+						@natureSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Nature -->
+					<div class="modal fade" id="NatureProficiencyModal" tabindex="-1" aria-labelledby="NatureProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="NatureProficiencyModalLabel">Edit Nature Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Nature" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="NatureProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Nature")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="NatureProficiencyCheckbox">
+												Proficient in Nature?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Perception Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientPerception ? "fw-bold" : "")">Perception (Wis)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#PerceptionProficiencyModal">
+						@perceptionSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Perception -->
+					<div class="modal fade" id="PerceptionProficiencyModal" tabindex="-1" aria-labelledby="PerceptionProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="PerceptionProficiencyModalLabel">Edit Perception Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Perception" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="PerceptionProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Perception")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="PerceptionProficiencyCheckbox">
+												Proficient in Perception?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Performance Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientPerformance ? "fw-bold" : "")">Performance (Cha)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#PerformanceProficiencyModal">
+						@performanceSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Performance -->
+					<div class="modal fade" id="PerformanceProficiencyModal" tabindex="-1" aria-labelledby="PerformanceProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="PerformanceProficiencyModalLabel">Edit Performance Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Performance" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="PerformanceProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Performance")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="PerformanceProficiencyCheckbox">
+												Proficient in Performance?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Persuasion Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientPersuasion ? "fw-bold" : "")">Persuasion (Cha)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#PersuasionProficiencyModal">
+						@persuasionSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Persuasion -->
+					<div class="modal fade" id="PersuasionProficiencyModal" tabindex="-1" aria-labelledby="PersuasionProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="PersuasionProficiencyModalLabel">Edit Persuasion Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Persuasion" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="PersuasionProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Persuasion")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="PersuasionProficiencyCheckbox">
+												Proficient in Persuasion?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Religion Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientReligion ? "fw-bold" : "")">Religion (Int)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#ReligionProficiencyModal">
+						@religionSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Religion -->
+					<div class="modal fade" id="ReligionProficiencyModal" tabindex="-1" aria-labelledby="ReligionProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="ReligionProficiencyModalLabel">Edit Religion Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Religion" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="ReligionProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Religion")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="ReligionProficiencyCheckbox">
+												Proficient in Religion?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Sleight of Hand Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientSleightOfHand ? "fw-bold" : "")">Sleight of Hand (Dex)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#SleightOfHandProficiencyModal">
+						@sleightOfHandSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Sleight of Hand -->
+					<div class="modal fade" id="SleightOfHandProficiencyModal" tabindex="-1" aria-labelledby="SleightOfHandProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="SleightOfHandProficiencyModalLabel">Edit Sleight of Hand Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Sleight of Hand" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="SleightOfHandProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Sleight of Hand")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="SleightOfHandProficiencyCheckbox">
+												Proficient in Sleight of Hand?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Stealth Display -->
+				<div class="col-md-4 text-center">
+					<p class="text-uppercase mb-1 @(isProficientStealth ? "fw-bold" : "")">Stealth (Dex)</p>
+					<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#StealthProficiencyModal">
+						@stealthSkillModifier.ToString("+#;-#;+0")
+					</button>
+					<!-- Modal for Stealth -->
+					<div class="modal fade" id="StealthProficiencyModal" tabindex="-1" aria-labelledby="StealthProficiencyModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="StealthProficiencyModalLabel">Edit Stealth Proficiency</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+									<input type="hidden" name="characterId" value="@Model.CharacterID" />
+									<input type="hidden" name="SkillName" value="Stealth" />
+									@Html.AntiForgeryToken()
+									<div class="modal-body">
+										<div class="form-check">
+											<input type="hidden" name="IsProficient" value="False" />
+											<input class="form-check-input" type="checkbox" name="IsProficient" id="StealthProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Stealth")?.IsProficient == true ? "checked" : "")>
+											<label class="form-check-label" for="StealthProficiencyCheckbox">
+												Proficient in Stealth?
+											</label>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Update Proficiency</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Survival Display -->
+<div class="col-md-4 text-center">
+    <p class="text-uppercase mb-1 @(isProficientSurvival ? "fw-bold" : "")">Survival (Wis)</p>
+    <button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#SurvivalProficiencyModal">
+        @survivalSkillModifier.ToString("+#;-#;+0")
+    </button>
+    <!-- Modal for Survival -->
+    <div class="modal fade" id="SurvivalProficiencyModal" tabindex="-1" aria-labelledby="SurvivalProficiencyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="SurvivalProficiencyModalLabel">Edit Survival Proficiency</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-controller="Skill" asp-action="UpdateSkill" asp-route-id="@Model.CharacterID" method="post">
+                    <input type="hidden" name="characterId" value="@Model.CharacterID" />
+                    <input type="hidden" name="SkillName" value="Survival" />
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <div class="form-check">
+                            <input type="hidden" name="IsProficient" value="False" />
+                            <input class="form-check-input" type="checkbox" name="IsProficient" id="SurvivalProficiencyCheckbox" value="True" @(Model.CharacterSkills.FirstOrDefault(st => st.Name == "Survival")?.IsProficient == true ? "checked" : "")>
+                            <label class="form-check-label" for="SurvivalProficiencyCheckbox">
+                                Proficient in Survival?
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Proficiency</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
-<h2 class="accordion-header" id="panelsStayOpen-heading2">
-	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSkills" aria-expanded="false" aria-controls="panelsStayOpen-collapseSkills">
-		SKILLS
-	</button>
-</h2>
-<div id="panelsStayOpen-collapseSkills" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSkills">
-	<div class="accordion-body">
-		<div class="row">
-	
-
-			<p>@isProficientAcrobatics</p>
-
-
-
+			</div>
 		</div>
 	</div>
-</div>

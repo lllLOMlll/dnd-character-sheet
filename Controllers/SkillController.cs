@@ -16,52 +16,54 @@ namespace CharacterSheetDnD.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        [Route("my-character/update-acrobatics-proficiency/{id}")]
-        public async Task<IActionResult> UpdateAcrobaticsProficiency(int id, IFormCollection formData)
-        {
-            var character = await _context.Characters
-                                           .Include(c => c.CharacterSkills)
-                                               .ThenInclude(cs => cs.Skill)
-                                           .SingleOrDefaultAsync(c => c.CharacterID == id);
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		[Route("my-character/update-skill/{id}")]
+		public async Task<IActionResult> UpdateSkill(int id, IFormCollection formData)
+		{
+			var character = await _context.Characters
+										   .Include(c => c.CharacterSkills)
+											   .ThenInclude(cs => cs.Skill)
+										   .SingleOrDefaultAsync(c => c.CharacterID == id);
 
-            if (character == null)
-            {
-                return NotFound($"Character with ID {id} not found.");
-            }
+			if (character == null)
+			{
+				return NotFound($"Character with ID {id} not found.");
+			}
 
-            // Find the 'Acrobatics' skill entry
-            var skill = await _context.Skills.FirstOrDefaultAsync(s => s.Name == "Acrobatics");
+			string skillName = formData["SkillName"].FirstOrDefault() ?? string.Empty;
 
-            if (skill == null)
-            {
-                return NotFound("Skill 'Acrobatics' not found.");
-            }
+			var skill = await _context.Skills.FirstOrDefaultAsync(s => s.Name == skillName);
 
-            // Parse the 'IsProficient' form value
-            bool isProficient = formData["IsProficient"].Contains("True");
+			if (skill == null)
+			{
+				return NotFound($"Skill '{skillName}' not found.");
+			}
 
-            var characterSkill = character.CharacterSkills.FirstOrDefault(cs => cs.SkillID == skill.SkillID);
-            if (characterSkill == null)
-            {
-                characterSkill = new CharacterSkill
-                {
-                    CharacterID = id,
-                    SkillID = skill.SkillID,
-                    IsProficient = isProficient
-                };
-                _context.CharacterSkills.Add(characterSkill);
-            }
-            else
-            {
-                characterSkill.IsProficient = isProficient;
-            }
+			bool isProficient = formData["IsProficient"].Contains("True");
 
-            await _context.SaveChangesAsync();
+			var characterSkill = character.CharacterSkills.FirstOrDefault(cs => cs.SkillID == skill.SkillID);
+			if (characterSkill == null)
+			{
+				characterSkill = new CharacterSkill
+				{
+					CharacterID = id,
+					SkillID = skill.SkillID,
+					IsProficient = isProficient
+				};
+				_context.CharacterSkills.Add(characterSkill);
+			}
+			else
+			{
+				characterSkill.IsProficient = isProficient;
+			}
 
-            return RedirectToAction("DisplayCharacter", "MyCharacter", new { id });
-        }
-    }
+			await _context.SaveChangesAsync();
+
+			return RedirectToAction("DisplayCharacter", "MyCharacter", new { id });
+		}
+
+
+	}
 }

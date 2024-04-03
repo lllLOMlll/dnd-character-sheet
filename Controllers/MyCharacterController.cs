@@ -115,7 +115,6 @@ namespace CharacterSheetDnD.Controllers
 				});
 			}
 
-
 			// Return the view viewModel -> MyCharacterViewModel
 			return View("MyCharacter", viewModel);
         }
