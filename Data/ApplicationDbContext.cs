@@ -31,67 +31,77 @@ namespace CharacterSheetDnD.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			// Configure one-to-one relationship between Character and CharacterStatistic
-			modelBuilder.Entity<Character>()
-				.HasOne(c => c.CharacterStatistic)
-				.WithOne(cs => cs.Character)
-				.HasForeignKey<CharacterStatistic>(cs => cs.CharacterID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.CharacterStatistic)
+                .WithOne(cs => cs.Character)
+                .HasForeignKey<CharacterStatistic>(cs => cs.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade); 
 
-			// Configure the one-to-many relationship between Character and CharacterClass
-			modelBuilder.Entity<CharacterClass>()
-				.HasOne(cc => cc.Character)
-				.WithMany(c => c.CharacterClasses)
-				.HasForeignKey(cc => cc.CharacterID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CharacterClass>()
+                .HasOne(cc => cc.Character)
+                .WithMany(c => c.CharacterClasses)
+                .HasForeignKey(cc => cc.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade);
 
-			// Configure one-to-one relationship between Character and CharacterHealth
-			modelBuilder.Entity<Character>()
-				.HasOne(c => c.CharacterHealth)
-				.WithOne(ch => ch.Character)
-				.HasForeignKey<CharacterHealth>(ch => ch.CharacterID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.CharacterHealth)
+                .WithOne(ch => ch.Character)
+                .HasForeignKey<CharacterHealth>(ch => ch.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade); 
 
-			// Configure the many-to-many relationship between Character and SavingThrow through CharacterSavingThrow
-			modelBuilder.Entity<CharacterSavingThrow>()
-				.HasOne(cst => cst.Character)
-				.WithMany(c => c.CharacterSavingThrows)
-				.HasForeignKey(cst => cst.CharacterID)
-				.OnDelete(DeleteBehavior.Cascade);
+            // For many-to-many relationships, consider carefully if cascade delete is appropriate,
+            // especially on join tables, as it can lead to unintended deletions.
+            modelBuilder.Entity<CharacterSavingThrow>()
+                .HasOne(cst => cst.Character)
+                .WithMany(c => c.CharacterSavingThrows)
+                .HasForeignKey(cst => cst.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade);
 
-			modelBuilder.Entity<CharacterSavingThrow>()
-				.HasOne(cst => cst.SavingThrow)
-				.WithMany(st => st.CharacterSavingThrows)
-				.HasForeignKey(cst => cst.SavingThrowID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CharacterSavingThrow>()
+                .HasOne(cst => cst.SavingThrow)
+                .WithMany(st => st.CharacterSavingThrows)
+                .HasForeignKey(cst => cst.SavingThrowID)
+                .OnDelete(DeleteBehavior.ClientCascade); 
 
-			modelBuilder.Entity<CharacterSkill>()
-				.HasOne(cs => cs.Character)
-				.WithMany(c => c.CharacterSkills)
-				.HasForeignKey(cs => cs.CharacterID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CharacterSkill>()
+                .HasOne(cs => cs.Character)
+                .WithMany(c => c.CharacterSkills)
+                .HasForeignKey(cs => cs.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade); 
 
-			modelBuilder.Entity<CharacterSkill>()
-				.HasOne(cs => cs.Skill)
-				.WithMany(s => s.CharacterSkills)
-				.HasForeignKey(cs => cs.SkillID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CharacterSkill>()
+                .HasOne(cs => cs.Skill)
+                .WithMany(s => s.CharacterSkills)
+                .HasForeignKey(cs => cs.SkillID)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
-			modelBuilder.Entity<Weapon>()
-				.HasBaseType<CharacterEquipmentBase>();
+            modelBuilder.Entity<Character>()
+                .HasMany(c => c.Equipment)
+                .WithOne() 
+                .HasForeignKey(e => e.CharacterID)
+                .OnDelete(DeleteBehavior.Cascade); 
 
-			modelBuilder.Entity<Armor>()
-				.HasBaseType<CharacterEquipmentBase>();
+            modelBuilder.Entity<Weapon>()
+                .HasBaseType<CharacterEquipmentBase>();
 
-			modelBuilder.Entity<MagicItem>()
-				.HasOne(m => m.CharacterEquipmentBase)
-				.WithMany()
-				.HasForeignKey(m => m.EquipmentID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Armor>()
+                .HasBaseType<CharacterEquipmentBase>();
+
+            modelBuilder.Entity<MagicItem>()
+                .HasOne(m => m.CharacterEquipmentBase)
+                .WithMany() // Assuming no inverse navigation property
+                .HasForeignKey(m => m.EquipmentID)
+                .OnDelete(DeleteBehavior.SetNull); // Consider setting FK to null on MagicItem when Equipment is deleted
+
+            modelBuilder.Entity<CharacterEquipmentBase>()
+                .HasOne(e => e.Character)
+                .WithMany(c => c.Equipment) // Assuming Character has a collection of Equipment
+                .HasForeignKey(e => e.CharacterID);
 
 
-			// Add the data to the table SavingThrow on Migration
-			modelBuilder.Entity<SavingThrow>().HasData(
+
+            // Add the data to the table SavingThrow on Migration
+            modelBuilder.Entity<SavingThrow>().HasData(
 			   new SavingThrow { SavingThrowID = 1, Name = "Strength", Description = "Used for physical tasks and resisting physical force" },
 			   new SavingThrow { SavingThrowID = 2, Name = "Dexterity", Description = "Used for agility, reflexes, and balance tasks" },
 			   new SavingThrow { SavingThrowID = 3, Name = "Constitution", Description = "Used for endurance and health" },

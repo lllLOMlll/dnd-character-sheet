@@ -1,4 +1,5 @@
-﻿using CharacterSheetDnD.Utilities;
+﻿using CharacterSheetDnD.Models;
+using CharacterSheetDnD.Utilities;
 
 namespace CharacterSheetDnD.ViewModels
 {
@@ -73,12 +74,17 @@ namespace CharacterSheetDnD.ViewModels
 		}
 		public List<CharacterSkillViewModel> CharacterSkills { get; set; }
 
-		// EQUIPMENT
-		public class EquipmentViewModel
+        // EQUIPMENT
+        // To get the View
+		public EquipmentAddViewModel EquipmentAddViewModel { get; set; }
+        public class EquipmentViewModel
 		{
 			public int EquipmentID { get; set; }
 			public string? ItemName { get; set; }
-			public string? Description { get; set; }
+			public string? RechargeRate { get; set; }
+            public EquipmentType? ItemType { get; set; }
+
+            public string? Description { get; set; }
 			public int Quantity { get; set; }
 			public bool IsEquipped { get; set; }
 			public int ValueInGold { get; set; }
@@ -124,7 +130,9 @@ namespace CharacterSheetDnD.ViewModels
 		{
 			CharacterSavingThrows = new List<CharacterSavingThrowViewModel>();
 			CharacterSkills = new List<CharacterSkillViewModel>();
-		}
+
+            EquipmentAddViewModel = new EquipmentAddViewModel();
+        }
 
 
 	}

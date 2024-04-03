@@ -4,6 +4,7 @@ using CharacterSheetDnD.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterSheetDnD.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240403201319_EquipmentType")]
+    partial class EquipmentType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,6 +277,9 @@ namespace CharacterSheetDnD.Migrations
                     b.Property<int>("CharacterID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CharacterID1")
+                        .HasColumnType("int");
+
                     b.Property<int>("CharacterID2")
                         .HasColumnType("int");
 
@@ -308,6 +314,8 @@ namespace CharacterSheetDnD.Migrations
                     b.HasKey("EquipmentID");
 
                     b.HasIndex("CharacterID");
+
+                    b.HasIndex("CharacterID1");
 
                     b.ToTable("CharacterEquipmentBases");
 
@@ -842,11 +850,15 @@ namespace CharacterSheetDnD.Migrations
 
             modelBuilder.Entity("CharacterSheetDnD.Models.CharacterEquipmentBase", b =>
                 {
-                    b.HasOne("CharacterSheetDnD.Models.Character", "Character")
+                    b.HasOne("CharacterSheetDnD.Models.Character", null)
                         .WithMany("Equipment")
                         .HasForeignKey("CharacterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CharacterSheetDnD.Models.Character", "Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterID1");
 
                     b.Navigation("Character");
                 });
