@@ -1,0 +1,69 @@
+﻿@model CharacterSheetDnD.ViewModels.MyCharacterViewModel
+
+@using CharacterSheetDnD.Utilities
+
+<!-- Create the Modifier for each Statisti using the CalculateModifier method of the AbilityScoreUtility class in Utilities-->
+@{
+	var strengthModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Strength);
+}
+
+@{
+	var dexterityModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity);
+}
+
+@{
+	var constitutionModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Constitution);
+}
+
+@{
+	var intelligenceModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Intelligence);
+}
+
+@{
+	var wisdomModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Wisdom);
+}
+
+@{
+	var charismaModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Wisdom);
+}
+
+@{
+    bool isProficientStrength = Model.CharacterSavingThrows.Any(st => st.Name == "Strength" && st.IsProficient);
+    bool isProficientDexterity = Model.CharacterSavingThrows.Any(st => st.Name == "Dexterity" && st.IsProficient);
+    bool isProficientConstitution = Model.CharacterSavingThrows.Any(st => st.Name == "Constitution" && st.IsProficient);
+    bool isProficientIntelligence = Model.CharacterSavingThrows.Any(st => st.Name == "Intelligence" && st.IsProficient);
+    bool isProficientWisdom = Model.CharacterSavingThrows.Any(st => st.Name == "Wisdom" && st.IsProficient);
+    bool isProficientCharisma = Model.CharacterSavingThrows.Any(st => st.Name == "Charisma" && st.IsProficient);
+    int proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);
+    
+    var strengthSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientStrength, strengthModifier, proficiencyBonus);
+    var dexteritySavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientDexterity, dexterityModifier, proficiencyBonus);
+    var constitutionSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientConstitution, constitutionModifier, proficiencyBonus);
+    var intelligenceSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientIntelligence, intelligenceModifier, proficiencyBonus);
+    var wisdomSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientWisdom, wisdomModifier, proficiencyBonus);
+    var charismaSavingThrowModifier = CharacterSheetDnD.Utilities.SavingThrowUtility.CalculateSavingThrowModifier(isProficientCharisma, charismaModifier, proficiencyBonus);
+
+	bool isProficientAcrobatics = Model.CharacterSkills.Any(s => s.SkillID == 1 && s.IsProficient);
+
+	var acrobaticsSkillModifier = CharacterSheetDnD.Utilities.SkillUtility.CalculateSkillModifier(isProficientAcrobatics, dexterityModifier, proficiencyBonus);
+}
+
+
+
+<h2 class="accordion-header" id="panelsStayOpen-heading2">
+	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSkills" aria-expanded="false" aria-controls="panelsStayOpen-collapseSkills">
+		SKILLS
+	</button>
+</h2>
+<div id="panelsStayOpen-collapseSkills" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSkills">
+	<div class="accordion-body">
+		<div class="row">
+	
+
+			<p>@isProficientAcrobatics</p>
+
+
+
+		</div>
+	</div>
+</div>

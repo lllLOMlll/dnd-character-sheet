@@ -61,10 +61,25 @@ namespace CharacterSheetDnD.ViewModels
 		}
 		public List<CharacterSavingThrowViewModel> CharacterSavingThrows { get; set; }
 
+		
+
+		// SKILLS
+		public class CharacterSkillViewModel
+		{
+			public int SkillID { get; set; }
+			public string? Name { get; set; }
+
+			public bool IsProficient { get; set; }
+		}
+		public List<CharacterSkillViewModel> CharacterSkills { get; set; }
+
+		
+		
 		// Constructor
 		public MyCharacterViewModel()
 		{
 			CharacterSavingThrows = new List<CharacterSavingThrowViewModel>();
+			CharacterSkills = new List<CharacterSkillViewModel>();
 		}
 
 

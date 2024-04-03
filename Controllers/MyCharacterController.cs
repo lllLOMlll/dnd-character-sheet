@@ -30,6 +30,8 @@ namespace CharacterSheetDnD.Controllers
 		   .Include(c => c.CharacterStatistic)
 		   .Include(c => c.CharacterSavingThrows)
 			   .ThenInclude(cst => cst.SavingThrow)
+           .Include(c => c.CharacterSkills)
+               .ThenInclude(cs => cs.Skill)
 		   .FirstOrDefaultAsync(c => c.CharacterID == id);
 
 			if (character == null)
@@ -96,10 +98,25 @@ namespace CharacterSheetDnD.Controllers
 					IsProficient = characterSavingThrow?.IsProficient ?? false
 				});
 			}
-			
-            
-            
-            // Return the view viewModel -> MyCharacterViewModel
+
+
+			// Skills
+			var allSkills = await _context.Skills.ToListAsync(); // Retrieve all skills to ensure we have a comprehensive list
+			foreach (var skill in allSkills)
+			{
+				var characterSkill = character.CharacterSkills
+					.FirstOrDefault(cs => cs.SkillID == skill.SkillID);
+
+				viewModel.CharacterSkills.Add(new CharacterSkillViewModel
+				{
+					SkillID = skill.SkillID,
+					Name = skill.Name,
+					IsProficient = characterSkill?.IsProficient ?? false
+				});
+			}
+
+
+			// Return the view viewModel -> MyCharacterViewModel
 			return View("MyCharacter", viewModel);
         }
 

@@ -49,16 +49,7 @@
 
 	<!-- SKILLS -->
 	<div class="accordion-item">
-		<h2 class="accordion-header" id="panelsStayOpen-heading3">
-			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse3" aria-expanded="false" aria-controls="panelsStayOpen-collapse3">
-				SKILLS
-			</button>
-		</h2>
-		<div id="panelsStayOpen-collapse3" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading3">
-			<div class="accordion-body">
-				<strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-			</div>
-		</div>
+		@await Html.PartialAsync("_Skills", Model)
 	</div>
 
 
