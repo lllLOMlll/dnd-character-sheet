@@ -137,10 +137,10 @@ namespace CharacterSheetDnD.Controllers
 			{
 				EquipmentID = w.EquipmentID,
 				ItemName = w.ItemName,
-				DamageDice = w.DamageDice,
+				DamageDice = w.DamageDice.ToString(),
 				DamageType = w.DamageType.ToString(),
 				Properties = w.Properties.ToString(),
-				Range = w.Range
+				Range = w.Range.ToString()
 			}).ToList();
 
 			// Armors

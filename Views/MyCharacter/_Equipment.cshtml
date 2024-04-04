@@ -1,85 +1,219 @@
 ﻿@model CharacterSheetDnD.ViewModels.EquipmentAddViewModel
 
-
 @using CharacterSheetDnD.Utilities
 
-
-
-
-
-	<h2 class="accordion-header" id="panelsStayOpen-heading2">
+<h2 class="accordion-header" id="panelsStayOpen-Equipment">
 	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEquipment" aria-expanded="false" aria-controls="panelsStayOpen-collapseEquipment">
-			EQUIPMENT
-		</button>
-	</h2>
+		ADD EQUIPMENT
+	</button>
+</h2>
 <div id="panelsStayOpen-collapseEquipment" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingEquipment">
-		<div class="accordion-body">
-			<div class="row">
+	<div class="accordion-body">
+		<div class="row">
+			<!-- Button trigger modal for Weapon -->
+			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addWeaponModal">Add Weapon</button>
 
+			<!-- Button trigger modal for Armor -->
+			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addArmorModal">Add Armor</button>
 
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEquipmentModal">
-                Add New Equipment
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="addEquipmentModal" tabindex="-1" aria-labelledby="addEquipmentModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addEquipmentModalLabel">Add New Equipment</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form asp-controller="Equipment" asp-action="AddEquipment" method="post">
-                            <div class="modal-body">
-                                <input type="hidden" name="CharacterID" value="@Model.CharacterID" />
-                                @Html.AntiForgeryToken()
-
-                                <div class="mb-3">
-                                    <label for="ItemName" class="form-label">Item Name</label>
-                                    <input type="text" class="form-control" id="ItemName" name="ItemName" required>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label class="mb-2" asp-for="ItemType" class="control-label"></label>
-                                    <select asp-for="ItemType" asp-items="@Html.GetEnumSelectList<EquipmentType>()" class="form-control">
-                                        <option value="">Select Item Type</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="Description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="Quantity" class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" id="Quantity" name="Quantity" min="1" value="1" required>
-                                </div>
-
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="IsEquipped" name="IsEquipped">
-                                    <label class="form-check-label" for="IsEquipped">Is Equipped?</label>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="ValueInGold" class="form-label">Value in Gold</label>
-                                    <input type="number" class="form-control" id="ValueInGold" name="ValueInGold" min="0" value="0" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Add Equipment</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-				
-
-
-
-			</div>
+			<!-- Button trigger modal for Other Equipment -->
+			<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addOtherEquipmentModal">Other</button>
 		</div>
 	</div>
+</div>
+
+<!-- Modal for Adding Weapon -->
+<div class="modal fade" id="addWeaponModal" tabindex="-1" aria-labelledby="addWeaponModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addWeaponModalLabel">Add New Weapon</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form asp-controller="Equipment" asp-action="AddWeapon" method="post">
+				<div class="modal-body">
+					<input type="hidden" name="CharacterID" value="@Model.CharacterID" />
+					@Html.AntiForgeryToken()
+
+					<div class="mb-3">
+						<label for="ItemName" class="form-label">Weapon Name</label>
+						<input type="text" class="form-control" id="ItemName" name="ItemName" required>
+					</div>
+
+						<div class="mb-3">
+						<label for="WeaponDescription" class="form-label">Weapon Name</label>
+						<input type="text" class="form-control" id="WeaponDescription" name="WeaponDescription">
+					</div>
+
+					<div class="mb-3">
+						<label for="DamageDice" class="form-label">Damage Dice</label>
+						<select class="form-control" id="DamageDice" name="DamageDice" required>
+							<option value="">Select Damage Dice</option>
+							@foreach (var diceDamage in Html.GetEnumSelectList<DamageDice>())
+							{
+								<option value="@diceDamage.Value">@diceDamage.Text</option>
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Weapon Properties</label>
+						<div>
+							@foreach (var property in Enum.GetValues(typeof(WeaponProperty)))
+							{
+								var propertyValue = (int)property;
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="checkbox" name="WeaponProperties" value="@propertyValue" id="@property">
+									<label class="form-check-label" for="@property">@property.ToString()</label>
+								</div>
+							}
+						</div>
+					</div>
+
+
+					<div class="mb-3">
+						<label for="Range" class="form-label">Range</label>
+						<select class="form-control" id="Range" name="Range">
+							<option value="">Select Range</option>
+							<!-- The keyword Range was in conflict with System.Range. I had the precice the path-->
+							@foreach (var range in Html.GetEnumSelectList<CharacterSheetDnD.Models.Range>())
+							{
+								<option value="@range.Value">@range.Text</option>
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="ValueInGold" class="form-label">Value in Gold</label>
+						<input type="number" class="form-control" id="ValueInGold" name="ValueInGold" min="0">
+					</div>
+
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="IsEquipped" name="IsEquipped">
+						<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
+					</div>
+
+
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="IsMagic" name="IsMagic">
+						<label class="form-check-label" for="IsMagic">Is Magic?</label>
+					</div>
+					
+					<!-- Magic option (displayed if IsMagic is checked) -->
+					<div id="magicItemOptions" style="display:none;"></div>
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-primary">Add Weapon</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal for Adding Other Equipment -->
+<div class="modal fade" id="addOtherEquipmentModal" tabindex="-1" aria-labelledby="addOtherEquipmentModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addOtherEquipmentModalLabel">Add Other Equipment</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form asp-controller="Equipment" asp-action="AddOtherEquipment" method="post">
+				<div class="modal-body">
+					<input type="hidden" name="CharacterID" value="@Model.CharacterID" />
+					@Html.AntiForgeryToken()
+
+					<!-- Replicated structure from Add Weapon modal, adjusted for Other Equipment -->
+					<div class="mb-3">
+						<label for="ItemName" class="form-label">Item Name</label>
+						<input type="text" class="form-control" id="ItemName" name="ItemName" required>
+					</div>
+
+					<div class="form-group mb-3">
+						<label class="mb-2" for="ItemType">Item Type</label>
+						<select id="ItemType" name="ItemType" class="form-control">
+							<option value="">Select Item Type</option>
+							@foreach (var type in Html.GetEnumSelectList<EquipmentType>())
+							{
+								<option value="@type.Value">@type.Text</option>
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="Description" class="form-label">Description</label>
+						<textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+					</div>
+
+					<div class="mb-3">
+						<label for="Quantity" class="form-label">Quantity</label>
+						<input type="number" class="form-control" id="Quantity" name="Quantity" min="1" value="1" required>
+					</div>
+					
+					<div class="mb-3">
+						<label for="ValueInGold" class="form-label">Value in Gold</label>
+						<input type="number" class="form-control" id="ValueInGold" name="ValueInGold" min="0" value="0" required>
+					</div>
+
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="IsEquipped" name="IsEquipped">
+						<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
+					</div>
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-primary">Add Equipment</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<!-- Place this script at the end of your body, after all modal definitions -->
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var isMagicCheckbox = document.getElementById('IsMagic');
+		var magicItemOptionsDiv = document.getElementById('magicItemOptions');
+
+		// Define the HTML for magic item options here, inside the script tag
+		var magicItemHtml = `
+		<div class="mb-3">
+			<label for="EffectDescription" class="form-label">Effect Description</label>
+			<textarea class="form-control" id="EffectDescription" name="EffectDescription" rows="2"></textarea>
+		</div>
+		<div class="mb-3">
+			<label for="EffectMechanics" class="form-label">Effect Mechanics</label>
+			<textarea class="form-control" id="EffectMechanics" name="EffectMechanics" rows="2"></textarea>
+		</div>
+		<div class="mb-3">
+			<label for="Charges" class="form-label">Charges</label>
+			<input type="number" class="form-control" id="Charges" name="Charges">
+		</div>
+		<div class="mb-3">
+			<label for="RechargeRate" class="form-label">Recharge Rate</label>
+			<input type="text" class="form-control" id="RechargeRate" name="RechargeRate" placeholder="e.g., Daily at dawn">
+		</div>
+		`;
+
+		isMagicCheckbox.addEventListener('change', function () {
+			if (this.checked) {
+				magicItemOptionsDiv.innerHTML = magicItemHtml;
+				magicItemOptionsDiv.style.display = '';
+			} else {
+				magicItemOptionsDiv.innerHTML = '';
+				magicItemOptionsDiv.style.display = 'none';
+			}
+		});
+	});
+</script>
+
+
+

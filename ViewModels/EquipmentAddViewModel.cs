@@ -12,6 +12,15 @@ namespace CharacterSheetDnD.ViewModels
         public int Quantity { get; set; } = 1;
         public bool IsEquipped { get; set; }
         public int ValueInGold { get; set; } = 0;
+
+		// Weapon-specific properties
+		public DamageDice? DamageDice {  get; set; }
+
+		public DamageType? DamageType { get; set; }
+      
+		public int WeaponProperties { get; set; } = (int)WeaponProperty.None;
+		public string? Range { get; set; }
+
     }
 }
 
