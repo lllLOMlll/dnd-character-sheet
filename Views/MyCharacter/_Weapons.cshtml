@@ -1,23 +1,29 @@
-﻿@model CharacterSheetDnD.ViewModels.EquipmentAddViewModel
+﻿@model CharacterSheetDnD.ViewModels.AddWeaponViewModel
 
 @using CharacterSheetDnD.Utilities
 
 <h2 class="accordion-header" id="panelsStayOpen-Equipment">
 	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEquipment" aria-expanded="false" aria-controls="panelsStayOpen-collapseEquipment">
-		ADD EQUIPMENT
+		WEAPONS
 	</button>
 </h2>
 <div id="panelsStayOpen-collapseEquipment" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingEquipment">
 	<div class="accordion-body">
-		<div class="row">
-			<!-- Button trigger modal for Weapon -->
+		<div class="row mb-3">
+			<!-- Button Add Weapon -->
 			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addWeaponModal">Add Weapon</button>
+		</div>
 
-			<!-- Button trigger modal for Armor -->
-			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addArmorModal">Add Armor</button>
+		<div class="row mb-3">
+			<!-- Button Edit Weapon -->
+			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addWeaponModal"
+			asp-controller="Weapon" asp-action="DisplayCharacterWeapons" asp-route-id="@Model.CharacterID"
+			>Edit Weapon</button>
+		</div>
 
-			<!-- Button trigger modal for Other Equipment -->
-			<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addOtherEquipmentModal">Other</button>
+		<div class="row mb-3">
+			<!-- Button Delete Weapon -->
+			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addWeaponModal">Delete Weapon</button>
 		</div>
 	</div>
 </div>
@@ -30,19 +36,25 @@
 				<h5 class="modal-title" id="addWeaponModalLabel">Add New Weapon</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<form asp-controller="Equipment" asp-action="AddWeapon" method="post">
+			<form asp-controller="Weapon" asp-action="AddWeapon" asp-route-id="@Model.CharacterID" method="post">
 				<div class="modal-body">
 					<input type="hidden" name="CharacterID" value="@Model.CharacterID" />
 					@Html.AntiForgeryToken()
 
 					<div class="mb-3">
-						<label for="ItemName" class="form-label">Weapon Name</label>
-						<input type="text" class="form-control" id="ItemName" name="ItemName" required>
+						<label for="Quantity" class="form-label">Quantity</label>
+						<input type="number" class="form-control" id="Quantity" name="Quantity" min="0" value="1">
+					</div>
+
+
+					<div class="mb-3">
+						<label for="WeaponName" class="form-label">Weapon Name</label>
+						<input type="text" class="form-control" id="WeaponName" name="WeaponName" required>
 					</div>
 
 						<div class="mb-3">
-						<label for="WeaponDescription" class="form-label">Weapon Name</label>
-						<input type="text" class="form-control" id="WeaponDescription" name="WeaponDescription">
+						<label for="Description" class="form-label">Description</label>
+						<input type="text" class="form-control" id="Description" name="Description">
 					</div>
 
 					<div class="mb-3">
@@ -52,6 +64,17 @@
 							@foreach (var diceDamage in Html.GetEnumSelectList<DamageDice>())
 							{
 								<option value="@diceDamage.Value">@diceDamage.Text</option>
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="DamageType" class="form-label">Damage Type</label>
+						<select class="form-control" id="DamageType" name="DamageType">
+							<option value="">Select Damage Type</option>
+							@foreach (var damageType in Html.GetEnumSelectList<DamageType>())
+							{
+								<option value="@damageType.Value">@damageType.Text</option>
 							}
 						</select>
 					</div>
@@ -72,11 +95,11 @@
 
 
 					<div class="mb-3">
-						<label for="Range" class="form-label">Range</label>
-						<select class="form-control" id="Range" name="Range">
+						<label for="WeaponRange" class="form-label">Range</label>
+						<select class="form-control" id="WeaponRange" name="WeaponRange">
 							<option value="">Select Range</option>
 							<!-- The keyword Range was in conflict with System.Range. I had the precice the path-->
-							@foreach (var range in Html.GetEnumSelectList<CharacterSheetDnD.Models.Range>())
+							@foreach (var range in Html.GetEnumSelectList<WeaponRange>())
 							{
 								<option value="@range.Value">@range.Text</option>
 							}
@@ -106,67 +129,6 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 					<button type="submit" class="btn btn-primary">Add Weapon</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-<!-- Modal for Adding Other Equipment -->
-<div class="modal fade" id="addOtherEquipmentModal" tabindex="-1" aria-labelledby="addOtherEquipmentModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="addOtherEquipmentModalLabel">Add Other Equipment</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<form asp-controller="Equipment" asp-action="AddOtherEquipment" method="post">
-				<div class="modal-body">
-					<input type="hidden" name="CharacterID" value="@Model.CharacterID" />
-					@Html.AntiForgeryToken()
-
-					<!-- Replicated structure from Add Weapon modal, adjusted for Other Equipment -->
-					<div class="mb-3">
-						<label for="ItemName" class="form-label">Item Name</label>
-						<input type="text" class="form-control" id="ItemName" name="ItemName" required>
-					</div>
-
-					<div class="form-group mb-3">
-						<label class="mb-2" for="ItemType">Item Type</label>
-						<select id="ItemType" name="ItemType" class="form-control">
-							<option value="">Select Item Type</option>
-							@foreach (var type in Html.GetEnumSelectList<EquipmentType>())
-							{
-								<option value="@type.Value">@type.Text</option>
-							}
-						</select>
-					</div>
-
-					<div class="mb-3">
-						<label for="Description" class="form-label">Description</label>
-						<textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
-					</div>
-
-					<div class="mb-3">
-						<label for="Quantity" class="form-label">Quantity</label>
-						<input type="number" class="form-control" id="Quantity" name="Quantity" min="1" value="1" required>
-					</div>
-					
-					<div class="mb-3">
-						<label for="ValueInGold" class="form-label">Value in Gold</label>
-						<input type="number" class="form-control" id="ValueInGold" name="ValueInGold" min="0" value="0" required>
-					</div>
-
-					<div class="mb-3 form-check">
-						<input type="checkbox" class="form-check-input" id="IsEquipped" name="IsEquipped">
-						<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
-					</div>
-				
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-primary">Add Equipment</button>
 				</div>
 			</form>
 		</div>

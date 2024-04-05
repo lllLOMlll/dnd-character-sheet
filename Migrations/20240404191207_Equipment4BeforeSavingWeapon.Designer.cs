@@ -4,6 +4,7 @@ using CharacterSheetDnD.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterSheetDnD.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240404191207_Equipment4BeforeSavingWeapon")]
+    partial class Equipment4BeforeSavingWeapon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +266,59 @@ namespace CharacterSheetDnD.Migrations
                     b.ToTable("CharacterClasses");
                 });
 
+            modelBuilder.Entity("CharacterSheetDnD.Models.CharacterEquipmentBase", b =>
+                {
+                    b.Property<int>("EquipmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipmentID"));
+
+                    b.Property<int>("CharacterID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CharacterID2")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("nvarchar(34)");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMagicItem")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValueInGold")
+                        .HasColumnType("int");
+
+                    b.HasKey("EquipmentID");
+
+                    b.HasIndex("CharacterID");
+
+                    b.ToTable("CharacterEquipmentBases");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("CharacterEquipmentBase");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("CharacterSheetDnD.Models.CharacterHealth", b =>
                 {
                     b.Property<int>("HealthID")
@@ -354,67 +410,35 @@ namespace CharacterSheetDnD.Migrations
                     b.ToTable("CharacterStatistics");
                 });
 
-            modelBuilder.Entity("CharacterSheetDnD.Models.CharacterWeapon", b =>
+            modelBuilder.Entity("CharacterSheetDnD.Models.MagicItem", b =>
                 {
-                    b.Property<int>("WeaponID")
+                    b.Property<int>("MagicItemID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeaponID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MagicItemID"));
 
-                    b.Property<int>("CharacterID")
+                    b.Property<int?>("Charges")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageDice")
-                        .HasMaxLength(255)
-                        .HasColumnType("int");
-
-                    b.Property<int>("DamageType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEquipped")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsMagicItem")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MagicCharges")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MagicEffectDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MagicEffectMechanics")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MagicRechargeRate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Properties")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ValueInGold")
-                        .HasColumnType("int");
-
-                    b.Property<string>("WeaponName")
+                    b.Property<string>("EffectDescription")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WeaponRange")
+                    b.Property<string>("EffectMechanics")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EquipmentID")
                         .HasColumnType("int");
 
-                    b.HasKey("WeaponID");
+                    b.Property<string>("RechargeRate")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CharacterID");
+                    b.HasKey("MagicItemID");
 
-                    b.ToTable("Weapons");
+                    b.HasIndex("EquipmentID");
+
+                    b.ToTable("MagicItems");
                 });
 
             modelBuilder.Entity("CharacterSheetDnD.Models.SavingThrow", b =>
@@ -746,6 +770,39 @@ namespace CharacterSheetDnD.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CharacterSheetDnD.Models.Armor", b =>
+                {
+                    b.HasBaseType("CharacterSheetDnD.Models.CharacterEquipmentBase");
+
+                    b.Property<int>("ArmorClass")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("StealthDisadvantage")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("Armor");
+                });
+
+            modelBuilder.Entity("CharacterSheetDnD.Models.Weapon", b =>
+                {
+                    b.HasBaseType("CharacterSheetDnD.Models.CharacterEquipmentBase");
+
+                    b.Property<int>("DamageDice")
+                        .HasMaxLength(255)
+                        .HasColumnType("int");
+
+                    b.Property<int>("DamageType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Properties")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Range")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("Weapon");
+                });
+
             modelBuilder.Entity("CharacterSavingThrow", b =>
                 {
                     b.HasOne("CharacterSheetDnD.Models.Character", "Character")
@@ -778,6 +835,17 @@ namespace CharacterSheetDnD.Migrations
                 {
                     b.HasOne("CharacterSheetDnD.Models.Character", "Character")
                         .WithMany("CharacterClasses")
+                        .HasForeignKey("CharacterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("CharacterSheetDnD.Models.CharacterEquipmentBase", b =>
+                {
+                    b.HasOne("CharacterSheetDnD.Models.Character", "Character")
+                        .WithMany("Equipment")
                         .HasForeignKey("CharacterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -826,15 +894,14 @@ namespace CharacterSheetDnD.Migrations
                     b.Navigation("Character");
                 });
 
-            modelBuilder.Entity("CharacterSheetDnD.Models.CharacterWeapon", b =>
+            modelBuilder.Entity("CharacterSheetDnD.Models.MagicItem", b =>
                 {
-                    b.HasOne("CharacterSheetDnD.Models.Character", "Character")
-                        .WithMany("CharacterWeapons")
-                        .HasForeignKey("CharacterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("CharacterSheetDnD.Models.CharacterEquipmentBase", "CharacterEquipmentBase")
+                        .WithMany()
+                        .HasForeignKey("EquipmentID")
+                        .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Character");
+                    b.Navigation("CharacterEquipmentBase");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -900,7 +967,7 @@ namespace CharacterSheetDnD.Migrations
 
                     b.Navigation("CharacterStatistic");
 
-                    b.Navigation("CharacterWeapons");
+                    b.Navigation("Equipment");
                 });
 
             modelBuilder.Entity("CharacterSheetDnD.Models.SavingThrow", b =>

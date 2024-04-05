@@ -82,7 +82,14 @@ namespace CharacterSheetDnD.Controllers
                 Intelligence = character.CharacterStatistic?.Intelligence ?? 0,
                 Wisdom = character.CharacterStatistic?.Wisdom ?? 0,
                 Charisma = character.CharacterStatistic?.Charisma ?? 0,
-            };
+
+				// Initialize the WeaponAddViewModel within MyCharacterViewModel
+				AddWeaponViewModel = new AddWeaponViewModel
+				{
+					CharacterID = id,
+				},
+
+			};
 
 			// Saving throws
 			var savingThrows = await _context.SavingThrows.ToListAsync();
@@ -115,60 +122,10 @@ namespace CharacterSheetDnD.Controllers
 				});
 			}
 
-			// Equipment
-			var equipment = await _context.CharacterEquipmentBases
-				.Where(e => e.CharacterID == id && !e.IsMagicItem)
-				.ToListAsync();
-			viewModel.Equipment = equipment.Select(e => new EquipmentViewModel
-			{
-				EquipmentID = e.EquipmentID,
-				ItemName = e.ItemName,
-				Description = e.Description,
-				Quantity = e.Quantity,
-				IsEquipped = e.IsEquipped,
-				ValueInGold = e.ValueInGold
-			}).ToList();
-
 			// Weapons
-			var weapons = await _context.Weapons
-				.Where(w => w.CharacterID == id)
-				.ToListAsync();
-			viewModel.Weapons = weapons.Select(w => new WeaponViewModel
-			{
-				EquipmentID = w.EquipmentID,
-				ItemName = w.ItemName,
-				DamageDice = w.DamageDice.ToString(),
-				DamageType = w.DamageType.ToString(),
-				Properties = w.Properties.ToString(),
-				Range = w.Range.ToString()
-			}).ToList();
+		    
 
-			// Armors
-			var armors = await _context.Armors
-				.Where(a => a.CharacterID == id)
-				.ToListAsync();
-			viewModel.Armors = armors.Select(a => new ArmorViewModel
-			{
-				EquipmentID = a.EquipmentID,
-				ItemName = a.ItemName,
-				ArmorClass = a.ArmorClass,
-				StealthDisadvantage = a.StealthDisadvantage
-			}).ToList();
 
-			// Magic Items
-			var magicItems = await _context.MagicItems
-				.Include(mi => mi.CharacterEquipmentBase)
-				.Where(mi => mi.CharacterEquipmentBase.CharacterID == id)
-				.ToListAsync();
-			viewModel.MagicItems = magicItems.Select(mi => new MagicItemViewModel
-			{
-				MagicItemID = mi.MagicItemID,
-				EffectDescription = mi.EffectDescription,
-				EffectMechanics = mi.EffectMechanics,
-				Charges = mi.Charges,
-				RechargeRate = mi.RechargeRate,
-				LinkedEquipmentItemName = mi.CharacterEquipmentBase?.ItemName // Assuming you want to show if it's linked to a specific item
-			}).ToList();
 
 			// Return the view viewModel -> MyCharacterViewModel
 			return View("MyCharacter", viewModel);

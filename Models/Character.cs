@@ -77,7 +77,8 @@ namespace CharacterSheetDnD.Models
         public virtual CharacterHealth? CharacterHealth { get; set; }
 		public virtual ICollection<CharacterSavingThrow> CharacterSavingThrows { get; set; }
         public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
-        public virtual ICollection<CharacterEquipmentBase> Equipment { get; set; }
+        public virtual ICollection<CharacterWeapon> CharacterWeapons { get; set; }
+        
 
         // Constructor to initialize the collections
         public Character()
@@ -85,7 +86,7 @@ namespace CharacterSheetDnD.Models
             CharacterClasses = new HashSet<CharacterClass>();
             CharacterSavingThrows = new HashSet<CharacterSavingThrow>();
             CharacterSkills = new HashSet<CharacterSkill>();
-            Equipment = new HashSet<CharacterEquipmentBase>();
+            CharacterWeapons = new HashSet<CharacterWeapon>();
         }
     }
 }

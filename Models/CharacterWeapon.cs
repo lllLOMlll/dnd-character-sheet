@@ -10,7 +10,6 @@ namespace CharacterSheetDnD.Models
 		Piercing,
 		Bludgeoning,
 		Magic,
-		// Add additional damage types as needed
 	}
 
 	[Flags]
@@ -27,7 +26,6 @@ namespace CharacterSheetDnD.Models
 		TwoHanded = 1 << 7,
 		Special = 1 << 8,
 		Loading = 1 << 9
-		// Add additional properties as needed
 	}
 
 	public enum DamageDice
@@ -54,7 +52,7 @@ namespace CharacterSheetDnD.Models
 		D12_2 = 10,
 	}
 
-	public enum Range
+	public enum WeaponRange
 	{
 		[Display(Name = "5/15")]
 		R1 = 1,
@@ -71,8 +69,27 @@ namespace CharacterSheetDnD.Models
 	}
 
 
-	public class Weapon : CharacterEquipmentBase
+	public class CharacterWeapon 
 	{
+		[Key]
+		public int WeaponID { get; set; }
+
+		[ForeignKey("CharacterID")]
+		public int CharacterID { get; set; }
+		public virtual Character? Character { get; set; }
+
+		[Required]
+		[StringLength(255)]
+		public string? WeaponName { get; set; }
+
+		public string? Description { get; set; }
+
+		[Required]
+		public int Quantity { get; set; } = 1;
+	
+		[Range(0, int.MaxValue, ErrorMessage = "Value in gold must be non-negative")]
+		public int ValueInGold { get; set; }
+		
 		[Required]
 		[StringLength(255)]
 		public DamageDice DamageDice { get; set; }
@@ -80,11 +97,20 @@ namespace CharacterSheetDnD.Models
 		[Required]
 		public DamageType DamageType { get; set; }
 
-		public Range Range { get; set; }
+		public WeaponRange WeaponRange { get; set; }
 
-		// Now using the WeaponProperty enum to represent weapon properties
 		public WeaponProperty Properties { get; set; } = WeaponProperty.None;
 
-		// Additional functionality or properties can be added here
+		public bool IsEquipped { get; set; }
+		
+		public bool IsMagicItem { get; set; }
+
+		public string? MagicEffectDescription { get; set; }
+
+		public string? MagicEffectMechanics { get; set; }
+		[Range(0, 100, ErrorMessage = "Charges must be a positive number")]
+		public int? MagicCharges { get; set; }
+
+		public string? MagicRechargeRate { get; set; }
 	}
 }

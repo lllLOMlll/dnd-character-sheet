@@ -20,11 +20,8 @@ namespace CharacterSheetDnD.Data
 		public DbSet<SavingThrow> SavingThrows { get; set; }
 		public DbSet<CharacterSkill> CharacterSkills { get; set; }
 		public DbSet<Skill> Skills { get; set; }
-		public DbSet<CharacterEquipmentBase> CharacterEquipmentBases { get; set; }
-		public DbSet<Weapon> Weapons { get; set; }
-		public DbSet<Armor> Armors { get; set; }
-		public DbSet<MagicItem> MagicItems { get; set; }
-
+		public DbSet<CharacterWeapon> Weapons { get; set; }
+	
 
 		// Configuring the relations between the table
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,30 +72,12 @@ namespace CharacterSheetDnD.Data
                 .HasForeignKey(cs => cs.SkillID)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
-            modelBuilder.Entity<Character>()
-                .HasMany(c => c.Equipment)
-                .WithOne() 
-                .HasForeignKey(e => e.CharacterID)
-                .OnDelete(DeleteBehavior.Cascade); 
-
-            modelBuilder.Entity<Weapon>()
-                .HasBaseType<CharacterEquipmentBase>();
-
-            modelBuilder.Entity<Armor>()
-                .HasBaseType<CharacterEquipmentBase>();
-
-            modelBuilder.Entity<MagicItem>()
-                .HasOne(m => m.CharacterEquipmentBase)
-                .WithMany() // Assuming no inverse navigation property
-                .HasForeignKey(m => m.EquipmentID)
-                .OnDelete(DeleteBehavior.SetNull); // Consider setting FK to null on MagicItem when Equipment is deleted
-
-            modelBuilder.Entity<CharacterEquipmentBase>()
-                .HasOne(e => e.Character)
-                .WithMany(c => c.Equipment) // Assuming Character has a collection of Equipment
-                .HasForeignKey(e => e.CharacterID);
-
-
+			modelBuilder.Entity<Character>()
+				.HasMany(c => c.CharacterWeapons)
+				.WithOne(w => w.Character)
+				.HasForeignKey(w => w.CharacterID)
+				.OnDelete(DeleteBehavior.Cascade);
+     
 
             // Add the data to the table SavingThrow on Migration
             modelBuilder.Entity<SavingThrow>().HasData(
