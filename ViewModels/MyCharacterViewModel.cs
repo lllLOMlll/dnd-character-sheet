@@ -117,6 +117,7 @@ namespace CharacterSheetDnD.ViewModels
 
 			// ViewModel
 			Weapons = new List<WeaponViewModel>();
+            WeaponViewModel = new WeaponViewModel(); // Initialize WeaponViewModel here
         }
 
 

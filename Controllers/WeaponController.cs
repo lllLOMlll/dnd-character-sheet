@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using CharacterSheetDnD.Models;
 using Microsoft.AspNetCore.Authorization;
 using CharacterSheetDnD.ViewModels;
+using CharacterSheetDnD.Migrations;
 
 namespace CharacterSheetDnD.Controllers
 {
-    public class WeaponController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	public class WeaponController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 
-        public WeaponController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public WeaponController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
 		[HttpPost]
 		[Authorize]
@@ -52,11 +53,11 @@ namespace CharacterSheetDnD.Controllers
 				MagicEffectMechanics = viewModel.EffectMechanics,
 				MagicCharges = viewModel.Charges,
 				MagicRechargeRate = viewModel.RechargeRate
-				
+
 			};
 
 			await _context.Weapons.AddAsync(weapon);
-			
+
 
 			await _context.SaveChangesAsync();
 
@@ -79,13 +80,33 @@ namespace CharacterSheetDnD.Controllers
 			return View("SelectWeapon", ViewModel);
 		}
 
+		[Authorize]
+		[Route("my-character/delete-weapon")]
+		public async Task<IActionResult> DeleteWeapon(int weaponId, int characterId)
+		{
+            var weaponToDelete = await _context.Weapons
+        .FirstOrDefaultAsync(w => w.WeaponID == weaponId);
+
+            if (weaponToDelete != null)
+            {
+                _context.Weapons.Remove(weaponToDelete);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Weapon successfully deleted!";
+            }
+            else
+            {
+                // Handle the case where the weapon wasn't found
+                TempData["ErrorMessage"] = "Weapon not found.";
+            }
+
+            return RedirectToAction("DisplayCharacterWeapons", new { id = characterId });
+        }
 
 
-		//var characters = await _context.Characters
-		//		.Where(c => c.UserId == userId)
-		//		.ToListAsync();
-		//          return View("SelectCharacter", characters);
-	}
+
+             
+
+    }
 
 
 

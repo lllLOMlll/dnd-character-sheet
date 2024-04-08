@@ -23,7 +23,10 @@
 
 		<div class="row">
 			<!-- Button Delete Weapon -->
-			<button type="button" class="btn btn-primary me-2 mb-3" data-bs-toggle="modal" data-bs-target="#addWeaponModal">Delete Weapon</button>
+			<a class="btn btn-primary me-2 mb-3"
+			asp-area="" asp-controller="Weapon" asp-action="DisplayCharacterWeapons" asp-route-id="@Model.CharacterID">
+				Delete Weapon
+		</a>
 		</div>
 	</div>
 </div>
