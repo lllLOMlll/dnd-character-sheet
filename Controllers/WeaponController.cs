@@ -21,7 +21,7 @@ namespace CharacterSheetDnD.Controllers
 		[Authorize]
 		[ValidateAntiForgeryToken]
 		[Route("my-character/add-weapon/{id}")]
-		public async Task<IActionResult> AddWeapon(int id, AddWeaponViewModel viewModel)
+		public async Task<IActionResult> AddWeapon(int id, WeaponViewModel viewModel)
 		{
 			// Manually map "on" value to true for checkboxes
 			viewModel.IsEquipped = Request.Form["IsEquipped"] == "true" || Request.Form["IsEquipped"].Contains("on");
@@ -47,6 +47,7 @@ namespace CharacterSheetDnD.Controllers
 				Properties = (WeaponProperty)viewModel.WeaponProperties,
 				IsEquipped = viewModel.IsEquipped,
 				IsMagicItem = viewModel.IsMagic,
+				BonusAttackDamageRolls = viewModel.BonusAttackDamageRolls,
 				MagicEffectDescription = viewModel.EffectDescription,
 				MagicEffectMechanics = viewModel.EffectMechanics,
 				MagicCharges = viewModel.Charges,
@@ -62,10 +63,32 @@ namespace CharacterSheetDnD.Controllers
 			return RedirectToAction("DisplayCharacter", "MyCharacter", new { id });
 		}
 
+		[Authorize]
+		[Route("my-character/choose-weapon/{id}")]
+		public async Task<IActionResult> DisplayCharacterWeapons(int id)
+		{
+			var weapons = await _context.Weapons
+			.Where(w => w.CharacterID == id)
+			.ToListAsync();
+
+			var ViewModel = new WeaponViewModel
+			{
+				Weapons = weapons
+			};
+
+			return View("SelectWeapon", ViewModel);
+		}
 
 
 
-
-
+		//var characters = await _context.Characters
+		//		.Where(c => c.UserId == userId)
+		//		.ToListAsync();
+		//          return View("SelectCharacter", characters);
 	}
+
+
+
+
 }
+

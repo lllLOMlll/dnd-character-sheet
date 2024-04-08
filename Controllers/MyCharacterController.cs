@@ -84,7 +84,7 @@ namespace CharacterSheetDnD.Controllers
                 Charisma = character.CharacterStatistic?.Charisma ?? 0,
 
 				// Initialize the WeaponAddViewModel within MyCharacterViewModel
-				AddWeaponViewModel = new AddWeaponViewModel
+				WeaponViewModel = new WeaponViewModel
 				{
 					CharacterID = id,
 				},

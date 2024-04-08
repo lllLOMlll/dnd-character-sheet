@@ -68,6 +68,21 @@ namespace CharacterSheetDnD.Models
 		R6 = 6,	
 	}
 
+	public enum BonusAttackDamageRolls
+	{
+		[Display(Name = "+1 bonus to attack and damage rolls")]
+		B1 = 1,
+		[Display(Name ="+2 bonus to attack and damage rolls")]
+		B2 = 2,
+		[Display(Name = "+3 bonus to attack and damage rolls")]
+		B3 = 3,
+		[Display(Name = "+4 bonus to attack and damage rolls")]
+		B4 = 4,
+		[Display(Name = "+5 bonus to attack and damage rolls")]
+		B5 = 5,
+
+	}
+
 
 	public class CharacterWeapon 
 	{
@@ -104,6 +119,7 @@ namespace CharacterSheetDnD.Models
 		public bool IsEquipped { get; set; }
 		
 		public bool IsMagicItem { get; set; }
+		public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
 
 		public string? MagicEffectDescription { get; set; }
 

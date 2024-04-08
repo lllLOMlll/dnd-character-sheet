@@ -76,25 +76,35 @@ namespace CharacterSheetDnD.ViewModels
 
         // EQUIPMENT
         // To get the View
-		public AddWeaponViewModel AddWeaponViewModel { get; set; }
-        public class EquipmentViewModel
+		public WeaponViewModel WeaponViewModel { get; set; }
+        public class CharacterWeapon
 		{
-			public int EquipmentID { get; set; }
-			public string? ItemName { get; set; }
-			public string? RechargeRate { get; set; }
-            public EquipmentType? ItemType { get; set; }
-
-            public string? Description { get; set; }
-			public int Quantity { get; set; }
+			public string? WeaponName { get; set; }
+			public EquipmentType? ItemType { get; set; }
+			public string? Description { get; set; }
+			public int Quantity { get; set; } = 1;
 			public bool IsEquipped { get; set; }
-			public int ValueInGold { get; set; }
+			public int ValueInGold { get; set; } = 0;
+
+			// Weapon-specific properties
+			public DamageDice? DamageDice { get; set; }
+
+			public DamageType? DamageType { get; set; }
+
+			public int WeaponProperties { get; set; } = (int)WeaponProperty.None;
+			public WeaponRange WeaponRange { get; set; }
+
+			// Magic-specific propterties
+			public bool IsMagic { get; set; }
+			public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
+			public string? EffectDescription { get; set; }
+			public string? EffectMechanics { get; set; }
+			public int? Charges { get; set; }
+			public string? RechargeRate { get; set; }
 		}
-		public List<EquipmentViewModel> Equipment { get; set; } = new List<EquipmentViewModel>();
+		public List<WeaponViewModel> Weapons { get; set; } = new List<WeaponViewModel>();
 
 		// WEAPONS
-
-
-
 
 
 
@@ -106,7 +116,7 @@ namespace CharacterSheetDnD.ViewModels
 			CharacterSkills = new List<CharacterSkillViewModel>();
 
 			// ViewModel
-			AddWeaponViewModel = new AddWeaponViewModel();
+			Weapons = new List<WeaponViewModel>();
         }
 
 

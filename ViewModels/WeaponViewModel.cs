@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterSheetDnD.ViewModels
 {
-    public class AddWeaponViewModel
+    public class WeaponViewModel
     {
         public int CharacterID { get; set; } // To know which character you're adding equipment to
         public string? WeaponName { get; set; }
@@ -24,16 +24,14 @@ namespace CharacterSheetDnD.ViewModels
 
 		// Magic-specific propterties
 		public bool IsMagic { get; set; } 
+		public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
 		public string? EffectDescription { get; set; }
 		public string? EffectMechanics { get; set; }
 		public int? Charges { get; set; }
 		public string? RechargeRate { get; set; }
 
+		public IEnumerable<CharacterWeapon>? Weapons { get; set; }
 
-		// Armor-specific properties
-		public int ArmorClass { get; set; }
-
-		public bool StealthDisadvantage { get; set; }
 
 	}
 }
