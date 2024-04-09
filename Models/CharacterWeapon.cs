@@ -4,6 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterSheetDnD.Models
 {
+
+	public enum MeleeRange
+	{
+		Melee,
+		Range
+	}
+
 	public enum DamageType
 	{
 		Slashing,
@@ -91,12 +98,15 @@ namespace CharacterSheetDnD.Models
 
 		[ForeignKey("CharacterID")]
 		public int CharacterID { get; set; }
+		
 		public virtual Character? Character { get; set; }
 
 		[Required]
 		[StringLength(255)]
 		public string? WeaponName { get; set; }
-
+		
+		public MeleeRange MeleeRange { get; set; }
+		
 		public string? Description { get; set; }
 
 		[Required]

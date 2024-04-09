@@ -6,6 +6,7 @@ namespace CharacterSheetDnD.ViewModels
 {
     public class WeaponViewModel
     {
+        public int WeaponID { get; set; }
         public int CharacterID { get; set; } // To know which character you're adding equipment to
         public string? WeaponName { get; set; }
         public EquipmentType? ItemType { get; set; }
@@ -14,26 +15,39 @@ namespace CharacterSheetDnD.ViewModels
         public bool IsEquipped { get; set; }
         public int ValueInGold { get; set; } = 0;
 
-		// Weapon-specific properties
-		public DamageDice? DamageDice {  get; set; }
+        // Weapon-specific properties
+        public DamageDice? DamageDice { get; set; }
 
-		public DamageType? DamageType { get; set; }
-      
-		public int WeaponProperties { get; set; } = (int)WeaponProperty.None;
-		public WeaponRange WeaponRange { get; set; }
+        public DamageType? DamageType { get; set; }
 
-		// Magic-specific propterties
-		public bool IsMagic { get; set; } 
-		public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
-		public string? EffectDescription { get; set; }
-		public string? EffectMechanics { get; set; }
-		public int? Charges { get; set; }
-		public string? RechargeRate { get; set; }
+        public int WeaponProperties { get; set; } = (int)WeaponProperty.None;
+        public WeaponRange WeaponRange { get; set; }
 
-		public IEnumerable<CharacterWeapon>? Weapons { get; set; }
+        // Magic-specific propterties
+        public bool IsMagic { get; set; }
+        public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
+        public string? EffectDescription { get; set; }
+        public string? EffectMechanics { get; set; }
+        public int? Charges { get; set; }
+        public string? RechargeRate { get; set; }
 
 
-	}
+        // This will hold the values for the checkboxes in your form
+        public List<WeaponPropertyOption> AvailableProperties { get; set; } = new List<WeaponPropertyOption>();
+
+        // This will hold the selected values when the form is submitted
+        public WeaponProperty SelectedProperties { get; set; } = WeaponProperty.None;
+
+        public IEnumerable<CharacterWeapon>? Weapons { get; set; }
+
+        public class WeaponPropertyOption
+        {
+            public WeaponProperty Value { get; set; }
+            public string? Text { get; set; }
+            public bool IsSelected { get; set; }
+        }
+
+    }
 }
 
 
