@@ -74,25 +74,21 @@ namespace CharacterSheetDnD.ViewModels
 		}
 		public List<CharacterSkillViewModel> CharacterSkills { get; set; }
 
-        // EQUIPMENT
-        // To get the View
+        // WEAPON
 		public WeaponViewModel WeaponViewModel { get; set; }
         public class CharacterWeapon
 		{
+			public int WeaponID { get; set; }
+			public int CharacterID { get; set; } // To know which character you're adding equipment to
 			public string? WeaponName { get; set; }
+			public MeleeRange? MeleeRange { get; set; }
 			public EquipmentType? ItemType { get; set; }
 			public string? Description { get; set; }
-
-			public MeleeRange MeleeRange { get; set; }
 			public int Quantity { get; set; } = 1;
 			public bool IsEquipped { get; set; }
 			public int ValueInGold { get; set; } = 0;
-
-			// Weapon-specific properties
 			public DamageDice? DamageDice { get; set; }
-
 			public DamageType? DamageType { get; set; }
-
 			public int WeaponProperties { get; set; } = (int)WeaponProperty.None;
 			public WeaponRange WeaponRange { get; set; }
 
@@ -103,13 +99,25 @@ namespace CharacterSheetDnD.ViewModels
 			public string? EffectMechanics { get; set; }
 			public int? Charges { get; set; }
 			public string? RechargeRate { get; set; }
+
+
+			// This will hold the values for the checkboxes in your form
+			public List<WeaponPropertyOption> AvailableProperties { get; set; } = new List<WeaponPropertyOption>();
+
+			// This will hold the selected values when the form is submitted
+			public WeaponProperty SelectedProperties { get; set; } = WeaponProperty.None;
+
+			public IEnumerable<CharacterWeapon>? Weapons { get; set; }
+
+			public class WeaponPropertyOption
+			{
+				public WeaponProperty Value { get; set; }
+				public string? Text { get; set; }
+				public bool IsSelected { get; set; }
+			}
+
 		}
 		public List<WeaponViewModel> Weapons { get; set; } = new List<WeaponViewModel>();
-
-		// WEAPONS
-
-
-
 
 		// Constructor
 		public MyCharacterViewModel()

@@ -32,7 +32,11 @@ namespace CharacterSheetDnD.Controllers
 			   .ThenInclude(cst => cst.SavingThrow)
            .Include(c => c.CharacterSkills)
                .ThenInclude(cs => cs.Skill)
-		   .FirstOrDefaultAsync(c => c.CharacterID == id);
+           .Include(c => c.CharacterWeapons)
+           .FirstOrDefaultAsync(c => c.CharacterID == id)
+      
+
+           ;
 
 			if (character == null)
             {
@@ -122,13 +126,39 @@ namespace CharacterSheetDnD.Controllers
 				});
 			}
 
-			// Weapons
-		    
+            // Weapons         
+            if (character.CharacterWeapons != null)
+            {
+                viewModel.Weapons = character.CharacterWeapons.Select(cw => new WeaponViewModel
+                {
+                    WeaponID = cw.WeaponID,
+                    CharacterID = cw.CharacterID,
+                    WeaponName = cw.WeaponName,
+                    MeleeRange = cw.MeleeRange,
+                    Description = cw.Description,
+                    Quantity = cw.Quantity,
+                    IsEquipped = cw.IsEquipped,
+                    ValueInGold = cw.ValueInGold,
+                    DamageDice = cw.DamageDice,
+                    DamageType = cw.DamageType,
+                    WeaponRange = cw.WeaponRange,
+                    WeaponProperties = (int)cw.Properties, // This line assumes WeaponProperties in ViewModel is an int. Adjust if it's actually an enum type.
+                    IsMagic = cw.IsMagicItem,
+                    BonusAttackDamageRolls = cw.BonusAttackDamageRolls,
+                    EffectDescription = cw.MagicEffectDescription,
+                    EffectMechanics = cw.MagicEffectMechanics,
+                    Charges = cw.MagicCharges,
+                    RechargeRate = cw.MagicRechargeRate,
+                
+                }).ToList();
+            }
 
 
 
-			// Return the view viewModel -> MyCharacterViewModel
-			return View("MyCharacter", viewModel);
+
+
+            // Return the view viewModel -> MyCharacterViewModel
+            return View("MyCharacter", viewModel);
         }
 
 

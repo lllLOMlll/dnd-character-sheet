@@ -75,23 +75,30 @@ namespace CharacterSheetDnD.Models
 		R6 = 6,	
 	}
 
-	public enum BonusAttackDamageRolls
-	{
-		[Display(Name = "+1 bonus to attack and damage rolls")]
-		B1 = 1,
-		[Display(Name ="+2 bonus to attack and damage rolls")]
-		B2 = 2,
-		[Display(Name = "+3 bonus to attack and damage rolls")]
-		B3 = 3,
-		[Display(Name = "+4 bonus to attack and damage rolls")]
-		B4 = 4,
-		[Display(Name = "+5 bonus to attack and damage rolls")]
-		B5 = 5,
+    public enum BonusAttackDamageRolls
+    {
+        [Display(Name = "+0")]
+        None = 0,
 
-	}
+        [Display(Name = "+1")]
+        B1 = 1,
+
+        [Display(Name = "+2")]
+        B2 = 2,
+
+        [Display(Name = "+3")]
+        B3 = 3,
+
+        [Display(Name = "+4")]
+        B4 = 4,
+
+        [Display(Name = "+5")]
+        B5 = 5,
+
+    }
 
 
-	public class CharacterWeapon 
+    public class CharacterWeapon 
 	{
 		[Key]
 		public int WeaponID { get; set; }
