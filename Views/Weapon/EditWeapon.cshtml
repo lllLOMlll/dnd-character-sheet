@@ -29,6 +29,32 @@
 
         <div class="row mb-3">
             <div class="col">
+                <label asp-for="MeleeRange" class="form-label">Melee or Range?</label>
+                <select asp-for="MeleeRange" class="form-select">
+                    <option value="">Select Melee or Range</option>
+                    @foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.MeleeRange>())
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label asp-for="WeaponRange" class="form-label">Weapon Range?</label>
+                <select asp-for="WeaponRange" class="form-select">
+                    <option value="">Select Weapon Range</option>
+                    @foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.WeaponRange>())
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
                 <label asp-for="Description" class="form-label">Description</label>
                 <textarea asp-for="Description" class="form-control" placeholder="Enter weapon description" rows="3"></textarea>
             </div>

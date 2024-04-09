@@ -42,7 +42,8 @@ namespace CharacterSheetDnD.Controllers
                 CharacterID = id,       
                 WeaponName = viewModel.WeaponName,
                 Description = viewModel.Description,
-                Quantity = viewModel.Quantity,
+                MeleeRange = viewModel.MeleeRange.GetValueOrDefault(),
+				Quantity = viewModel.Quantity,
                 ValueInGold = viewModel.ValueInGold,
                 DamageDice = viewModel.DamageDice.GetValueOrDefault(),
                 DamageType = viewModel.DamageType.GetValueOrDefault(),
@@ -123,6 +124,8 @@ namespace CharacterSheetDnD.Controllers
                 CharacterID = characterId,
                 WeaponID = weaponToEdit.WeaponID,
                 WeaponName = weaponToEdit.WeaponName,
+                MeleeRange = weaponToEdit.MeleeRange,
+                WeaponRange = weaponToEdit.WeaponRange,
                 Description = weaponToEdit.Description,
                 Quantity = weaponToEdit.Quantity,
                 IsEquipped = weaponToEdit.IsEquipped,
@@ -137,8 +140,7 @@ namespace CharacterSheetDnD.Controllers
             Value = p,
             Text = p.ToString(),
             IsSelected = (weaponToEdit.Properties & p) == p
-        }).ToList(),
-                WeaponRange = weaponToEdit.WeaponRange,
+        }).ToList(),     
                 IsMagic = weaponToEdit.IsMagicItem,
                 BonusAttackDamageRolls = weaponToEdit.BonusAttackDamageRolls,
                 EffectDescription = weaponToEdit.MagicEffectDescription,
@@ -175,6 +177,8 @@ namespace CharacterSheetDnD.Controllers
 
             // Updating the weapon properties from the viewModel.
             weaponToUpdate.WeaponName = viewModel.WeaponName;
+            weaponToUpdate.MeleeRange = viewModel.MeleeRange.GetValueOrDefault();
+            weaponToUpdate.WeaponRange = viewModel.WeaponRange;
             weaponToUpdate.Description = viewModel.Description;
             weaponToUpdate.Quantity = viewModel.Quantity;
             weaponToUpdate.IsEquipped = viewModel.IsEquipped;

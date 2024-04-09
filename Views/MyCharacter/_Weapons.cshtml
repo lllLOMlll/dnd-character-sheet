@@ -56,6 +56,29 @@
 					</div>
 
 					<div class="mb-3">
+						<label for="DamageDice" class="form-label">Damage Dice</label>
+						<select class="form-control" id="MeleeRange" name="MeleeRange" required>
+							<option value="">Melee or Range?</option>
+							@foreach (var meleeRange in Html.GetEnumSelectList<MeleeRange>())
+							{
+								<option value="@meleeRange.Value">@meleeRange.Text</option>
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="WeaponRange" class="form-label">Range</label>
+						<select class="form-control" id="WeaponRange" name="WeaponRange">
+							<option value="">Select Range (if applicable)</option>
+							<!-- The keyword Range was in conflict with System.Range. I had the precice the path-->
+							@foreach (var range in Html.GetEnumSelectList<WeaponRange>())
+							{
+								<option value="@range.Value">@range.Text</option>
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
 						<label for="Description" class="form-label">Description</label>
 						<input type="text" class="form-control" id="Description" name="Description">
 					</div>
@@ -94,19 +117,6 @@
 								</div>
 							}
 						</div>
-					</div>
-
-
-					<div class="mb-3">
-						<label for="WeaponRange" class="form-label">Range</label>
-						<select class="form-control" id="WeaponRange" name="WeaponRange">
-							<option value="">Select Range</option>
-							<!-- The keyword Range was in conflict with System.Range. I had the precice the path-->
-							@foreach (var range in Html.GetEnumSelectList<WeaponRange>())
-							{
-								<option value="@range.Value">@range.Text</option>
-							}
-						</select>
 					</div>
 
 					<div class="mb-3">
