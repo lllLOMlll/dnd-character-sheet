@@ -37,8 +37,8 @@
 		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Dexterity</button>
 	</div>
 
+	<!-- HIT POINTS-->
 	<h5 class="text-center mb-2 bg-dark text-white p-1">Hit Points</h5>
-	
 	<!-- Current Hit Points -->
 	<div class="col-md-6 text-center">
 		<p class="text-uppercase mb-0">Current Hit Points</p>
@@ -105,7 +105,7 @@
 		</div>
 	</div>
 
-
+	<!-- PROFICIENCY BONUS - INSPIRATION -->
 	<h5 class="text-center mb-2 bg-dark text-white p-1">Proficiency Bonus - Inspiration</h5>
 	<!-- Proficiency Bonus -->
 	<div class="col-md-6 text-center">
@@ -121,6 +121,7 @@
 		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Level</button>
 	</div>
 
+	<!-- EQUIPPED WEAPONS -->
 	<h5 class="text-center mb-2 bg-dark text-white p-1">Equipped Weapons</h5>
 	<div class="d-flex flex-column align-items-center">
 		<table class="table w-50">
@@ -128,8 +129,7 @@
 				<tr>
 					<th>Weapon Name</th>
 					<th>ATK Bonus</th>
-					<th>Damage/Type</th>
-					<th>Range (Normal/Disavantage)</th>
+					<th>Damage/Type</th>			
 				</tr>
 			</thead>
 			<tbody>
@@ -153,17 +153,17 @@
 
 								<!-- ATK Bonus -->
 								<td>
-									@CharacterSheetDnD.Utilities.ConvertEnumForDisplay.GetDisplayName(weapon.BonusAttackDamageRolls)
-
+								@{
+									
+								}
+								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetNumericValue(weapon.BonusAttackDamageRolls)
 								</td>
+
 								<!-- Damage/Type -->
 								<td>
-								@CharacterSheetDnD.Utilities.ConvertEnumForDisplay.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) @CharacterSheetDnD.Utilities.ConvertEnumForDisplay.GetDisplayName(weapon.BonusAttackDamageRolls)
+								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) @CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.BonusAttackDamageRolls)
 								</td>
-								<!-- Range-->
-								<td>
-								@CharacterSheetDnD.Utilities.ConvertEnumForDisplay.GetDisplayName(weapon.WeaponRange) 
-								</td>
+						
 
 
 							</tr>
@@ -177,9 +177,11 @@
 											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
+											<strong>Is your character proficient with that weapon?</strong> <p>@weapon.IsProficient</p>
+											<strong>Range (Normal/Disadvantage)</strong> <p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayNamesForFlags((WeaponRange)weapon.WeaponRange)</p>
 											<strong>Description:</strong> <p>@weapon.Description</p>
 											<strong>Value in Gold:</strong> <p>@weapon.ValueInGold</p>
-											<strong>Weapon Properties:</strong> <p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplay.GetDisplayNamesForFlags((WeaponProperty)weapon.WeaponProperties)</p>
+											<strong>Weapon Properties:</strong> <p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayNamesForFlags((WeaponProperty)weapon.WeaponProperties)</p>
 											<strong>Effect Description:</strong> <p>@weapon.EffectDescription</p>
 											<strong>Effect Mechanics:</strong> <p>@weapon.EffectMechanics</p>
 											<strong>Charges:</strong> <p>@weapon.Charges</p>

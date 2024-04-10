@@ -27,6 +27,7 @@ namespace CharacterSheetDnD.Controllers
         public async Task<IActionResult> AddWeapon(int id, WeaponViewModel viewModel)
         {
             // Manually map "on" value to true for checkboxes
+            viewModel.IsProficient = Request.Form["IsProficient"] == "true" || Request.Form["IsProficient"].Contains("on");
             viewModel.IsEquipped = Request.Form["IsEquipped"] == "true" || Request.Form["IsEquipped"].Contains("on");
             viewModel.IsMagic = Request.Form["IsMagic"] == "true" || Request.Form["IsMagic"].Contains("on");
 
@@ -41,6 +42,7 @@ namespace CharacterSheetDnD.Controllers
             {
                 CharacterID = id,       
                 WeaponName = viewModel.WeaponName,
+                IsProficient = viewModel.IsProficient,
                 Description = viewModel.Description,
                 MeleeRange = viewModel.MeleeRange.GetValueOrDefault(),
 				Quantity = viewModel.Quantity,
@@ -124,6 +126,7 @@ namespace CharacterSheetDnD.Controllers
                 CharacterID = characterId,
                 WeaponID = weaponToEdit.WeaponID,
                 WeaponName = weaponToEdit.WeaponName,
+                IsProficient = weaponToEdit.IsProficient,
                 MeleeRange = weaponToEdit.MeleeRange,
                 WeaponRange = weaponToEdit.WeaponRange,
                 Description = weaponToEdit.Description,
@@ -177,6 +180,7 @@ namespace CharacterSheetDnD.Controllers
 
             // Updating the weapon properties from the viewModel.
             weaponToUpdate.WeaponName = viewModel.WeaponName;
+            weaponToUpdate.IsProficient = viewModel.IsProficient;
             weaponToUpdate.MeleeRange = viewModel.MeleeRange.GetValueOrDefault();
             weaponToUpdate.WeaponRange = viewModel.WeaponRange;
             weaponToUpdate.Description = viewModel.Description;

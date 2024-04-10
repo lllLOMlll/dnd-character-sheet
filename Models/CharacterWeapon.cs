@@ -112,6 +112,8 @@ namespace CharacterSheetDnD.Models
 		[StringLength(255)]
 		public string? WeaponName { get; set; }
 		
+		public bool IsProficient { get; set; }
+		
 		public MeleeRange MeleeRange { get; set; }
 		
 		public string? Description { get; set; }
@@ -142,6 +144,7 @@ namespace CharacterSheetDnD.Models
 
 		public string? MagicEffectMechanics { get; set; }
 		[Range(0, 100, ErrorMessage = "Charges must be a positive number")]
+		
 		public int? MagicCharges { get; set; }
 
 		public string? MagicRechargeRate { get; set; }

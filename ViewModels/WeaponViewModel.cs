@@ -9,7 +9,8 @@ namespace CharacterSheetDnD.ViewModels
         public int WeaponID { get; set; }
         public int CharacterID { get; set; } // To know which character you're adding equipment to
         public string? WeaponName { get; set; }
-        public MeleeRange? MeleeRange { get; set; }
+		public bool IsProficient { get; set; }
+		public MeleeRange? MeleeRange { get; set; }
         public EquipmentType? ItemType { get; set; }
         public string? Description { get; set; }
         public int Quantity { get; set; } = 1;

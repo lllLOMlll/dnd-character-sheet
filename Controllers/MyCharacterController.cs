@@ -134,6 +134,7 @@ namespace CharacterSheetDnD.Controllers
                     WeaponID = cw.WeaponID,
                     CharacterID = cw.CharacterID,
                     WeaponName = cw.WeaponName,
+                    IsProficient = cw.IsProficient,
                     MeleeRange = cw.MeleeRange,
                     Description = cw.Description,
                     Quantity = cw.Quantity,

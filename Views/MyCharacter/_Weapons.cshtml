@@ -24,9 +24,9 @@
 		<div class="row">
 			<!-- Button Delete Weapon -->
 			<a class="btn btn-primary me-2 mb-3"
-			asp-area="" asp-controller="Weapon" asp-action="DisplayCharacterWeapons" asp-route-id="@Model.CharacterID">
+			   asp-area="" asp-controller="Weapon" asp-action="DisplayCharacterWeapons" asp-route-id="@Model.CharacterID">
 				Delete Weapon
-		</a>
+			</a>
 		</div>
 	</div>
 </div>
@@ -43,20 +43,27 @@
 				<div class="modal-body">
 					<input type="hidden" name="CharacterID" value="@Model.CharacterID" />
 					@Html.AntiForgeryToken()
-
+					<!-- Quantity -->
 					<div class="mb-3">
 						<label for="Quantity" class="form-label">Quantity</label>
 						<input type="number" class="form-control" id="Quantity" name="Quantity" min="0" value="1">
 					</div>
 
-
+					<!-- Weapon Name -->
 					<div class="mb-3">
 						<label for="WeaponName" class="form-label">Weapon Name</label>
 						<input type="text" class="form-control" id="WeaponName" name="WeaponName" required>
 					</div>
 
+					<!-- Is Proficient -->
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="IsProficient" name="IsProficient">
+						<label class="form-check-label" for="IsProficient">Is your character proficient with that weapon?</label>
+					</div>
+
+					<!-- Melee/Range -->
 					<div class="mb-3">
-						<label for="DamageDice" class="form-label">Damage Dice</label>
+						<label for="DamageDice" class="form-label">Melee or Range?</label>
 						<select class="form-control" id="MeleeRange" name="MeleeRange" required>
 							<option value="">Melee or Range?</option>
 							@foreach (var meleeRange in Html.GetEnumSelectList<MeleeRange>())
@@ -66,6 +73,7 @@
 						</select>
 					</div>
 
+					<!-- Range -->
 					<div class="mb-3">
 						<label for="WeaponRange" class="form-label">Range</label>
 						<select class="form-control" id="WeaponRange" name="WeaponRange">
@@ -78,11 +86,13 @@
 						</select>
 					</div>
 
+					<!-- Description -->
 					<div class="mb-3">
 						<label for="Description" class="form-label">Description</label>
 						<input type="text" class="form-control" id="Description" name="Description">
 					</div>
 
+					<!-- Dice Damage -->
 					<div class="mb-3">
 						<label for="DamageDice" class="form-label">Damage Dice</label>
 						<select class="form-control" id="DamageDice" name="DamageDice" required>
@@ -94,6 +104,7 @@
 						</select>
 					</div>
 
+					<!-- Damage Type -->
 					<div class="mb-3">
 						<label for="DamageType" class="form-label">Damage Type</label>
 						<select class="form-control" id="DamageType" name="DamageType">
@@ -105,6 +116,7 @@
 						</select>
 					</div>
 
+					<!--Weapon Properties -->
 					<div class="mb-3">
 						<label class="form-label">Weapon Properties</label>
 						<div>
@@ -119,17 +131,19 @@
 						</div>
 					</div>
 
+					<!-- Value in Gold -->
 					<div class="mb-3">
 						<label for="ValueInGold" class="form-label">Value in Gold</label>
 						<input type="number" class="form-control" id="ValueInGold" name="ValueInGold" min="0">
 					</div>
 
+					<!-- Is Equiped -->
 					<div class="mb-3 form-check">
 						<input type="checkbox" class="form-check-input" id="IsEquipped" name="IsEquipped">
 						<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
 					</div>
 
-
+					<!-- Is Magic -->
 					<div class="mb-3 form-check">
 						<input type="checkbox" class="form-check-input" id="IsMagic" name="IsMagic">
 						<label class="form-check-label" for="IsMagic">Is Magic?</label>
@@ -161,33 +175,33 @@
 		// Define the HTML for magic item options here, inside the script tag
 		var magicItemHtml = `
 
-					<div class="mb-3">
-								<label for="BonusAttackDamageRolls" class="form-label">Bonus to attack and damage rolls</label>
-								<select class="form-control" id="BonusAttackDamageRolls" name="BonusAttackDamageRolls">
-									<option value="">Select bonus to attack and damage rolls</option>
+						<div class="mb-3">
+									<label for="BonusAttackDamageRolls" class="form-label">Bonus to attack and damage rolls</label>
+									<select class="form-control" id="BonusAttackDamageRolls" name="BonusAttackDamageRolls">
+										<option value="">Select bonus to attack and damage rolls</option>
 	@foreach (var bonusAttackDamageRolls in Html.GetEnumSelectList<BonusAttackDamageRolls>())
 	{
-												<option value="@bonusAttackDamageRolls.Value">@bonusAttackDamageRolls.Text</option>
+														<option value="@bonusAttackDamageRolls.Value">@bonusAttackDamageRolls.Text</option>
 	}
-								</select>
-							</div>
-			<div class="mb-3">
-				<label for="EffectDescription" class="form-label">Effect Description</label>
-				<textarea class="form-control" id="EffectDescription" name="EffectDescription" rows="2"></textarea>
-			</div>
-			<div class="mb-3">
-				<label for="EffectMechanics" class="form-label">Effect Mechanics</label>
-				<textarea class="form-control" id="EffectMechanics" name="EffectMechanics" rows="2"></textarea>
-			</div>
-			<div class="mb-3">
-				<label for="Charges" class="form-label">Charges</label>
-				<input type="number" class="form-control" id="Charges" name="Charges">
-			</div>
-			<div class="mb-3">
-				<label for="RechargeRate" class="form-label">Recharge Rate</label>
-				<input type="text" class="form-control" id="RechargeRate" name="RechargeRate" placeholder="e.g., Daily at dawn">
-			</div>
-			`;
+									</select>
+								</div>
+				<div class="mb-3">
+					<label for="EffectDescription" class="form-label">Effect Description</label>
+					<textarea class="form-control" id="EffectDescription" name="EffectDescription" rows="2"></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="EffectMechanics" class="form-label">Effect Mechanics</label>
+					<textarea class="form-control" id="EffectMechanics" name="EffectMechanics" rows="2"></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="Charges" class="form-label">Charges</label>
+					<input type="number" class="form-control" id="Charges" name="Charges">
+				</div>
+				<div class="mb-3">
+					<label for="RechargeRate" class="form-label">Recharge Rate</label>
+					<input type="text" class="form-control" id="RechargeRate" name="RechargeRate" placeholder="e.g., Daily at dawn">
+				</div>
+				`;
 
 		isMagicCheckbox.addEventListener('change', function () {
 			if (this.checked) {
