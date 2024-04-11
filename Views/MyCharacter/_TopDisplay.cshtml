@@ -157,19 +157,24 @@
 
 									var proficiencyBonusAttackRoll = CharacterSheetDnD.Utilities.AttackDamageRolls.GetProficiencyBonusAttackRoll(weapon.IsProficient, proficiencyBonus);
 
+									// Creating the bool for the GetStrengthOrDexterityModifier Method
+									bool isMelee = weapon.MeleeRange.HasValue && weapon.MeleeRange == MeleeRange.Melee;
+									bool isRange = weapon.MeleeRange.HasValue && weapon.MeleeRange == MeleeRange.Range;
 									bool hasFinesse = WeaponPropertyUtility.HasFinesse((WeaponProperty)weapon.WeaponProperties);
-
+									bool isThrown = WeaponPropertyUtility.HasThrown((WeaponProperty)weapon.WeaponProperties);
 
 									var strengthOrDexterityModifier = CharacterSheetDnD.Utilities.AttackDamageRolls.GetStrengthOrDexterityModifier(
 									CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Strength),
 									CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity),
-									hasFinesse
+									isMelee,
+									isRange,
+									hasFinesse,
+									isThrown
 									);
 
 									var attackBonusRoll = CharacterSheetDnD.Utilities.AttackDamageRolls.GetAttackBonus(proficiencyBonusAttackRoll, strengthOrDexterityModifier);
 								}
-									+@attackBonusRoll
-
+									+@attackBonusRoll						
 								</td>
 
 								<!-- Damage/Type -->

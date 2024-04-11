@@ -21,13 +21,28 @@ namespace CharacterSheetDnD.Utilities
 			}
 		}
 
-		public static int GetStrengthOrDexterityModifier(int strengthModifier, int dexterityModifier, bool isFinesse)
+		public static int GetStrengthOrDexterityModifier(int strengthModifier, int dexterityModifier, bool isMelee, bool isRange, bool isFinesse, bool isThrown)
 		{
-			if (!isFinesse)
+			if (isMelee)
 			{
-				return strengthModifier;
+				if (!isFinesse)
+				{
+					return strengthModifier;
+				}
+				return Math.Max(strengthModifier, dexterityModifier);
 			}
-			return Math.Max(strengthModifier, dexterityModifier);
+			if (isRange)
+			{
+				if (!isThrown)
+				{
+					return dexterityModifier;
+				}
+				return Math.Max(strengthModifier, dexterityModifier);
+			}
+			else
+				throw new InvalidOperationException("Invalid combination of parameters for weapon attack type.");
+			
+	
 		}
 
 	}
