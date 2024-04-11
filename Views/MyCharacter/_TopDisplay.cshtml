@@ -129,7 +129,7 @@
 				<tr>
 					<th>Weapon Name</th>
 					<th>ATK Bonus</th>
-					<th>Damage/Type</th>			
+					<th>Damage</th>			
 				</tr>
 			</thead>
 			<tbody>
@@ -177,10 +177,9 @@
 									+@attackBonusRoll						
 								</td>
 
-								<!-- Damage/Type -->
+								<!-- Damage -->
 								<td>
-								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) @CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.BonusAttackDamageRolls)							
-								</td>
+								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) + @strengthOrDexterityModifier
 						
 
 
@@ -196,7 +195,8 @@
 										</div>
 										<div class="modal-body">
 											<strong>Is your character proficient with that weapon?</strong> <p>@weapon.IsProficient</p>
-											<strong>Range (Normal/Disadvantage)</strong> <p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayNamesForFlags((WeaponRange)weapon.WeaponRange)</p>
+											<strong>Range (Normal/Disadvantage)</strong>
+											<p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayNameForNonFlagsEnum((WeaponRange)weapon.WeaponRange)</p>
 											<strong>Description:</strong> <p>@weapon.Description</p>
 											<strong>Value in Gold:</strong> <p>@weapon.ValueInGold</p>
 											<strong>Weapon Properties:</strong> <p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayNamesForFlags((WeaponProperty)weapon.WeaponProperties)</p>

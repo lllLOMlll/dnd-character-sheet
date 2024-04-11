@@ -17,6 +17,7 @@ namespace CharacterSheetDnD.Models
 		Piercing,
 		Bludgeoning,
 		Magic,
+		Other
 	}
 
 	[Flags]
@@ -61,6 +62,7 @@ namespace CharacterSheetDnD.Models
 
 	public enum WeaponRange
 	{
+		[Display(Name = "Not a range weapon")]
 		R0 = 0,
 		[Display(Name = "5/15")]
 		R1 = 1,
@@ -139,6 +141,8 @@ namespace CharacterSheetDnD.Models
 		public bool IsEquipped { get; set; }
 		
 		public bool IsMagicItem { get; set; }
+		public bool RequiresAttunement { get; set; }
+		public bool IsAttuned { get; set; }
 		public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
 
 		public string? MagicEffectDescription { get; set; }

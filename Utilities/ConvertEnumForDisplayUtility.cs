@@ -34,6 +34,18 @@ namespace CharacterSheetDnD.Utilities
 			return string.Join(", ", selectedFlags);
 		}
 
+		// This method directly gets the display name for a given enum value, which is suitable for non-flags enums.
+		public static string GetDisplayNameForNonFlagsEnum(Enum enumValue)
+		{
+			var memberInfo = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
+			if (memberInfo != null)
+			{
+				var attribute = memberInfo.GetCustomAttribute<DisplayAttribute>();
+				return attribute?.GetName() ?? enumValue.ToString();
+			}
+			return enumValue.ToString();
+		}
+
 		public static string GetNumericValue(Enum enumValue)
 		{
 			// Directly parsing the enum's name, assuming it's like "B1", "B2", etc.

@@ -145,6 +145,8 @@ namespace CharacterSheetDnD.Controllers
                     WeaponRange = cw.WeaponRange,
                     WeaponProperties = (int)cw.Properties, // This line assumes WeaponProperties in ViewModel is an int. Adjust if it's actually an enum type.
                     IsMagic = cw.IsMagicItem,
+                    RequiresAttunement = cw.RequiresAttunement,
+                    IsAttuned = cw.IsAttuned,
                     BonusAttackDamageRolls = cw.BonusAttackDamageRolls,
                     EffectDescription = cw.MagicEffectDescription,
                     EffectMechanics = cw.MagicEffectMechanics,

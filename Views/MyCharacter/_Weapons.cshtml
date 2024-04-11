@@ -77,14 +77,17 @@
 					<div class="mb-3">
 						<label for="WeaponRange" class="form-label">Range</label>
 						<select class="form-control" id="WeaponRange" name="WeaponRange">
-							<option value="">Select Range (if applicable)</option>
-							<!-- The keyword Range was in conflict with System.Range. I had the precice the path-->
-							@foreach (var range in Html.GetEnumSelectList<WeaponRange>())
+							<option value="0">Select Range (if applicable)</option>
+							@foreach (var range in Html.GetEnumSelectList<CharacterSheetDnD.Models.WeaponRange>())
 							{
-								<option value="@range.Value">@range.Text</option>
+								if (range.Value != "0") // Exclude R0 from the dropdown
+								{
+									<option value="@range.Value">@range.Text</option>
+								}
 							}
 						</select>
 					</div>
+
 
 					<!-- Description -->
 					<div class="mb-3">
@@ -92,7 +95,7 @@
 						<input type="text" class="form-control" id="Description" name="Description">
 					</div>
 
-					<!-- Dice Damage -->
+					<!-- Damage Dice  -->
 					<div class="mb-3">
 						<label for="DamageDice" class="form-label">Damage Dice</label>
 						<select class="form-control" id="DamageDice" name="DamageDice" required>
@@ -107,7 +110,7 @@
 					<!-- Damage Type -->
 					<div class="mb-3">
 						<label for="DamageType" class="form-label">Damage Type</label>
-						<select class="form-control" id="DamageType" name="DamageType">
+						<select class="form-control" id="DamageType" name="DamageType" required>
 							<option value="">Select Damage Type</option>
 							@foreach (var damageType in Html.GetEnumSelectList<DamageType>())
 							{
@@ -149,6 +152,8 @@
 						<label class="form-check-label" for="IsMagic">Is Magic?</label>
 					</div>
 
+			
+
 					<!-- Magic option (displayed if IsMagic is checked) -->
 					<div id="magicItemOptions" style="display:none;"></div>
 
@@ -174,7 +179,17 @@
 
 		// Define the HTML for magic item options here, inside the script tag
 		var magicItemHtml = `
+											<!-- Requires Attument -->
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="RequiresAttunement" name="RequiresAttunement">
+						<label class="form-check-label" for="RequiresAttunement">Requires Attunement?</label>
+					</div>
 
+					<!-- Is Attuned -->
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="IsAttuned" name="IsAttuned">
+						<label class="form-check-label" for="IsAttuned">Is Attuned?</label>
+					</div>
 						<div class="mb-3">
 									<label for="BonusAttackDamageRolls" class="form-label">Bonus to attack and damage rolls</label>
 									<select class="form-control" id="BonusAttackDamageRolls" name="BonusAttackDamageRolls">
@@ -185,6 +200,7 @@
 	}
 									</select>
 								</div>
+			
 				<div class="mb-3">
 					<label for="EffectDescription" class="form-label">Effect Description</label>
 					<textarea class="form-control" id="EffectDescription" name="EffectDescription" rows="2"></textarea>

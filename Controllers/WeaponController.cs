@@ -8,6 +8,7 @@ using CharacterSheetDnD.ViewModels;
 using CharacterSheetDnD.Migrations;
 using SQLitePCL;
 using static CharacterSheetDnD.ViewModels.WeaponViewModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CharacterSheetDnD.Controllers
 {
@@ -30,9 +31,11 @@ namespace CharacterSheetDnD.Controllers
             viewModel.IsProficient = Request.Form["IsProficient"] == "true" || Request.Form["IsProficient"].Contains("on");
             viewModel.IsEquipped = Request.Form["IsEquipped"] == "true" || Request.Form["IsEquipped"].Contains("on");
             viewModel.IsMagic = Request.Form["IsMagic"] == "true" || Request.Form["IsMagic"].Contains("on");
+            viewModel.RequiresAttunement = Request.Form["RequiresAttunement"] == "true" || Request.Form["RequiresAttunement"].Contains("on");
+			viewModel.IsAttuned = Request.Form["IsAttuned"] == "true" || Request.Form["IsAttuned"].Contains("on");
 
 
-            var characterExists = await _context.Characters.AnyAsync(c => c.CharacterID == id);
+			var characterExists = await _context.Characters.AnyAsync(c => c.CharacterID == id);
             if (!characterExists)
             {
                 return NotFound($"Character with ID {id} does not exist.");
@@ -53,6 +56,8 @@ namespace CharacterSheetDnD.Controllers
                 Properties = (WeaponProperty)viewModel.WeaponProperties,
                 IsEquipped = viewModel.IsEquipped,
                 IsMagicItem = viewModel.IsMagic,
+                RequiresAttunement = viewModel.RequiresAttunement,
+                IsAttuned = viewModel.IsAttuned,
                 BonusAttackDamageRolls = viewModel.BonusAttackDamageRolls,
                 MagicEffectDescription = viewModel.EffectDescription,
                 MagicEffectMechanics = viewModel.EffectMechanics,
@@ -145,6 +150,8 @@ namespace CharacterSheetDnD.Controllers
             IsSelected = (weaponToEdit.Properties & p) == p
         }).ToList(),     
                 IsMagic = weaponToEdit.IsMagicItem,
+                RequiresAttunement = weaponToEdit.RequiresAttunement,
+                IsAttuned = weaponToEdit.IsAttuned,
                 BonusAttackDamageRolls = weaponToEdit.BonusAttackDamageRolls,
                 EffectDescription = weaponToEdit.MagicEffectDescription,
                 EffectMechanics = weaponToEdit.MagicEffectMechanics,
@@ -191,6 +198,8 @@ namespace CharacterSheetDnD.Controllers
             weaponToUpdate.DamageType = viewModel.DamageType.GetValueOrDefault();
             weaponToUpdate.Properties = viewModel.SelectedProperties; 
             weaponToUpdate.IsMagicItem = viewModel.IsMagic;
+            weaponToUpdate.RequiresAttunement = viewModel.RequiresAttunement;
+            weaponToUpdate.IsAttuned = viewModel.IsAttuned;
             weaponToUpdate.BonusAttackDamageRolls = viewModel.BonusAttackDamageRolls;
             weaponToUpdate.MagicEffectDescription = viewModel.EffectDescription;
             weaponToUpdate.MagicEffectMechanics = viewModel.EffectMechanics;

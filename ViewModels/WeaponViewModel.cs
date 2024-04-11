@@ -28,7 +28,9 @@ namespace CharacterSheetDnD.ViewModels
 
         // Magic-specific propterties
         public bool IsMagic { get; set; }
-        public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
+		public bool RequiresAttunement { get; set; }
+		public bool IsAttuned { get; set; }
+		public BonusAttackDamageRolls BonusAttackDamageRolls { get; set; }
         public string? EffectDescription { get; set; }
         public string? EffectMechanics { get; set; }
         public int? Charges { get; set; }
