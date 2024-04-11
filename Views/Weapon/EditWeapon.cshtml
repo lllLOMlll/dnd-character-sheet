@@ -40,15 +40,17 @@
 		<div class="row mb-3">
 			<div class="col">
 				<label asp-for="MeleeRange" class="form-label">Melee or Range?</label>
-				<select asp-for="MeleeRange" class="form-select">
+				<select asp-for="MeleeRange" class="form-select" required>
 					<option value="">Select Melee or Range</option>
 					@foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.MeleeRange>())
 					{
 						<option value="@type.Value">@type.Text</option>
 					}
 				</select>
+				<span asp-validation-for="MeleeRange" class="text-danger"></span> 
 			</div>
 		</div>
+
 
 		<!-- Range -->
 		<div class="row mb-3">
@@ -88,13 +90,14 @@
 			<!-- Damage Dice -->
 			<div class="col-md-4">
 				<label asp-for="DamageDice" class="form-label">Damage Dice</label>
-				<select asp-for="DamageDice" class="form-select">
+				<select asp-for="DamageDice" class="form-select" required>
 					<option value="">Select Damage Dice</option>
 					@foreach (var dice in Html.GetEnumSelectList<CharacterSheetDnD.Models.DamageDice>())
 					{
 						<option value="@dice.Value">@dice.Text</option>
 					}
 				</select>
+				<span asp-validation-for="DamageDice" class="text-danger"></span>
 			</div>
 		</div>
 
@@ -102,13 +105,14 @@
 		<div class="row mb-3">
 			<div class="col">
 				<label asp-for="DamageType" class="form-label">Damage Type</label>
-				<select asp-for="DamageType" class="form-select">
+				<select asp-for="DamageType" class="form-select" required>
 					<option value="">Select Damage Type</option>
 					@foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.DamageType>())
 					{
 						<option value="@type.Value">@type.Text</option>
 					}
 				</select>
+				<span asp-validation-for="MeleeRange" class="text-danger"></span>
 			</div>
 		</div>
 
