@@ -61,6 +61,7 @@ namespace CharacterSheetDnD.Models
 
 	public enum WeaponRange
 	{
+		R0 = 0,
 		[Display(Name = "5/15")]
 		R1 = 1,
 		[Display(Name = "20/60")]

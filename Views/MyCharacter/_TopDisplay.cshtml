@@ -154,14 +154,27 @@
 								<!-- ATK Bonus -->
 								<td>
 								@{
-									
+
+									var proficiencyBonusAttackRoll = CharacterSheetDnD.Utilities.AttackDamageRolls.GetProficiencyBonusAttackRoll(weapon.IsProficient, proficiencyBonus);
+
+									bool hasFinesse = WeaponPropertyUtility.HasFinesse((WeaponProperty)weapon.WeaponProperties);
+
+
+									var strengthOrDexterityModifier = CharacterSheetDnD.Utilities.AttackDamageRolls.GetStrengthOrDexterityModifier(
+									CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Strength),
+									CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity),
+									hasFinesse
+									);
+
+									var attackBonusRoll = CharacterSheetDnD.Utilities.AttackDamageRolls.GetAttackBonus(proficiencyBonusAttackRoll, strengthOrDexterityModifier);
 								}
-								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetNumericValue(weapon.BonusAttackDamageRolls)
+									+@attackBonusRoll
+
 								</td>
 
 								<!-- Damage/Type -->
 								<td>
-								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) @CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.BonusAttackDamageRolls)
+								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) @CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.BonusAttackDamageRolls)							
 								</td>
 						
 

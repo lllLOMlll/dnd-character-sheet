@@ -168,7 +168,7 @@ namespace CharacterSheetDnD.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(viewModel); // Return the view with validation errors.
+                return View("EditWeapon", viewModel); // Return the view with validation errors.
             }
 
             var weaponToUpdate = await _context.Weapons.FirstOrDefaultAsync(w => w.WeaponID == id);
