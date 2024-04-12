@@ -83,7 +83,6 @@ namespace CharacterSheetDnD.ViewModels
 			public string? WeaponName { get; set; }
 			public bool IsProficient { get; set; }
 			public MeleeRange? MeleeRange { get; set; }
-			public EquipmentType? ItemType { get; set; }
 			public string? Description { get; set; }
 			public int Quantity { get; set; } = 1;
 			public bool IsEquipped { get; set; }

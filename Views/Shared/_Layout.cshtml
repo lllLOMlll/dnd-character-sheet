@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -40,16 +41,28 @@
 								</ul>
 							</li>
 
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									Armor
-								</a>
-								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-									<li><a class="dropdown-item" asp-area="" asp-controller="SelectCharacter" asp-action="DisplaySelectCharacter">Add a New Armor</a></li>
-									<li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Edit Armor</a></li>
-									<li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Delete Armor</a></li>
-								</ul>
-							</li>
+							@if (Context.Session.GetInt32("SelectedCharacterID") != null)
+							{
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										Armor/Shield
+									</a>
+									<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+										<li>
+											<a class="dropdown-item"
+											   asp-area=""
+											   asp-controller="Armor"
+											   asp-action="DisplayAddArmorPage"
+											   asp-route-id="@Context.Session.GetInt32("SelectedCharacterID").Value">
+												Add a New Armor
+											</a>
+										</li>
+										<li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Edit Armor</a></li>
+										<li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Delete Armor</a></li>
+									</ul>
+								</li>
+							}
+
 						}
 
 					</ul>

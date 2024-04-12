@@ -22,8 +22,16 @@ namespace CharacterSheetDnD.Controllers
         [HttpGet]
         [Authorize]
         [Route("my-character/{id}")]
+
+        
         public async Task<IActionResult> DisplayCharacter(int id)
         {
+
+            // Store the selected character's ID in session
+            HttpContext.Session.SetInt32("SelectedCharacterID", id);
+
+
+            // Inclue all relevent tables from my database
 			var character = await _context.Characters
 		   .Include(c => c.CharacterClasses)
 		   .Include(c => c.CharacterHealth)

@@ -14,7 +14,6 @@ namespace CharacterSheetDnD.ViewModels
 
 		[Required(ErrorMessage = "Please select whether the weapon is Melee or Range.")]
 		public MeleeRange? MeleeRange { get; set; }
-        public EquipmentType? ItemType { get; set; }
         public string? Description { get; set; }
         public int Quantity { get; set; } = 1;
         public bool IsEquipped { get; set; }
