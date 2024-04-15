@@ -4,6 +4,7 @@ using CharacterSheetDnD.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterSheetDnD.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240415141546_TestWithoutArmor")]
+    partial class TestWithoutArmor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,10 +300,6 @@ namespace CharacterSheetDnD.Migrations
                     b.HasIndex("CharacterID");
 
                     b.ToTable("CharacterArmors");
-
-                    b.HasDiscriminator<int>("ArmorType");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("CharacterSheetDnD.Models.CharacterClass", b =>
@@ -832,43 +831,6 @@ namespace CharacterSheetDnD.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CharacterSheetDnD.Models.HeavyArmor", b =>
-                {
-                    b.HasBaseType("CharacterSheetDnD.Models.CharacterArmor");
-
-                    b.Property<int>("HeavyArmorType")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue(2);
-                });
-
-            modelBuilder.Entity("CharacterSheetDnD.Models.LightArmor", b =>
-                {
-                    b.HasBaseType("CharacterSheetDnD.Models.CharacterArmor");
-
-                    b.Property<int>("LightArmorType")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue(0);
-                });
-
-            modelBuilder.Entity("CharacterSheetDnD.Models.MediumArmor", b =>
-                {
-                    b.HasBaseType("CharacterSheetDnD.Models.CharacterArmor");
-
-                    b.Property<int>("MediumArmorType")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("CharacterSheetDnD.Models.ShieldArmor", b =>
-                {
-                    b.HasBaseType("CharacterSheetDnD.Models.CharacterArmor");
-
-                    b.HasDiscriminator().HasValue(3);
-                });
-
             modelBuilder.Entity("CharacterSavingThrow", b =>
                 {
                     b.HasOne("CharacterSheetDnD.Models.Character", "Character")
@@ -900,7 +862,7 @@ namespace CharacterSheetDnD.Migrations
             modelBuilder.Entity("CharacterSheetDnD.Models.CharacterArmor", b =>
                 {
                     b.HasOne("CharacterSheetDnD.Models.Character", "Character")
-                        .WithMany("CharacterArmors")
+                        .WithMany()
                         .HasForeignKey("CharacterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1024,8 +986,6 @@ namespace CharacterSheetDnD.Migrations
 
             modelBuilder.Entity("CharacterSheetDnD.Models.Character", b =>
                 {
-                    b.Navigation("CharacterArmors");
-
                     b.Navigation("CharacterClasses");
 
                     b.Navigation("CharacterHealth");

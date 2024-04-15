@@ -1,251 +1,213 @@
-﻿@model CharacterSheetDnD.ViewModels.ArmorViewModel
+﻿@model CharacterSheetDnD.ViewModels.GenericArmorViewModel
 
 @{
-	ViewData["Title"] = "AddArmor";
-}
-
-
-@if (TempData["SuccessMessage"] != null)
-{
-	<div class="alert alert-success">
-		@TempData["SuccessMessage"]
-	</div>
+	ViewData["Title"] = "Add Armor";
 }
 
 <div class="container mt-4">
-	<h1 class="mb-4">Add Armor</h1>
+	<h1>@ViewData["Title"]</h1>
 
-@* 	<form asp-controller="Weapon" asp-action="SaveWeaponChanges" asp-route-id="@Model.WeaponID" method="post" class="g-3">
+	<form asp-controller="Armor" asp-action="AddArmor" method="post">
 		@Html.AntiForgeryToken()
-		<input type="hidden" asp-for="WeaponID" />
+
+		<!-- Hidden field for CharacterID, assuming you're passing it from the session -->
 		<input type="hidden" asp-for="CharacterID" />
 
-		<!-- Weapon Name -->
-		<div class="row mb-3">
-			<div class="col">
-				<label asp-for="WeaponName" class="form-label">Weapon Name</label>
-				<input asp-for="WeaponName" class="form-control" placeholder="Enter weapon name" />
-			</div>
-		</div>
-
-		<!-- Is Proficient -->
-		<div class="col-md-6">
-			<div class="form-check mb-3">
-				<input asp-for="IsProficient" class="form-check-input" id="IsProficient" />
-				<label class="form-check-label" asp-for="IsProficient">Is your character proficient with that weapon?</label>
-			</div>
-		</div>
-
-		<!-- Melee/Range -->
-		<div class="row mb-3">
-			<div class="col">
-				<label asp-for="MeleeRange" class="form-label">Melee or Range?</label>
-				<select asp-for="MeleeRange" class="form-select" required>
-					<option value="">Select Melee or Range</option>
-					@foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.MeleeRange>())
-					{
-						<option value="@type.Value">@type.Text</option>
-					}
-				</select>
-				<span asp-validation-for="MeleeRange" class="text-danger"></span> 
-			</div>
+		<div class="mb-3">
+			<label for="ArmorType" class="form-label">Armor Type</label>
+			<select class="form-select" id="ArmorType" asp-for="ArmorType" required onchange="showSpecificArmorType()">
+				<option value="">Select Armor Type</option>
+				<option value="Light">Light</option>
+				<option value="Medium">Medium</option>
+				<option value="Heavy">Heavy</option>
+				<option value="Shield">Shield</option>
+			</select>
 		</div>
 
 
-		<!-- Range -->
-		<div class="row mb-3">
-			<div class="col">
-				<label asp-for="WeaponRange" class="form-label">Weapon Range?</label>
-				<select asp-for="WeaponRange" class="form-select">
-					<option value="0">Select Weapon Range</option>
-					@foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.WeaponRange>())
-					{
-						if (type.Value != "0") // Exclude R0 from being displayed as an option
-						{
-							<option value="@type.Value">@type.Text</option>
-						}
-					}
-				</select>
-			</div>
+		<!-- Specific Armor Type for Light Armor -->
+		<div class="mb-3" id="LightArmorType" style="display: none;">
+			<label for="LightArmorTypeSelect" class="form-label">Light Armor Type</label>
+			<select class="form-select" id="LightArmorTypeSelect" name="LightArmorType">
+				<option value="">Select Light Armor Type</option>
+				@foreach (var armor in Html.GetEnumSelectList<LightArmorType>())
+				{
+					<option value="@armor.Value">@armor.Text</option>
+				}
+			</select>
 		</div>
 
+		<!-- Specific Armor Type for Medium Armor -->
+		<div class="mb-3" id="MediumArmorType" style="display: none;">
+			<label for="MediumArmorTypeSelect" class="form-label">Medium Armor Type</label>
+			<select class="form-select" id="MediumArmorTypeSelect" name="MediumArmorType">
+				<option value="">Select Medium Armor Type</option>
+				@foreach (var armor in Html.GetEnumSelectList<MediumArmorType>())
+				{
+					<option value="@armor.Value">@armor.Text</option>
+				}
+			</select>
+		</div>
+
+		<!-- Specific Armor Type for Heavy Armor -->
+		<div class="mb-3" id="HeavyArmorType" style="display: none;">
+			<label for="HeavyArmorTypeSelect" class="form-label">Heavy Armor Type</label>
+			<select class="form-select" id="HeavyArmorTypeSelect" name="HeavyArmorType">
+				<option value="">Select Heavy Armor Type</option>
+				@foreach (var armor in Html.GetEnumSelectList<HeavyArmorType>())
+				{
+					<option value="@armor.Value">@armor.Text</option>
+				}
+			</select>
+		</div>
+
+
+
+		<!-- Armor Name -->
+		<div class="mb-3">
+			<label for="ArmorName" class="form-label">Armor Name</label>
+			<input type="text" class="form-control" id="ArmorName" asp-for="ArmorName" required>
+			<span asp-validation-for="ArmorName" class="text-danger"></span>
+		</div>
 
 		<!-- Description -->
-		<div class="row mb-3">
-			<div class="col">
-				<label asp-for="Description" class="form-label">Description</label>
-				<textarea asp-for="Description" class="form-control" placeholder="Enter weapon description" rows="3"></textarea>
-			</div>
-		</div>
-
-		<!-- Quantity -->
-		<div class="row mb-3">
-			<div class="col-md-4">
-				<label asp-for="Quantity" class="form-label">Quantity</label>
-				<input asp-for="Quantity" type="number" class="form-control" placeholder="0" />
-			</div>
-
-			<!-- Value in Gold -->
-			<div class="col-md-4">
-				<label asp-for="ValueInGold" class="form-label">Value in Gold</label>
-				<input asp-for="ValueInGold" type="number" class="form-control" placeholder="0" />
-			</div>
-
-			<!-- Damage Dice -->
-			<div class="col-md-4">
-				<label asp-for="DamageDice" class="form-label">Damage Dice</label>
-				<select asp-for="DamageDice" class="form-select" required>
-					<option value="">Select Damage Dice</option>
-					@foreach (var dice in Html.GetEnumSelectList<CharacterSheetDnD.Models.DamageDice>())
-					{
-						<option value="@dice.Value">@dice.Text</option>
-					}
-				</select>
-				<span asp-validation-for="DamageDice" class="text-danger"></span>
-			</div>
-		</div>
-
-		<!-- Damage Type -->
-		<div class="row mb-3">
-			<div class="col">
-				<label asp-for="DamageType" class="form-label">Damage Type</label>
-				<select asp-for="DamageType" class="form-select" required>
-					<option value="">Select Damage Type</option>
-					@foreach (var type in Html.GetEnumSelectList<CharacterSheetDnD.Models.DamageType>())
-					{
-						<option value="@type.Value">@type.Text</option>
-					}
-				</select>
-				<span asp-validation-for="MeleeRange" class="text-danger"></span>
-			</div>
-		</div>
-
-		<!-- Properties -->
-		<div class="row mb-3">
-			<div class="col">
-				<label class="form-label">Weapon Properties</label>
-				<br />
-				@foreach (var propertyOption in Model.AvailableProperties)
-				{
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="checkbox" name="SelectedProperties" value="@propertyOption.Value" id="property-@propertyOption.Value" @(Html.Raw(propertyOption.IsSelected ? "checked='checked'" : "")) />
-						<label class="form-check-label" for="property-@propertyOption.Value">@propertyOption.Text</label>
-					</div>
-				}
-			</div>
-		</div>
-
-		<!-- Is Equipped -->
-		<div class="col-md-6">
-			<div class="form-check mb-3">
-				<input asp-for="IsEquipped" class="form-check-input" id="isEquippedCheck" />
-				<label class="form-check-label" asp-for="IsEquipped">Is Equipped?</label>
-			</div>
-		</div>
-
-
-		<!-- Consider using similar row structure for Magic Properties if needed -->
-		<h4 class="mb-3">Magic Weapon</h4>
-
-		<!-- Magic Weapon Section -->
 		<div class="mb-3">
-			<div class="form-check">
-				<input asp-for="IsMagic" class="form-check-input" id="IsMagicCheck" />
-				<label class="form-check-label" asp-for="IsMagic">Is Magic?</label>
+			<label for="Description" class="form-label">Description</label>
+			<textarea class="form-control" id="Description" asp-for="Description"></textarea>
+		</div>
+
+		<!-- Rarity -->
+		<div class="mb-3">
+			<label for="Rarity" class="form-label">Rarity</label>
+			<select class="form-select" asp-for="Rarity" required>
+				<option value="">Select Armor Rarity</option>
+				@foreach (var rarity in Html.GetEnumSelectList<Rarity>())
+				{
+					<option value="@rarity.Value">@rarity.Text</option>
+				}
+			</select>
+		</div>
+		<!-- Quantity and Value in Gold -->
+		<div class="mb-3">
+			<label for="Quantity" class="form-label">Quantity</label>
+			<input type="number" class="form-control" id="Quantity" asp-for="Quantity" min="0">
+		</div>
+
+		<div class="mb-3">
+			<label for="ValueInGold" class="form-label">Value in Gold</label>
+			<input type="number" class="form-control" id="ValueInGold" asp-for="ValueInGold" min="0">
+		</div>
+
+
+		<!-- Is Equipped Checkbox -->
+		<div class="mb-3 form-check">
+			<input type="checkbox" class="form-check-input" id="IsEquipped" asp-for="IsEquipped">
+			<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
+		</div>
+
+		<!-- Stealth Disadvantage Checkbox -->
+		<div class="mb-3 form-check">
+			<input type="checkbox" class="form-check-input" id="StealthDisadvantage" asp-for="StealthDisadvantage">
+			<label class="form-check-label" for="StealthDisadvantage">Stealth Disadvantage?</label>
+		</div>
+
+
+		<!-- Magic Item Checkbox -->
+		<div class="mb-3 form-check">
+			<input type="checkbox" class="form-check-input" id="IsMagic" asp-for="IsMagic">
+			<label class="form-check-label" for="IsMagic">Is Magic?</label>
+		</div>
+
+		<!-- Magic Item Options (hidden initially) -->
+		<div id="magicItemOptions" style="display:none;">
+
+			<!-- Magic Bonus to AC -->
+			<div class="mb-3">
+				<label for="MagicBonusAC" class="form-label">Magic Bonus to AC</label>
+				<select class="form-select" id="MagicBonusAC" asp-for="MagicBonusAC">
+					<option value="">Select Magic Bonus to AC</option>
+					@foreach (var bonus in Html.GetEnumSelectList<MagicBonusAC>())
+					{
+						<option value="@bonus.Value">@bonus.Text</option>
+					}
+				</select>
+			</div>
+
+			<!-- Magic Effect Description -->
+			<div class="mb-3">
+				<label for="MagicEffectDescription" class="form-label">Magic Effect Description</label>
+				<textarea class="form-control" id="MagicEffectDescription" asp-for="MagicEffectDescription"></textarea>
+			</div>
+
+			<!-- Magic Effect Mechanics -->
+			<div class="mb-3">
+				<label for="MagicEffectMechanics" class="form-label">Magic Effect Mechanics</label>
+				<textarea class="form-control" id="MagicEffectMechanics" asp-for="MagicEffectMechanics"></textarea>
+			</div>
+
+
+
+			<!-- Magic Charges -->
+			<div class="mb-3">
+				<label for="MagicCharges" class="form-label">Magic Charges</label>
+				<input type="number" class="form-control" id="MagicCharges" asp-for="MagicCharges" min="0">
+			</div>
+
+			<!-- Magic Recharge Rate -->
+			<div class="mb-3">
+				<label for="MagicRechargeRate" class="form-label">Magic Recharge Rate</label>
+				<input type="text" class="form-control" id="MagicRechargeRate" asp-for="MagicRechargeRate">
 			</div>
 		</div>
 
-		<!-- The following fields should be conditionally displayed based on the IsMagic checkbox -->
-		<div id="magicWeaponOptions" style="display:none;">
-
-			<!-- Requires Attunement -->
-			<div class="mb-3">
-				<div class="form-check">
-					<input asp-for="RequiresAttunement" class="form-check-input" id="RequiresAttunement" />
-					<label class="form-check-label" asp-for="RequiresAttunement">Requires Attunement?</label>
-				</div>
-			</div>
-			<!-- Is Attuned -->
-			<div class="mb-3">
-				<div class="form-check">
-					<input asp-for="IsAttuned" class="form-check-input" id="IsAttuned" />
-					<label class="form-check-label" asp-for="IsAttuned">Is Attuned?</label>
-				</div>
-			</div>
-			<!-- Bonus Attack Damage Roll -->
-			<div class="row mb-3">
-				<div class="col">
-					<label asp-for="BonusAttackDamageRolls" class="form-label">Bonus Attack Damage Rolls</label>
-					<select asp-for="BonusAttackDamageRolls" class="form-select">
-						<option value="">Select Bonus Attack Damage Rolls</option>
-						@foreach (var bonus in Html.GetEnumSelectList<CharacterSheetDnD.Models.BonusAttackDamageRolls>())
-						{
-							<option value="@bonus.Value">@bonus.Text</option>
-						}
-					</select>
-				</div>
-			</div>
-			<!-- Effect Description -->
-			<div class="row mb-3">
-				<div class="col">
-					<label asp-for="EffectDescription" class="form-label">Effect Description</label>
-					<textarea asp-for="EffectDescription" class="form-control" rows="2"></textarea>
-				</div>
-			</div>
-			<!-- Effect Mechanics -->
-			<div class="row mb-3">
-				<div class="col">
-					<label asp-for="EffectMechanics" class="form-label">Effect Mechanics</label>
-					<textarea asp-for="EffectMechanics" class="form-control" rows="2"></textarea>
-				</div>
-			</div>
-			<!-- Charges -->
-			<div class="row mb-3">
-				<div class="col-md-6">
-					<label asp-for="Charges" class="form-label">Charges</label>
-					<input asp-for="Charges" type="number" class="form-control" />
-				</div>
-			<!-- Charges Rate -->
-				<div class="col-md-6">
-					<label asp-for="RechargeRate" class="form-label">Recharge Rate</label>
-					<input asp-for="RechargeRate" class="form-control" />
-				</div>
-			</div>
-
-		</div>
-
-		<div class="text-center mt-4">
-			<button type="submit" class="btn btn-primary">Save Changes</button>
-		</div> *@
-	@* </form> *@
-
+		<button type="submit" class="btn btn-primary">Add Armor</button>
+	</form>
 </div>
 
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('#IsMagic').change(function () {
+				if ($(this).is(':checked')) {
+					$('#magicItemOptions').show();
+				} else {
+					$('#magicItemOptions').hide();
+				}
+			});
+		});
+	</script>
 
+	<script>
+		function showSpecificArmorType() {
+			// Retrieve the general armor type selected by the user
+			var armorType = document.getElementById("ArmorType").value;
 
-@* <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		var isMagicCheckbox = document.getElementById('IsMagicCheck');
-		var magicWeaponOptionsDiv = document.getElementById('magicWeaponOptions');
+			// Initially hide all specific armor type selections
+			["Light", "Medium", "Heavy", "Shield"].forEach(type => {
+				var div = document.getElementById(type + "ArmorType");
+				if (div) {
+					div.style.display = "none";
+					var select = document.getElementById(type + "ArmorTypeSelect");
+					if (select) {
+						select.removeAttribute("required");
+						select.value = ""; // Reset the value
+					}
+				}
+			});
 
-		// Function to toggle the display of magic weapon options
-		function toggleMagicOptions() {
-			if (isMagicCheckbox.checked) {
-				magicWeaponOptionsDiv.style.display = '';
-			} else {
-				magicWeaponOptionsDiv.style.display = 'none';
+			// Show the relevant specific type selection
+			var specificDiv = document.getElementById(armorType + "ArmorType");
+			var specificSelect = document.getElementById(armorType + "ArmorTypeSelect");
+			if (specificDiv && specificSelect) {
+				specificDiv.style.display = "block";
+				specificSelect.setAttribute("required", "required");
 			}
 		}
-
-		// Initialize the display based on the checkbox's initial state
-		toggleMagicOptions();
-
-		// Add an event listener to toggle display on change
-		isMagicCheckbox.addEventListener('change', toggleMagicOptions);
-	});
-</script> *@
+	</script>
 
 
 
 
+
+}
 

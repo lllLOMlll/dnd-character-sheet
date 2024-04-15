@@ -21,7 +21,15 @@ namespace CharacterSheetDnD.Data
 		public DbSet<CharacterSkill> CharacterSkills { get; set; }
 		public DbSet<Skill> Skills { get; set; }
 		public DbSet<CharacterWeapon> Weapons { get; set; }
-	
+		public DbSet<CharacterArmor> CharacterArmors { get; set; }
+		public DbSet<LightArmor> LightArmors { get; set; }
+		public DbSet<MediumArmor> MediumArmors { get; set; }
+		public DbSet<HeavyArmor> HeavyArmors { get; set; }
+		public DbSet<ShieldArmor> ShieldArmors { get; set; }
+
+
+
+
 
 		// Configuring the relations between the table
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -77,10 +85,26 @@ namespace CharacterSheetDnD.Data
 				.WithOne(w => w.Character)
 				.HasForeignKey(w => w.CharacterID)
 				.OnDelete(DeleteBehavior.Cascade);
-     
 
-            // Add the data to the table SavingThrow on Migration
-            modelBuilder.Entity<SavingThrow>().HasData(
+			// Configuring the one-to-many relationship between Character and CharacterArmor
+			modelBuilder.Entity<Character>()
+				.HasMany(c => c.CharacterArmors) // Assuming Character has a collection property CharacterArmors
+				.WithOne(ca => ca.Character) // Assuming CharacterArmor has a navigation property Character
+				.HasForeignKey(ca => ca.CharacterID) // CharacterArmor has a foreign key property CharacterID
+				.OnDelete(DeleteBehavior.Cascade); // Specify the behavior on delete
+
+			// Configuring TPH inheritance for CharacterArmor
+			modelBuilder.Entity<CharacterArmor>()
+				.HasDiscriminator<ArmorType>("ArmorType")
+				//.HasValue<CharacterArmor>("CharacterArmor") // Optional, for direct instances of CharacterArmor
+				.HasValue<LightArmor>(ArmorType.Light) // Derived types of CharacterArmor
+				.HasValue<MediumArmor>(ArmorType.Medium)
+				.HasValue<HeavyArmor>(ArmorType.Heavy)
+				.HasValue<ShieldArmor>(ArmorType.Shield);
+
+
+			// Add the data to the table SavingThrow on Migration
+			modelBuilder.Entity<SavingThrow>().HasData(
 			   new SavingThrow { SavingThrowID = 1, Name = "Strength", Description = "Used for physical tasks and resisting physical force" },
 			   new SavingThrow { SavingThrowID = 2, Name = "Dexterity", Description = "Used for agility, reflexes, and balance tasks" },
 			   new SavingThrow { SavingThrowID = 3, Name = "Constitution", Description = "Used for endurance and health" },
