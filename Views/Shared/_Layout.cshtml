@@ -59,9 +59,24 @@
 											</a>
 										</li>
 										<!-- Edit Armor -->
-										<li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Edit Armor</a></li>
+										<li>
+											<a class="dropdown-item"
+											   asp-area=""
+											   asp-controller="Armor"
+											   asp-action="DisplayCharacterArmors"
+											   asp-route-id="@((int?)Context.Session.GetInt32("SelectedCharacterID"))">
+												Edit Armor
+											</a>
+										</li>
 										<!-- Delete Armor -->
-										<li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Delete Armor</a></li>
+										<li>
+											<a class="dropdown-item"
+											   asp-area=""
+											   asp-controller=""
+											   asp-action="">
+												Delete Armor
+											</a>
+										</li>
 									</ul>
 								</li>
 							}

@@ -45,7 +45,91 @@ namespace CharacterSheetDnD.Controllers
 			return View("AddArmor", viewModel);
 		}
 
-		[HttpPost]
+        [HttpGet]
+        [Authorize]
+        [Route("my-character/character-armors")]
+        public IActionResult DisplayCharacterArmors()
+        {
+            var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
+            if (selectedCharacterID == null)
+            {
+                TempData["Message"] = "Please select a character before viewing armors.";
+                return RedirectToAction("SelectCharacter", "Character");
+            }
+
+            var armors = _context.CharacterArmors
+                .Where(ca => ca.CharacterID == selectedCharacterID.Value)
+                .Select(ca => new GenericArmorViewModel
+                {
+                    ArmorID = ca.ArmorID,
+                    ArmorName = ca.ArmorName,
+                    // Populate other necessary fields here
+                }).ToList();
+
+            var viewModel = new GenericArmorViewModel
+            {
+                CharacterID = selectedCharacterID.Value,
+                Armors = armors
+            };
+
+            return View("CharacterArmors", viewModel);
+        }
+
+
+        [Authorize]
+        [Route("my-character/delete-armor")]
+        public async Task<IActionResult> DeleteArmor(int armorId)
+        {
+			var selectedCharacterId = HttpContext.Session.GetInt32("SelectedCharacterID");
+
+            var armorToDelete = await _context.CharacterArmors
+										.FirstOrDefaultAsync(a => a.ArmorID == armorId);
+
+			if (armorToDelete != null)
+			{
+				_context.CharacterArmors.Remove(armorToDelete);
+				await _context.SaveChangesAsync();
+				TempData["SuccessMessage"] = "Armor successfully deleted.";
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Armor not found.";
+			}
+
+			return RedirectToAction("DisplayCharacterArmors", selectedCharacterId);
+        }
+
+		[Authorize]
+		[HttpGet("my-character/edit-amor/{armorId:int}")]
+		public async Task<IActionResult> DisplaySelectedArmor(int armorId)
+		{
+			var selectedCharacterId = HttpContext.Session.GetInt32("SelectedCharacterID");
+			
+			if (selectedCharacterId == null) 
+			{
+				TempData["ErrorMessage"] = "Character ID not found.";
+                return RedirectToAction("DisplayCharacterArmors", selectedCharacterId);            
+
+			}
+
+			var armorToEdit = await _context.CharacterArmors
+										.FirstOrDefaultAsync(a => a.ArmorID == armorId);
+
+			if (armorToEdit == null) 
+			{
+				return NotFound();
+			}
+			var viewModel = new GenericArmorViewModel
+			{
+				CharacterID = selectedCharacterId.Value,
+				ArmorID = armorToEdit.ArmorID,
+				ArmorName = armorToEdit.ArmorName,
+			};
+
+			return View("EditArmor", viewModel);
+		}
+
+        [HttpPost]
 		[Authorize]
 		[Route("my-character/add-armor")]
 		public async Task<IActionResult> AddArmor(GenericArmorViewModel model)
@@ -69,7 +153,7 @@ namespace CharacterSheetDnD.Controllers
 			}
 
 
-			CharacterArmor newArmor = CreateArmorBasedOnType(model);
+			CharacterArmor? newArmor = CreateArmorBasedOnType(model);
 			if (newArmor != null)
 			{
 				var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
@@ -214,7 +298,6 @@ namespace CharacterSheetDnD.Controllers
 
 
 	}
-
 
 
 

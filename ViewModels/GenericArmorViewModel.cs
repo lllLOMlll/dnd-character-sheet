@@ -41,5 +41,6 @@ namespace CharacterSheetDnD.ViewModels
 		[Range(0, int.MaxValue, ErrorMessage = "Charges must be a positive number.")]
 		public int? MagicCharges { get; set; }
 		public string? MagicRechargeRate { get; set; }
+		public IEnumerable<GenericArmorViewModel>? Armors { get; set; }
 	}
 }
