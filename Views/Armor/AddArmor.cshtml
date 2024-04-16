@@ -4,6 +4,21 @@
 	ViewData["Title"] = "Add Armor";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success">
+		@TempData["SuccessMessage"]
+	</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<div class="alert alert-danger">
+		@TempData["ErrorMessage"]
+	</div>
+}
+
+
 <div class="container mt-4">
 	<h1>@ViewData["Title"]</h1>
 
@@ -27,10 +42,10 @@
 
 		<!-- Specific Armor Type for Light Armor -->
 		<div class="mb-3" id="LightArmorType" style="display: none;">
-			<label for="LightArmorTypeSelect" class="form-label">Light Armor Type</label>
-			<select class="form-select" id="LightArmorTypeSelect" name="LightArmorType">
+			<label for="SpecificLightArmorType" class="form-label">Light Armor Type</label>
+			<select class="form-select" id="SpecificLightArmorType" asp-for="SpecificLightArmorType">
 				<option value="">Select Light Armor Type</option>
-				@foreach (var armor in Html.GetEnumSelectList<LightArmorType>())
+				@foreach (var armor in Html.GetEnumSelectList<CharacterSheetDnD.Models.LightArmorType>())
 				{
 					<option value="@armor.Value">@armor.Text</option>
 				}
@@ -39,29 +54,28 @@
 
 		<!-- Specific Armor Type for Medium Armor -->
 		<div class="mb-3" id="MediumArmorType" style="display: none;">
-			<label for="MediumArmorTypeSelect" class="form-label">Medium Armor Type</label>
-			<select class="form-select" id="MediumArmorTypeSelect" name="MediumArmorType">
+			<label for="SpecificMediumArmorType" class="form-label">Medium Armor Type</label>
+			<select class="form-select" id="SpecificMediumArmorType" asp-for="SpecificMediumArmorType">
 				<option value="">Select Medium Armor Type</option>
-				@foreach (var armor in Html.GetEnumSelectList<MediumArmorType>())
+				@foreach (var armor in Html.GetEnumSelectList<CharacterSheetDnD.Models.MediumArmorType>())
 				{
 					<option value="@armor.Value">@armor.Text</option>
 				}
 			</select>
 		</div>
+
 
 		<!-- Specific Armor Type for Heavy Armor -->
 		<div class="mb-3" id="HeavyArmorType" style="display: none;">
-			<label for="HeavyArmorTypeSelect" class="form-label">Heavy Armor Type</label>
-			<select class="form-select" id="HeavyArmorTypeSelect" name="HeavyArmorType">
+			<label for="SpecificHeavyArmorType" class="form-label">Heavy Armor Type</label>
+			<select class="form-select" id="SpecificHeavyArmorType" asp-for="SpecificHeavyArmorType">
 				<option value="">Select Heavy Armor Type</option>
-				@foreach (var armor in Html.GetEnumSelectList<HeavyArmorType>())
+				@foreach (var armor in Html.GetEnumSelectList<CharacterSheetDnD.Models.HeavyArmorType>())
 				{
 					<option value="@armor.Value">@armor.Text</option>
 				}
 			</select>
 		</div>
-
-
 
 		<!-- Armor Name -->
 		<div class="mb-3">
@@ -179,31 +193,31 @@
 
 	<script>
 		function showSpecificArmorType() {
-			// Retrieve the general armor type selected by the user
-			var armorType = document.getElementById("ArmorType").value;
-
-			// Initially hide all specific armor type selections
-			["Light", "Medium", "Heavy", "Shield"].forEach(type => {
-				var div = document.getElementById(type + "ArmorType");
-				if (div) {
-					div.style.display = "none";
-					var select = document.getElementById(type + "ArmorTypeSelect");
-					if (select) {
-						select.removeAttribute("required");
-						select.value = ""; // Reset the value
-					}
-				}
+			// Hide all specific armor type selections initially
+			const types = ["LightArmorType", "MediumArmorType", "HeavyArmorType"];
+			types.forEach(type => {
+				document.getElementById(type).style.display = "none";
 			});
 
-			// Show the relevant specific type selection
-			var specificDiv = document.getElementById(armorType + "ArmorType");
-			var specificSelect = document.getElementById(armorType + "ArmorTypeSelect");
-			if (specificDiv && specificSelect) {
-				specificDiv.style.display = "block";
-				specificSelect.setAttribute("required", "required");
+			// Get the selected armor type
+			const selectedType = document.getElementById("ArmorType").value;
+			const specificTypeId = selectedType + "ArmorType";
+
+			// Check if the selected type corresponds to a valid section
+			if (types.includes(specificTypeId)) {
+				document.getElementById(specificTypeId).style.display = "block";
 			}
 		}
+
+		// Ensure you attach the event listener after the DOM has fully loaded
+		document.addEventListener("DOMContentLoaded", function () {
+			document.getElementById("ArmorType").addEventListener("change", showSpecificArmorType);
+			showSpecificArmorType(); // Call it on page load in case there's a pre-selected value
+		});
+
 	</script>
+
+
 
 
 

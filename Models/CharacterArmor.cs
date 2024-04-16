@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CharacterSheetDnD.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterSheetDnD.Models
@@ -82,4 +83,5 @@ namespace CharacterSheetDnD.Models
 		// Shields might have specific properties that could be added here
 	}
 
-}
+
+	}

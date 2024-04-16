@@ -9,17 +9,18 @@ using CharacterSheetDnD.Migrations;
 using SQLitePCL;
 using static CharacterSheetDnD.ViewModels.ArmorViewModel;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using CharacterSheetDnD.Binders;
 
 namespace CharacterSheetDnD.Controllers
 {
-    public class ArmorController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	public class ArmorController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 
-        public ArmorController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public ArmorController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
 
 		[HttpGet]
@@ -27,12 +28,12 @@ namespace CharacterSheetDnD.Controllers
 		[Route("my-character/add-armor")]
 		public IActionResult DisplayAddArmorPage()
 		{
-			
+
 			var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
 			if (selectedCharacterID == null)
 			{
 				TempData["Message"] = "Please select a character before adding armor.";
-				return RedirectToAction("SelectCharacter", "Character"); 
+				return RedirectToAction("SelectCharacter", "Character");
 			}
 
 			var viewModel = new GenericArmorViewModel
@@ -47,124 +48,167 @@ namespace CharacterSheetDnD.Controllers
 		[HttpPost]
 		[Authorize]
 		[Route("my-character/add-armor")]
-		public async Task<IActionResult> AddArmor(ArmorViewModel model)
+		public async Task<IActionResult> AddArmor(GenericArmorViewModel model)
 		{
+			if (model == null)
+			{
+				TempData["ErrorMessage"] = "Model==null";
+				return View("AddArmor", model); // Handle null model
+			}
+
 			if (!ModelState.IsValid)
 			{
-				return View(model);
+				foreach (var state in ModelState)
+				{
+					if (state.Value.Errors.Count > 0)
+					{
+						TempData["ErrorMessage"] += $" {state.Key} has errors;";
+					}
+				}
+				return View("AddArmor", model);
 			}
 
-			CharacterArmor newArmor = null;
 
-			switch (model)
-			{
-				case LightArmorViewModel lightArmorViewModel:
-					newArmor = new LightArmor
-					{
-						// Mapping common properties
-						CharacterID = lightArmorViewModel.CharacterID,
-						ArmorName = lightArmorViewModel.ArmorName,
-						Description = lightArmorViewModel.Description,
-						Rarity = lightArmorViewModel.Rarity,
-						Quantity = lightArmorViewModel.Quantity,
-						ValueInGold = lightArmorViewModel.ValueInGold,
-						StealthDisadvantage = lightArmorViewModel.StealthDisadvantage,
-						IsEquipped = lightArmorViewModel.IsEquipped,
-						IsMagicItem = lightArmorViewModel.IsMagicItem,
-						RequiresAttunement = lightArmorViewModel.RequiresAttunement,
-						IsAttuned = lightArmorViewModel.IsAttuned,
-						MagicBonusAC = lightArmorViewModel.MagicBonusAC,
-						MagicEffectDescription = lightArmorViewModel.MagicEffectDescription,
-						MagicEffectMechanics = lightArmorViewModel.MagicEffectMechanics,
-						MagicCharges = lightArmorViewModel.MagicCharges,
-						MagicRechargeRate = lightArmorViewModel.MagicRechargeRate,
-						// Mapping specific property
-						LightArmorType = lightArmorViewModel.LightArmorType
-					};
-					break;
-				case MediumArmorViewModel mediumArmorViewModel:
-					newArmor = new MediumArmor
-					{
-						// Mapping common properties
-						CharacterID = mediumArmorViewModel.CharacterID,
-						ArmorName = mediumArmorViewModel.ArmorName,
-						Description = mediumArmorViewModel.Description,
-						Rarity = mediumArmorViewModel.Rarity,
-						Quantity = mediumArmorViewModel.Quantity,
-						ValueInGold = mediumArmorViewModel.ValueInGold,
-						StealthDisadvantage = mediumArmorViewModel.StealthDisadvantage,
-						IsEquipped = mediumArmorViewModel.IsEquipped,
-						IsMagicItem = mediumArmorViewModel.IsMagicItem,
-						RequiresAttunement = mediumArmorViewModel.RequiresAttunement,
-						IsAttuned = mediumArmorViewModel.IsAttuned,
-						MagicBonusAC = mediumArmorViewModel.MagicBonusAC,
-						MagicEffectDescription = mediumArmorViewModel.MagicEffectDescription,
-						MagicEffectMechanics = mediumArmorViewModel.MagicEffectMechanics,
-						MagicCharges = mediumArmorViewModel.MagicCharges,
-						MagicRechargeRate = mediumArmorViewModel.MagicRechargeRate,
-						// Mapping specific property
-						MediumArmorType = mediumArmorViewModel.MediumArmorType
-					};
-					break;
-				case HeavyArmorViewModel heavyArmorViewModel:
-					newArmor = new HeavyArmor
-					{
-						// Mapping common properties
-						CharacterID = heavyArmorViewModel.CharacterID,
-						ArmorName = heavyArmorViewModel.ArmorName,
-						Description = heavyArmorViewModel.Description,
-						Rarity = heavyArmorViewModel.Rarity,
-						Quantity = heavyArmorViewModel.Quantity,
-						ValueInGold = heavyArmorViewModel.ValueInGold,
-						StealthDisadvantage = heavyArmorViewModel.StealthDisadvantage,
-						IsEquipped = heavyArmorViewModel.IsEquipped,
-						IsMagicItem = heavyArmorViewModel.IsMagicItem,
-						RequiresAttunement = heavyArmorViewModel.RequiresAttunement,
-						IsAttuned = heavyArmorViewModel.IsAttuned,
-						MagicBonusAC = heavyArmorViewModel.MagicBonusAC,
-						MagicEffectDescription = heavyArmorViewModel.MagicEffectDescription,
-						MagicEffectMechanics = heavyArmorViewModel.MagicEffectMechanics,
-						MagicCharges = heavyArmorViewModel.MagicCharges,
-						MagicRechargeRate = heavyArmorViewModel.MagicRechargeRate,
-						// Mapping specific property
-						HeavyArmorType = heavyArmorViewModel.HeavyArmorType
-					};
-					break;
-				case ShieldViewModel shieldViewModel:
-					newArmor = new ShieldArmor
-					{
-						// Mapping common properties
-						CharacterID = shieldViewModel.CharacterID,
-						ArmorName = shieldViewModel.ArmorName,
-						Description = shieldViewModel.Description,
-						Rarity = shieldViewModel.Rarity,
-						Quantity = shieldViewModel.Quantity,
-						ValueInGold = shieldViewModel.ValueInGold,
-						StealthDisadvantage = shieldViewModel.StealthDisadvantage,
-						IsEquipped = shieldViewModel.IsEquipped,
-						IsMagicItem = shieldViewModel.IsMagicItem,
-						RequiresAttunement = shieldViewModel.RequiresAttunement,
-						IsAttuned = shieldViewModel.IsAttuned,
-						MagicBonusAC = shieldViewModel.MagicBonusAC,
-						MagicEffectDescription = shieldViewModel.MagicEffectDescription,
-						MagicEffectMechanics = shieldViewModel.MagicEffectMechanics,
-						MagicCharges = shieldViewModel.MagicCharges,
-						MagicRechargeRate = shieldViewModel.MagicRechargeRate
-						// Note: ShieldViewModel does not have a specific property in the provided code snippet.
-						// If ShieldArmor has specific properties, they should be mapped here.
-					};
-					break;
-			}
-
+			CharacterArmor newArmor = CreateArmorBasedOnType(model);
 			if (newArmor != null)
 			{
+				var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
+				if (selectedCharacterID == null)
+				{
+					TempData["ErrorMessage"] = "Character ID is missing. Please select a character.";
+					return RedirectToAction("SelectCharacter", "Character"); // Or another appropriate action
+				}
+
+				// Assign the CharacterID to the newArmor instance
+				newArmor.CharacterID = selectedCharacterID.Value;
+
 				_context.CharacterArmors.Add(newArmor);
 				await _context.SaveChangesAsync();
-				return RedirectToAction("AddArmor", model); // Make sure this is an actual page or route in your application
+				TempData["SuccessMessage"] = "Armor added successfully!";
+				return RedirectToAction("DisplayAddArmorPage"); // Redirect as appropriate
 			}
 
-			// If the model does not match any expected ViewModel, return to the form with the current model
-			return View(model);
+			TempData["ErrorMessage"] = "There was an issue saving the armor. Please check the details and try again.";
+			ModelState.AddModelError("", "There was an issue saving the armor. Please check the details and try again.");
+			return View("AddArmor", model);
+		}
+
+		private CharacterArmor CreateArmorBasedOnType(GenericArmorViewModel model)
+		{
+			CharacterArmor armor = null;
+
+			switch (model.ArmorType)
+			{
+				case ArmorType.Light:
+					if (model.SpecificLightArmorType.HasValue) // Ensure the specific type is provided
+					{
+
+						armor = new LightArmor
+						{
+							ArmorName = model.ArmorName,
+							Description = model.Description,
+							Quantity = model.Quantity,
+							ValueInGold = model.ValueInGold,
+							StealthDisadvantage = model.StealthDisadvantage,
+							Rarity = model.Rarity.HasValue ? model.Rarity.Value : default(Rarity), // Assuming Rarity is not null due to model validation
+							IsEquipped = model.IsEquipped,
+							IsMagicItem = model.IsMagic,
+							RequiresAttunement = model.RequiresAttunement,
+							IsAttuned = model.IsAttuned,
+							MagicBonusAC = model.MagicBonusAC.HasValue ? (MagicBonusAC)model.MagicBonusAC.Value : default(MagicBonusAC), // Casting to the enum with a check
+							MagicEffectDescription = model.MagicEffectDescription,
+							MagicEffectMechanics = model.MagicEffectMechanics,
+							MagicCharges = model.MagicCharges,
+							MagicRechargeRate = model.MagicRechargeRate,
+							LightArmorType = model.SpecificLightArmorType.Value
+						};
+					}
+					break;
+				case ArmorType.Medium:
+					if (model.SpecificMediumArmorType.HasValue) // Ensure the specific type is provided
+					{
+
+						armor = new MediumArmor
+						{
+							// Common properties
+							ArmorName = model.ArmorName,
+							Description = model.Description,
+							Quantity = model.Quantity,
+							ValueInGold = model.ValueInGold,
+							StealthDisadvantage = model.StealthDisadvantage,
+							Rarity = model.Rarity.HasValue ? model.Rarity.Value : default(Rarity),
+							IsEquipped = model.IsEquipped,
+							IsMagicItem = model.IsMagic,
+							RequiresAttunement = model.RequiresAttunement,
+							IsAttuned = model.IsAttuned,
+							MagicBonusAC = model.MagicBonusAC.HasValue ? (MagicBonusAC)model.MagicBonusAC.Value : default(MagicBonusAC),
+							MagicEffectDescription = model.MagicEffectDescription,
+							MagicEffectMechanics = model.MagicEffectMechanics,
+							MagicCharges = model.MagicCharges,
+							MagicRechargeRate = model.MagicRechargeRate,
+							// Specific property
+							MediumArmorType = model.SpecificMediumArmorType.Value
+						};
+					}
+					break;
+
+				case ArmorType.Heavy:
+					if (model.SpecificHeavyArmorType.HasValue) // Ensure the specific type is provided
+					{
+
+						armor = new HeavyArmor
+						{
+							// Common properties
+							ArmorName = model.ArmorName,
+							Description = model.Description,
+							Quantity = model.Quantity,
+							ValueInGold = model.ValueInGold,
+							StealthDisadvantage = model.StealthDisadvantage,
+							Rarity = model.Rarity.HasValue ? model.Rarity.Value : default(Rarity),
+							IsEquipped = model.IsEquipped,
+							IsMagicItem = model.IsMagic,
+							RequiresAttunement = model.RequiresAttunement,
+							IsAttuned = model.IsAttuned,
+							MagicBonusAC = model.MagicBonusAC.HasValue ? (MagicBonusAC)model.MagicBonusAC.Value : default(MagicBonusAC),
+							MagicEffectDescription = model.MagicEffectDescription,
+							MagicEffectMechanics = model.MagicEffectMechanics,
+							MagicCharges = model.MagicCharges,
+							MagicRechargeRate = model.MagicRechargeRate,
+							// Specific property
+							HeavyArmorType = model.SpecificHeavyArmorType.Value
+						};
+					}
+					break;
+
+				case ArmorType.Shield:
+					// Assuming Shield does not have a specific type like LightArmorType, MediumArmorType, or HeavyArmorType
+					// But if there's a specific type or category that needs parsing, apply a similar approach as above.
+
+					armor = new ShieldArmor
+					{
+						// Common properties
+						ArmorName = model.ArmorName,
+						Description = model.Description,
+						Quantity = model.Quantity,
+						ValueInGold = model.ValueInGold,
+						StealthDisadvantage = model.StealthDisadvantage,
+						Rarity = model.Rarity.HasValue ? model.Rarity.Value : default(Rarity),
+						IsEquipped = model.IsEquipped,
+						IsMagicItem = model.IsMagic,
+						RequiresAttunement = model.RequiresAttunement,
+						IsAttuned = model.IsAttuned,
+						MagicBonusAC = model.MagicBonusAC.HasValue ? (MagicBonusAC)model.MagicBonusAC.Value : default(MagicBonusAC),
+						MagicEffectDescription = model.MagicEffectDescription,
+						MagicEffectMechanics = model.MagicEffectMechanics,
+						MagicCharges = model.MagicCharges,
+						MagicRechargeRate = model.MagicRechargeRate,
+						// No specific property to set for Shield, but include if applicable
+					};
+					break;
+
+			}
+
+			return armor;
 		}
 
 
