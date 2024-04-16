@@ -93,9 +93,9 @@ namespace CharacterSheetDnD.Controllers
 			return View("AddArmor", model);
 		}
 
-		private CharacterArmor CreateArmorBasedOnType(GenericArmorViewModel model)
+		private CharacterArmor? CreateArmorBasedOnType(GenericArmorViewModel model)
 		{
-			CharacterArmor armor = null;
+			CharacterArmor? armor = null;
 
 			switch (model.ArmorType)
 			{

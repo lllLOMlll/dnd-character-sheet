@@ -88,16 +88,15 @@ namespace CharacterSheetDnD.Data
 
 			// Configuring the one-to-many relationship between Character and CharacterArmor
 			modelBuilder.Entity<Character>()
-				.HasMany(c => c.CharacterArmors) // Assuming Character has a collection property CharacterArmors
-				.WithOne(ca => ca.Character) // Assuming CharacterArmor has a navigation property Character
-				.HasForeignKey(ca => ca.CharacterID) // CharacterArmor has a foreign key property CharacterID
-				.OnDelete(DeleteBehavior.Cascade); // Specify the behavior on delete
+				.HasMany(c => c.CharacterArmors) 
+				.WithOne(ca => ca.Character) 
+				.HasForeignKey(ca => ca.CharacterID) 
+				.OnDelete(DeleteBehavior.Cascade); 
 
 			// Configuring TPH inheritance for CharacterArmor
 			modelBuilder.Entity<CharacterArmor>()
-				.HasDiscriminator<ArmorType>("ArmorType")
-				//.HasValue<CharacterArmor>("CharacterArmor") // Optional, for direct instances of CharacterArmor
-				.HasValue<LightArmor>(ArmorType.Light) // Derived types of CharacterArmor
+				.HasDiscriminator<ArmorType>("ArmorType")		
+				.HasValue<LightArmor>(ArmorType.Light) 
 				.HasValue<MediumArmor>(ArmorType.Medium)
 				.HasValue<HeavyArmor>(ArmorType.Heavy)
 				.HasValue<ShieldArmor>(ArmorType.Shield);
