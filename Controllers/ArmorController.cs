@@ -353,7 +353,9 @@ namespace CharacterSheetDnD.Controllers
 				TempData["ErrorMessage"] = "The armor to edit was not found.";
 				return View("EditArmor", model);
 			}
-			
+
+		
+
 			if (model.ArmorType != armorToEdit.ArmorType) // Check if the armor type has changed
 			{
 				var newArmor = CreateArmorBasedOnType(model); // You already have this method
@@ -386,7 +388,7 @@ namespace CharacterSheetDnD.Controllers
 			else
 			{
 				armorToEdit.ArmorName = model.ArmorName;
-				armorToEdit.Rarity = (Rarity)model.Rarity;
+				armorToEdit.Rarity = model.Rarity;
 				armorToEdit.Description = model.Description;
 				armorToEdit.Quantity = model.Quantity;
 				armorToEdit.ValueInGold = model.ValueInGold;
@@ -396,7 +398,7 @@ namespace CharacterSheetDnD.Controllers
 				armorToEdit.IsMagicItem = model.IsMagic;
 				armorToEdit.RequiresAttunement = model.RequiresAttunement;
 				armorToEdit.IsAttuned = model.IsAttuned;
-				armorToEdit.MagicBonusAC = (MagicBonusAC)model.MagicBonusAC;
+				armorToEdit.MagicBonusAC = (MagicBonusAC?)model.MagicBonusAC;
 				armorToEdit.MagicEffectDescription = model.MagicEffectDescription;
 				armorToEdit.MagicEffectMechanics = model.MagicEffectMechanics;
 				armorToEdit.MagicCharges = model.MagicCharges;
@@ -415,7 +417,39 @@ namespace CharacterSheetDnD.Controllers
 			return RedirectToAction("DisplayCharacterArmors", new { id = armorToEdit.CharacterID });
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> CheckArmorEquipped(int characterId, int excludeArmorId)
+		{
+			var isEquipped = await _context.CharacterArmors
+				.AnyAsync(a => a.CharacterID == characterId &&
+							   a.ArmorID != excludeArmorId &&
+							   a.IsEquipped &&
+							   a.ArmorType != ArmorType.Shield); // Assuming ArmorType.Shield represents shields
 
+			return Json(isEquipped);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UnequipCurrentArmor(int characterId, int excludeArmorId)
+		{
+			var equippedArmors = await _context.CharacterArmors
+				.Where(a => a.CharacterID == characterId &&
+							a.ArmorID != excludeArmorId &&
+							a.IsEquipped &&
+							a.ArmorType != ArmorType.Shield)
+				.ToListAsync();
+
+			if (equippedArmors.Any())
+			{
+				foreach (var armor in equippedArmors)
+				{
+					armor.IsEquipped = false;
+				}
+				await _context.SaveChangesAsync();
+			}
+
+			return Json(new { success = true });
+		}
 
 
 	}

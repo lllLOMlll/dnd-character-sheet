@@ -40,7 +40,7 @@ namespace CharacterSheetDnD.Models
 
 		[Required(ErrorMessage = "Armor name is required.")]
 		public string? ArmorName { get; set; }
-		public Rarity Rarity { get; set; }
+		public Rarity? Rarity { get; set; }
 		public string? Description { get; set; }
 		public int Quantity { get; set; }
 		public int ValueInGold { get; set; }
@@ -50,7 +50,7 @@ namespace CharacterSheetDnD.Models
 		public bool IsMagicItem { get; set; }
 		public bool RequiresAttunement { get; set; }
 		public bool IsAttuned { get; set; }
-		public MagicBonusAC MagicBonusAC { get; set; }
+		public MagicBonusAC? MagicBonusAC { get; set; }
 		public string? MagicEffectDescription { get; set; }
 		public string? MagicEffectMechanics { get; set; }
 		[Range(0, 100, ErrorMessage = "Charges must be a positive number")]

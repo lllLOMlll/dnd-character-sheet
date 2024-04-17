@@ -115,7 +115,7 @@
 
 		<!-- Is Equipped Checkbox -->
 		<div class="mb-3 form-check">
-			<input type="checkbox" class="form-check-input" id="IsEquipped" asp-for="IsEquipped">
+			<input type="checkbox" class="form-check-input" id="IsEquipped" asp-for="IsEquipped" onclick="checkAndToggleEquipped()">
 			<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
 		</div>
 
@@ -224,7 +224,46 @@
 
 	</script>
 
+	<script>
+		async function checkAndToggleEquipped() {
+			const isEquippedCheckbox = document.getElementById('IsEquipped');
+			if (isEquippedCheckbox.checked) {
+				const characterId = @Model.CharacterID;
+				const excludeArmorId = @Model.ArmorID; // Assuming this is the ID of the armor being edited
 
+				const response = await fetch(`/Armor/CheckArmorEquipped?characterId=${characterId}&excludeArmorId=${excludeArmorId}`);
+				const isOtherArmorEquipped = await response.json();
+
+				if (isOtherArmorEquipped) {
+					const shouldUnequip = confirm("The character already has another armor equipped. Do you want to unequip it?");
+					if (shouldUnequip) {
+						// User confirmed to unequip the currently equipped armor
+						const formData = new FormData();
+						formData.append('characterId', characterId.toString());
+						formData.append('excludeArmorId', excludeArmorId.toString());
+
+						// Include anti-forgery token if needed
+						const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+						formData.append('__RequestVerificationToken', token);
+
+						await fetch('/Armor/UnequipCurrentArmor', {
+							method: 'POST',
+							body: formData,
+							headers: {
+								'RequestVerificationToken': token
+							}
+						});
+
+					} else {
+						// If user chooses not to unequip, uncheck the "Is Equipped" checkbox
+						isEquippedCheckbox.checked = false;
+					}
+				}
+			}
+		}
+
+
+	</script>
 
 
 
