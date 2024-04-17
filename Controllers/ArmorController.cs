@@ -45,44 +45,44 @@ namespace CharacterSheetDnD.Controllers
 			return View("AddArmor", viewModel);
 		}
 
-        [HttpGet]
-        [Authorize]
-        [Route("my-character/character-armors")]
-        public IActionResult DisplayCharacterArmors()
-        {
-            var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
-            if (selectedCharacterID == null)
-            {
-                TempData["Message"] = "Please select a character before viewing armors.";
-                return RedirectToAction("SelectCharacter", "Character");
-            }
+		[HttpGet]
+		[Authorize]
+		[Route("my-character/character-armors")]
+		public IActionResult DisplayCharacterArmors()
+		{
+			var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
+			if (selectedCharacterID == null)
+			{
+				TempData["Message"] = "Please select a character before viewing armors.";
+				return RedirectToAction("SelectCharacter", "Character");
+			}
 
-            var armors = _context.CharacterArmors
-                .Where(ca => ca.CharacterID == selectedCharacterID.Value)
-                .Select(ca => new GenericArmorViewModel
-                {
-                    ArmorID = ca.ArmorID,
-                    ArmorName = ca.ArmorName,
-                    // Populate other necessary fields here
-                }).ToList();
+			var armors = _context.CharacterArmors
+				.Where(ca => ca.CharacterID == selectedCharacterID.Value)
+				.Select(ca => new GenericArmorViewModel
+				{
+					ArmorID = ca.ArmorID,
+					ArmorName = ca.ArmorName,
+					// Populate other necessary fields here
+				}).ToList();
 
-            var viewModel = new GenericArmorViewModel
-            {
-                CharacterID = selectedCharacterID.Value,
-                Armors = armors
-            };
+			var viewModel = new GenericArmorViewModel
+			{
+				CharacterID = selectedCharacterID.Value,
+				Armors = armors
+			};
 
-            return View("CharacterArmors", viewModel);
-        }
+			return View("CharacterArmors", viewModel);
+		}
 
 
-        [Authorize]
-        [Route("my-character/delete-armor")]
-        public async Task<IActionResult> DeleteArmor(int armorId)
-        {
+		[Authorize]
+		[Route("my-character/delete-armor")]
+		public async Task<IActionResult> DeleteArmor(int armorId)
+		{
 			var selectedCharacterId = HttpContext.Session.GetInt32("SelectedCharacterID");
 
-            var armorToDelete = await _context.CharacterArmors
+			var armorToDelete = await _context.CharacterArmors
 										.FirstOrDefaultAsync(a => a.ArmorID == armorId);
 
 			if (armorToDelete != null)
@@ -97,25 +97,25 @@ namespace CharacterSheetDnD.Controllers
 			}
 
 			return RedirectToAction("DisplayCharacterArmors", selectedCharacterId);
-        }
+		}
 
 		[Authorize]
 		[HttpGet("my-character/edit-amor/{armorId:int}")]
 		public async Task<IActionResult> DisplaySelectedArmor(int armorId)
 		{
 			var selectedCharacterId = HttpContext.Session.GetInt32("SelectedCharacterID");
-			
-			if (selectedCharacterId == null) 
+
+			if (selectedCharacterId == null)
 			{
 				TempData["ErrorMessage"] = "Character ID not found.";
-                return RedirectToAction("DisplayCharacterArmors", selectedCharacterId);            
+				return RedirectToAction("DisplayCharacterArmors", selectedCharacterId);
 
 			}
 
 			var armorToEdit = await _context.CharacterArmors
 										.FirstOrDefaultAsync(a => a.ArmorID == armorId);
 
-			if (armorToEdit == null) 
+			if (armorToEdit == null)
 			{
 				return NotFound();
 			}
@@ -124,12 +124,44 @@ namespace CharacterSheetDnD.Controllers
 				CharacterID = selectedCharacterId.Value,
 				ArmorID = armorToEdit.ArmorID,
 				ArmorName = armorToEdit.ArmorName,
+				Rarity = armorToEdit.Rarity,
+				Description = armorToEdit.Description,
+				Quantity = armorToEdit.Quantity,
+				ValueInGold = armorToEdit.ValueInGold,
+				StealthDisadvantage = armorToEdit.StealthDisadvantage,
+				ArmorType = armorToEdit.ArmorType,
+				IsEquipped = armorToEdit.IsEquipped,
+				IsMagic = armorToEdit.IsMagicItem,
+				RequiresAttunement = armorToEdit.RequiresAttunement,
+				IsAttuned = armorToEdit.IsAttuned,
+				MagicBonusAC = (int?)armorToEdit.MagicBonusAC,
+				MagicEffectDescription = armorToEdit.MagicEffectDescription,
+				MagicCharges = armorToEdit.MagicCharges,
+				MagicRechargeRate = armorToEdit.MagicRechargeRate
+
+
 			};
+
+			// To display the Specific armor type (Ligth, Medium and Heavy)
+			switch (armorToEdit)
+			{
+				case LightArmor lightArmor:
+					viewModel.SpecificLightArmorType = lightArmor.LightArmorType;
+					break;
+				case MediumArmor mediumArmor:
+					viewModel.SpecificMediumArmorType = mediumArmor.MediumArmorType;
+					break;
+				case HeavyArmor heavyArmor:  
+					viewModel.SpecificHeavyArmorType = heavyArmor.HeavyArmorType;
+					break;
+			}
+
+
 
 			return View("EditArmor", viewModel);
 		}
 
-        [HttpPost]
+		[HttpPost]
 		[Authorize]
 		[Route("my-character/add-armor")]
 		public async Task<IActionResult> AddArmor(GenericArmorViewModel model)
@@ -295,11 +327,98 @@ namespace CharacterSheetDnD.Controllers
 			return armor;
 		}
 
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		[Route("my-character/edit-armor/{armorId:int}")]
+		public async Task<IActionResult> SaveArmorChanges(GenericArmorViewModel model, int armorId)
+		{
+			if (model == null)
+			{
+				TempData["ErrorMessage"] = "No data to save.";
+				return View("EditArmor", model);
+			}
+
+			if (!ModelState.IsValid)
+			{
+				TempData["ErrorMessage"] = "Please correct the errors and try again.";
+				return View("EditArmor", model);
+			}
+
+			var armorToEdit = await _context.CharacterArmors
+											.FirstOrDefaultAsync(a => a.ArmorID == armorId);
+
+			if (armorToEdit == null)
+			{
+				TempData["ErrorMessage"] = "The armor to edit was not found.";
+				return View("EditArmor", model);
+			}
+			
+			if (model.ArmorType != armorToEdit.ArmorType) // Check if the armor type has changed
+			{
+				var newArmor = CreateArmorBasedOnType(model); // You already have this method
+			// Ensure the CharacterID is correctly set on the newArmor instance
+				if (newArmor != null)
+				{
+					var selectedCharacterID = HttpContext.Session.GetInt32("SelectedCharacterID");
+					if (selectedCharacterID == null)
+					{
+						TempData["ErrorMessage"] = "Character ID is missing. Please select a character.";
+						return RedirectToAction("SelectCharacter", "Character");
+					}
+
+					newArmor.CharacterID = selectedCharacterID.Value; // Ensure this is set correctly
+
+					_context.CharacterArmors.Remove(armorToEdit); // Remove the old armor
+					_context.CharacterArmors.Add(newArmor); // Add the new armor
+
+					await _context.SaveChangesAsync();
+					TempData["SuccessMessage"] = "Armor updated successfully!";
+
+					return RedirectToAction("DisplayCharacterArmors", new { id = newArmor.CharacterID });
+				}
+				else
+				{
+					TempData["ErrorMessage"] = "Failed to create new armor based on type.";
+					return View("EditArmor", model);
+				}
+			}
+			else
+			{
+				armorToEdit.ArmorName = model.ArmorName;
+				armorToEdit.Rarity = (Rarity)model.Rarity;
+				armorToEdit.Description = model.Description;
+				armorToEdit.Quantity = model.Quantity;
+				armorToEdit.ValueInGold = model.ValueInGold;
+				armorToEdit.StealthDisadvantage = model.StealthDisadvantage;
+				armorToEdit.ArmorType = (ArmorType)model.ArmorType;
+				armorToEdit.IsEquipped = model.IsEquipped;
+				armorToEdit.IsMagicItem = model.IsMagic;
+				armorToEdit.RequiresAttunement = model.RequiresAttunement;
+				armorToEdit.IsAttuned = model.IsAttuned;
+				armorToEdit.MagicBonusAC = (MagicBonusAC)model.MagicBonusAC;
+				armorToEdit.MagicEffectDescription = model.MagicEffectDescription;
+				armorToEdit.MagicEffectMechanics = model.MagicEffectMechanics;
+				armorToEdit.MagicCharges = model.MagicCharges;
+				armorToEdit.MagicRechargeRate = model.MagicRechargeRate;
+
+
+
+				_context.CharacterArmors.Update(armorToEdit);
+				await _context.SaveChangesAsync();
+				TempData["SuccessMessage"] = "Armor updated successfully!";
+			}
+
+
+
+
+			return RedirectToAction("DisplayCharacterArmors", new { id = armorToEdit.CharacterID });
+		}
+
+
 
 
 	}
-
-
 
 }
 
