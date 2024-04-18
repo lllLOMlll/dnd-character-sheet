@@ -129,13 +129,13 @@
 				<tr>
 					<th>Weapon Name</th>
 					<th>ATK Bonus</th>
-					<th>Damage</th>			
+					<th>Damage</th>
 				</tr>
 			</thead>
 			<tbody>
 			@if (Model.Weapons != null && Model.Weapons.Any())
-			{  
-				
+			{
+
 				@foreach (var weapon in Model.Weapons)
 				{
 					@if (weapon.IsEquipped)
@@ -174,13 +174,13 @@
 
 									var attackBonusRoll = CharacterSheetDnD.Utilities.AttackDamageRolls.GetAttackBonus(proficiencyBonusAttackRoll, strengthOrDexterityModifier);
 								}
-									+@attackBonusRoll						
+									+@attackBonusRoll
 								</td>
 
 								<!-- Damage -->
 								<td>
 								@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayName(weapon.DamageDice ?? default(DamageDice)) + @strengthOrDexterityModifier
-						
+
 
 
 							</tr>
@@ -212,7 +212,7 @@
 								</div>
 							</div>
 					}
-				
+
 				}
 			}
 			else
@@ -224,6 +224,85 @@
 		</table>
 	</div>
 
+	<!-- ARMOR -->
+	<h5 class="text-center mb-2 p-1">Equipped Armors</h5>
+	<div class="d-flex flex-column align-items-center">
+		<table class="table w-50">
+			<thead>
+				<tr>
+					<th>Armor Name</th>
+					<th>Armor Type/Subtype</th>
+					<th>AC Bonus</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			@if (Model.Armors != null && Model.Armors.Any())
+			{
+				@foreach (var armor in Model.Armors)
+				{
+					if (armor.IsEquipped)
+					{
+							<tr>
+								<!-- Name -->
+								<td>
+									<div class="d-flex justify-content-start">
+										<button class="btn btn-dark btn-outline-info btn-sm text-nowrap" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#armorDetailsModal_@armor.ArmorID">
+											<i class="bi bi-eye-fill"></i> @armor.ArmorName
+										</button>
+									</div>
+								</td>
+								<!-- Armor type and subtype -->
+								<td>
+								@armor.ArmorType
+								@{
+									var specificType = "";
+									switch (armor.ArmorType)
+									{
+										case ArmorType.Light:
+											specificType = armor.SpecificLightArmorType.HasValue ? armor.SpecificLightArmorType.Value.ToString() : "";
+											break;
+										case ArmorType.Medium:
+											specificType = armor.SpecificMediumArmorType.HasValue ? armor.SpecificMediumArmorType.Value.ToString() : "";
+											break;
+										case ArmorType.Heavy:
+											specificType = armor.SpecificHeavyArmorType.HasValue ? armor.SpecificHeavyArmorType.Value.ToString() : "";
+											break;
+										case ArmorType.Shield:
+											// No specific subtype for Shield in this example
+											break;
+									}
+
+									// Display subtype if available
+									if (!string.IsNullOrEmpty(specificType))
+									{
+										@: - @specificType
+									}
+								}
+								</td>
+								<!-- AC Bonus -->
+								<td>
+								@armor.MagicBonusAC?.ToString("+#;-#;0") 
+								</td>
+							</tr>
+					}
+				}
+			}
+			else
+			{
+					<p>No armor found.</p>
+			}
+
+
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Shield -->
+
+
+
 
 
 </div>
+

@@ -1,5 +1,7 @@
 ﻿using CharacterSheetDnD.Models;
 using CharacterSheetDnD.Utilities;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace CharacterSheetDnD.ViewModels
 {
@@ -118,8 +120,40 @@ namespace CharacterSheetDnD.ViewModels
 				public bool IsSelected { get; set; }
 			}
 
+	
+
 		}
+
+		// ARMOR
+		public GenericArmorViewModel? GenericArmorViewModel { get; set; }
+
+		public class CharacterArmor
+		{
+			public int ArmorID { get; set; }
+			public int CharacterID { get; set; }
+			public virtual Character? Character { get; set; }
+			public string? ArmorName { get; set; }
+			public Rarity? Rarity { get; set; }
+			public string? Description { get; set; }
+			public int Quantity { get; set; }
+			public int ValueInGold { get; set; }
+			public bool StealthDisadvantage { get; set; }
+			public ArmorType ArmorType { get; set; }
+			public bool IsEquipped { get; set; }
+			public bool IsMagicItem { get; set; }
+			public bool RequiresAttunement { get; set; }
+			public bool IsAttuned { get; set; }
+			public MagicBonusAC? MagicBonusAC { get; set; }
+			public string? MagicEffectDescription { get; set; }
+			public string? MagicEffectMechanics { get; set; }
+			public int? MagicCharges { get; set; }
+			public string? MagicRechargeRate { get; set; }
+			public IEnumerable<CharacterArmor>? Armors { get; set; }
+		}
+
+
 		public List<WeaponViewModel> Weapons { get; set; } = new List<WeaponViewModel>();
+		public List<GenericArmorViewModel> Armors { get; set; } = new List<GenericArmorViewModel>();
 
 		// Constructor
 		public MyCharacterViewModel()
@@ -129,7 +163,9 @@ namespace CharacterSheetDnD.ViewModels
 
 			// ViewModel
 			Weapons = new List<WeaponViewModel>();
-            WeaponViewModel = new WeaponViewModel(); 
+            WeaponViewModel = new WeaponViewModel();
+			Armors = new List<GenericArmorViewModel>();
+			GenericArmorViewModel = new GenericArmorViewModel();
         }
 
 
