@@ -39,7 +39,7 @@ namespace CharacterSheetDnD.Controllers
 			var viewModel = new GenericArmorViewModel
 			{
 				// Initialize your ViewModel here as needed
-				// For example, you might want to load specific data based on the selected character
+				CharacterID = selectedCharacterID.Value
 			};
 
 			return View("AddArmor", viewModel);
@@ -181,7 +181,7 @@ namespace CharacterSheetDnD.Controllers
 						TempData["ErrorMessage"] += $" {state.Key} has errors;";
 					}
 				}
-				return View("AddArmor", model);
+				return RedirectToAction("AddArmor", model);
 			}
 
 
@@ -192,7 +192,7 @@ namespace CharacterSheetDnD.Controllers
 				if (selectedCharacterID == null)
 				{
 					TempData["ErrorMessage"] = "Character ID is missing. Please select a character.";
-					return RedirectToAction("SelectCharacter", "Character"); // Or another appropriate action
+					return RedirectToAction("SelectCharacter", "Character"); 
 				}
 
 				// Assign the CharacterID to the newArmor instance
@@ -201,7 +201,7 @@ namespace CharacterSheetDnD.Controllers
 				_context.CharacterArmors.Add(newArmor);
 				await _context.SaveChangesAsync();
 				TempData["SuccessMessage"] = "Armor added successfully!";
-				return RedirectToAction("DisplayAddArmorPage"); // Redirect as appropriate
+				return RedirectToAction("DisplayAddArmorPage"); 
 			}
 
 			TempData["ErrorMessage"] = "There was an issue saving the armor. Please check the details and try again.";
@@ -216,7 +216,7 @@ namespace CharacterSheetDnD.Controllers
 			switch (model.ArmorType)
 			{
 				case ArmorType.Light:
-					if (model.SpecificLightArmorType.HasValue) // Ensure the specific type is provided
+					if (model.SpecificLightArmorType.HasValue) 
 					{
 
 						armor = new LightArmor
@@ -418,16 +418,14 @@ namespace CharacterSheetDnD.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> CheckArmorEquipped(int characterId, int excludeArmorId)
+		public async Task<IActionResult> CheckArmorEquipped(int characterId)
 		{
 			var isEquipped = await _context.CharacterArmors
-				.AnyAsync(a => a.CharacterID == characterId &&
-							   a.ArmorID != excludeArmorId &&
-							   a.IsEquipped &&
-							   a.ArmorType != ArmorType.Shield); // Assuming ArmorType.Shield represents shields
+				.AnyAsync(a => a.CharacterID == characterId && a.IsEquipped && a.ArmorType != ArmorType.Shield);
 
 			return Json(isEquipped);
 		}
+
 
 		[HttpPost]
 		public async Task<IActionResult> UnequipCurrentArmor(int characterId, int excludeArmorId)
@@ -450,6 +448,36 @@ namespace CharacterSheetDnD.Controllers
 
 			return Json(new { success = true });
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> CheckShieldEquipped(int characterId)
+		{
+			var isEquipped = await _context.CharacterArmors
+				.AnyAsync(a => a.CharacterID == characterId && a.IsEquipped && a.ArmorType == ArmorType.Shield);
+
+			return Json(isEquipped);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UnequipCurrentShield(int characterId)
+		{
+			var equippedShields = await _context.CharacterArmors
+				.Where(a => a.CharacterID == characterId && a.IsEquipped && a.ArmorType == ArmorType.Shield)
+				.ToListAsync();
+
+			if (equippedShields.Any())
+			{
+				foreach (var shield in equippedShields)
+				{
+					shield.IsEquipped = false;
+				}
+				await _context.SaveChangesAsync();
+			}
+
+			return Json(new { success = true });
+		}
+
+
 
 
 	}

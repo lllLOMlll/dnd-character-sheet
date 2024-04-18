@@ -115,7 +115,7 @@
 
 		<!-- Is Equipped Checkbox -->
 		<div class="mb-3 form-check">
-			<input type="checkbox" class="form-check-input" id="IsEquipped" asp-for="IsEquipped">
+			<input type="checkbox" class="form-check-input" id="IsEquipped" asp-for="IsEquipped" onclick="checkAndToggleEquipped()">
 			<label class="form-check-label" for="IsEquipped">Is Equipped?</label>
 		</div>
 
@@ -217,6 +217,59 @@
 
 	</script>
 
+	<!-- Can only equipe one armor -->
+	<script>
+		async function checkAndToggleEquipped() {
+			const isEquippedCheckbox = document.getElementById('IsEquipped');
+			const armorTypeSelect = document.getElementById('ArmorType');
+			const armorType = armorTypeSelect.value;
+
+			if (isEquippedCheckbox.checked) {
+				const characterId = @Model.CharacterID;
+
+				let checkUrl = `/Armor/CheckArmorEquipped?characterId=${characterId}`;
+				// If the selected type is a shield, modify the request URL accordingly
+				if (armorType === "Shield") {
+					checkUrl = `/Armor/CheckShieldEquipped?characterId=${characterId}`;
+				}
+
+				const response = await fetch(checkUrl);
+				const isOtherArmorEquipped = await response.json();
+
+				const itemType = armorType === "Shield" ? "shield" : "armor";
+				if (isOtherArmorEquipped) {
+					const shouldUnequip = confirm(`The character already has another ${itemType} equipped. Do you want to unequip it?`);
+					if (shouldUnequip) {
+						// Proceed to unequip the currently equipped item.
+						// Note: You might need a separate endpoint for unequipping shields, or handle it within the same endpoint.
+						const formData = new FormData();
+						formData.append('characterId', characterId.toString());
+
+						const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+						formData.append('__RequestVerificationToken', token);
+
+						let unequipUrl = '/Armor/UnequipCurrentArmor';
+						// If the selected type is a shield, modify the request URL accordingly
+						if (armorType === "Shield") {
+							unequipUrl = '/Armor/UnequipCurrentShield';
+						}
+
+						await fetch(unequipUrl, {
+							method: 'POST',
+							body: formData,
+							headers: {
+								'RequestVerificationToken': token
+							}
+						});
+
+					} else {
+						isEquippedCheckbox.checked = false;
+					}
+				}
+			}
+		}
+
+	</script>
 
 
 

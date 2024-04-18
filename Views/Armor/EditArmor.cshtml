@@ -179,6 +179,8 @@
 </div>
 
 @section Scripts {
+
+	<!-- Display magic properties -->
 	<script>
 		$(document).ready(function () {
 			// Function to toggle magic item options based on checkbox state
@@ -198,6 +200,7 @@
 		});
 	</script>
 
+	<!-- Show Specifif Armor Type -->
 	<script>
 		function showSpecificArmorType() {
 			// Hide all specific armor type selections initially
@@ -224,44 +227,53 @@
 
 	</script>
 
+	<!-- Can only equipe one armor -->
 	<script>
 		async function checkAndToggleEquipped() {
 			const isEquippedCheckbox = document.getElementById('IsEquipped');
+			const armorTypeSelect = document.getElementById('ArmorType');
+			const armorType = armorTypeSelect.value;
+			const characterId = @Model.CharacterID;
+			const armorId = @Model.ArmorID; // This is now available since we're editing an existing item
+
 			if (isEquippedCheckbox.checked) {
-				const characterId = @Model.CharacterID;
-				const excludeArmorId = @Model.ArmorID; // Assuming this is the ID of the armor being edited
+				let checkUrl = `/Armor/CheckArmorEquipped?characterId=${characterId}&excludeArmorId=${armorId}`;
+				// Modify the URL if it's a shield being checked
+				if (armorType === "Shield") {
+					checkUrl = `/Armor/CheckShieldEquipped?characterId=${characterId}&excludeArmorId=${armorId}`;
+				}
 
-				const response = await fetch(`/Armor/CheckArmorEquipped?characterId=${characterId}&excludeArmorId=${excludeArmorId}`);
-				const isOtherArmorEquipped = await response.json();
+				const response = await fetch(checkUrl);
+				const isOtherItemEquipped = await response.json();
 
-				if (isOtherArmorEquipped) {
-					const shouldUnequip = confirm("The character already has another armor equipped. Do you want to unequip it?");
+				const itemType = armorType === "Shield" ? "shield" : "armor";
+				if (isOtherItemEquipped) {
+					const shouldUnequip = confirm(`The character already has another ${itemType} equipped. Do you want to unequip it?`);
 					if (shouldUnequip) {
-						// User confirmed to unequip the currently equipped armor
+						let unequipUrl = '/Armor/UnequipCurrentArmor';
+						// Modify the URL for unequipping if it's a shield
+						if (armorType === "Shield") {
+							unequipUrl = '/Armor/UnequipCurrentShield';
+						}
+
 						const formData = new FormData();
 						formData.append('characterId', characterId.toString());
-						formData.append('excludeArmorId', excludeArmorId.toString());
-
-						// Include anti-forgery token if needed
 						const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
 						formData.append('__RequestVerificationToken', token);
 
-						await fetch('/Armor/UnequipCurrentArmor', {
+						await fetch(unequipUrl, {
 							method: 'POST',
 							body: formData,
 							headers: {
 								'RequestVerificationToken': token
 							}
 						});
-
 					} else {
-						// If user chooses not to unequip, uncheck the "Is Equipped" checkbox
 						isEquippedCheckbox.checked = false;
 					}
 				}
 			}
 		}
-
 
 	</script>
 
