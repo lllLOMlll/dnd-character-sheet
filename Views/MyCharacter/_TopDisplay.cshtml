@@ -200,10 +200,15 @@
 											<strong>Description:</strong> <p>@weapon.Description</p>
 											<strong>Value in Gold:</strong> <p>@weapon.ValueInGold</p>
 											<strong>Weapon Properties:</strong> <p>@CharacterSheetDnD.Utilities.ConvertEnumForDisplayUtility.GetDisplayNamesForFlags((WeaponProperty)weapon.WeaponProperties)</p>
-											<strong>Effect Description:</strong> <p>@weapon.EffectDescription</p>
-											<strong>Effect Mechanics:</strong> <p>@weapon.EffectMechanics</p>
-											<strong>Charges:</strong> <p>@weapon.Charges</p>
-											<strong>Recharge Rate:</strong> <p>@weapon.RechargeRate</p>
+											<strong>Is Magic?:</strong> <p>@weapon.IsMagic</p>
+											@if (weapon.IsMagic == true)
+										{
+												<strong>Effect Description:</strong> <p>@weapon.EffectDescription</p>
+												<strong>Effect Mechanics:</strong> <p>@weapon.EffectMechanics</p>
+												<strong>Charges:</strong> <p>@weapon.Charges</p>
+												<strong>Recharge Rate:</strong> <p>@weapon.RechargeRate</p>
+										}
+									
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -254,37 +259,85 @@
 								</td>
 								<!-- Armor type and subtype -->
 								<td>
-								@armor.ArmorType
+								@armor.ArmorType.ToString()
 								@{
-									var specificType = "";
-									switch (armor.ArmorType)
+									var specificTypeDisplay = string.Empty;
+									if (armor.ArmorType.HasValue)
 									{
-										case ArmorType.Light:
-											specificType = armor.SpecificLightArmorType.HasValue ? armor.SpecificLightArmorType.Value.ToString() : "";
-											break;
-										case ArmorType.Medium:
-											specificType = armor.SpecificMediumArmorType.HasValue ? armor.SpecificMediumArmorType.Value.ToString() : "";
-											break;
-										case ArmorType.Heavy:
-											specificType = armor.SpecificHeavyArmorType.HasValue ? armor.SpecificHeavyArmorType.Value.ToString() : "";
-											break;
-										case ArmorType.Shield:
-											// No specific subtype for Shield in this example
-											break;
+										switch (armor.ArmorType.Value)
+										{
+											case ArmorType.Light when armor.SpecificLightArmorType.HasValue:
+												specificTypeDisplay = armor.SpecificLightArmorType.Value.ToString();
+												break;
+											case ArmorType.Medium when armor.SpecificMediumArmorType.HasValue:
+												specificTypeDisplay = armor.SpecificMediumArmorType.Value.ToString();
+												break;
+											case ArmorType.Heavy when armor.SpecificHeavyArmorType.HasValue:
+												specificTypeDisplay = armor.SpecificHeavyArmorType.Value.ToString();
+												break;
+												// No case for Shield as it doesn't have a specific subtype in your model
+										}
 									}
 
-									// Display subtype if available
-									if (!string.IsNullOrEmpty(specificType))
+									if (!string.IsNullOrEmpty(specificTypeDisplay))
 									{
-										@: - @specificType
+										@: - @specificTypeDisplay
 									}
 								}
 								</td>
+
+
 								<!-- AC Bonus -->
 								<td>
 								@armor.MagicBonusAC?.ToString("+#;-#;0") 
 								</td>
 							</tr>
+
+
+							<!-- Modal -->
+							<div class="modal fade" id="armorDetailsModal_@armor.ArmorID" tabindex="-1" aria-labelledby="armorDetailsModal_@armor.ArmorID" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="armorDetailsModal_@armor.ArmorID">@armor.ArmorName Details</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<strong>Armor type:</strong> <p>@armor.ArmorType</p>
+											@if (armor.ArmorType != null)
+										{
+											@if (armor.ArmorType.Value == ArmorType.Shield)
+											{
+													<strong>Sub armor type:</strong> <p>None</p>
+											}
+											else
+											{
+													<strong>Sub armor type:</strong> <p>@specificTypeDisplay</p>
+											}
+										}
+																	
+											<strong>Description:</strong> <p>@armor.Description</p>
+											<strong>Rarity:</strong> <p>@armor.Rarity</p>
+											<strong>Value in Gold:</strong> <p>@armor.ValueInGold</p>	
+											<strong>Is Magic?</strong> <p>@armor.IsMagic</p>
+											<!-- Display this part only if the armor IsMagic -->
+											@if (armor.IsMagic == true)
+										{
+												<strong>RequiresAttunment:</strong> <p>@armor.RequiresAttunement</p>
+												<strong>Magic Bonus AC:</strong> <p>@armor.MagicBonusAC</p>
+												<strong>Effect Description:</strong> <p>@armor.MagicEffectDescription</p>
+												<strong>Effect Mechanics:</strong> <p>@armor.MagicEffectMechanics</p>
+												<strong>Charges:</strong> <p>@armor.MagicCharges</p>
+												<strong>Recharge Rate:</strong> <p>@armor.MagicRechargeRate</p>
+										}
+							
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
 					}
 				}
 			}

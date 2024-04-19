@@ -172,30 +172,50 @@ namespace CharacterSheetDnD.Controllers
 			}
 
 			// Armors
+			// Armors
 			if (character.CharacterArmors != null)
 			{
-				viewModel.Armors = character.CharacterArmors.Select(ca => new GenericArmorViewModel
+				viewModel.Armors = character.CharacterArmors.Select(ca =>
 				{
-					ArmorID = ca.ArmorID,
-					CharacterID = ca.CharacterID,
-					ArmorName = ca.ArmorName,
-					ArmorType = ca.ArmorType,
-					Description = ca.Description,
-					Quantity = ca.Quantity,
-					IsEquipped = ca.IsEquipped,
-					ValueInGold = ca.ValueInGold,
-					StealthDisadvantage = ca.StealthDisadvantage,
-					Rarity = ca.Rarity,
-					IsMagic = ca.IsMagicItem,
-					RequiresAttunement = ca.RequiresAttunement,
-					IsAttuned = ca.IsAttuned,
-					MagicBonusAC = (int?)ca.MagicBonusAC,
-					MagicEffectDescription = ca.MagicEffectDescription,
-					MagicCharges = ca.MagicCharges,
-					MagicRechargeRate = ca.MagicRechargeRate,
+					var armorViewModel = new GenericArmorViewModel
+					{
+						ArmorID = ca.ArmorID,
+						CharacterID = ca.CharacterID,
+						ArmorName = ca.ArmorName,
+						ArmorType = ca.ArmorType,
+						Description = ca.Description,
+						Quantity = ca.Quantity,
+						IsEquipped = ca.IsEquipped,
+						ValueInGold = ca.ValueInGold,
+						StealthDisadvantage = ca.StealthDisadvantage,
+						Rarity = ca.Rarity,
+						IsMagic = ca.IsMagicItem,
+						RequiresAttunement = ca.RequiresAttunement,
+						IsAttuned = ca.IsAttuned,
+						MagicBonusAC = (int?)ca.MagicBonusAC,
+						MagicEffectDescription = ca.MagicEffectDescription,
+						MagicCharges = ca.MagicCharges,
+						MagicRechargeRate = ca.MagicRechargeRate,
+					};
 
+					// Determine the specific armor type and set it accordingly
+					switch (ca)
+					{
+						case LightArmor la:
+							armorViewModel.SpecificLightArmorType = la.LightArmorType;
+							break;
+						case MediumArmor ma:
+							armorViewModel.SpecificMediumArmorType = ma.MediumArmorType;
+							break;
+						case HeavyArmor ha:
+							armorViewModel.SpecificHeavyArmorType = ha.HeavyArmorType;
+							break;
+					}
+
+					return armorViewModel;
 				}).ToList();
 			}
+
 
 
 
