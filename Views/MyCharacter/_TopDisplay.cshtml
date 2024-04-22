@@ -11,6 +11,13 @@
 	var proficiencyBonus = CharacterSheetDnD.Utilities.ProficiencyUtility.GetProficiency(Model.Level);
 }
 
+<!-- AC calculator->
+@{
+	var armorClass = 10 + CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity);
+}
+
+
+
 
 <!-- MAIN INFORMATION -->
 <div class="row">
@@ -20,14 +27,14 @@
 	<div class="col-md-4 text-center">
 		<p class="text-uppercase mb-0">Armor Class</p>
 		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91c4.59-1.15 8-5.86 8-10.91V5zm6 9.09c0 4-2.55 7.7-6 8.83c-3.45-1.13-6-4.82-6-8.83v-4.7l6-2.25l6 2.25z" /></svg>
-		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Dexterity</button>
+		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@armorClass</button>
 	</div>
 
 	<!-- Initiative -->
 	<div class="col-md-4 text-center">
 		<p class="text-uppercase mb-0">Initiative</p>
 		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 512 512"><path fill="black" d="M447.1 86.2C400.3 33.4 332.2 0 256 0C114.6 0 0 114.6 0 256h64c0-106.1 85.9-192 192-192c58.5 0 110.4 26.5 145.5 67.8L341.3 192H512V21.3zM256 448c-58.5 0-110.4-26.5-145.5-67.8l60.2-60.2H0v170.7l64.9-64.9c46.8 52.8 115 86.2 191.1 86.2c141.4 0 256-114.6 256-256h-64c0 106.1-85.9 192-192 192" /></svg>
-		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@Model.Dexterity</button>
+		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">+@CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity)</button>
 	</div>
 
 	<!-- Speed-->
@@ -289,8 +296,87 @@
 
 								<!-- AC Bonus -->
 								<td>
-								@armor.MagicBonusAC?.ToString("+#;-#;0") 
-								</td>
+								@* @armor.MagicBonusAC?.ToString("+#;-#;0")  *@
+								@{
+									var armorClassToDisplay = 0;
+									var specificArmorTypeToDisplay = string.Empty;
+
+									if (armor.ArmorType.HasValue)
+									{
+										switch (armor.ArmorType.Value)
+										{
+											case ArmorType.Shield:
+												armorClassToDisplay = 2;
+												break;
+
+											case ArmorType.Light when armor.SpecificLightArmorType.HasValue:
+												specificArmorTypeToDisplay = armor.SpecificLightArmorType.Value.ToString();
+												if (specificArmorTypeToDisplay == "Padded")
+												{
+													armorClassToDisplay = 11;
+												}
+												else if (specificArmorTypeToDisplay == "Leather")
+												{
+													armorClassToDisplay = 11;
+												}
+												else if (specificArmorTypeToDisplay == "StuddedLeather")
+												{
+													armorClassToDisplay = 12;
+												}
+
+												break;
+
+											case ArmorType.Medium when armor.SpecificMediumArmorType.HasValue:
+												specificArmorTypeToDisplay = armor.SpecificMediumArmorType.Value.ToString();												
+												if (specificArmorTypeToDisplay == "Hide")
+												{
+													armorClassToDisplay = 12;
+												}
+												else if (specificArmorTypeToDisplay == "ChainShirt")
+												{
+													armorClassToDisplay = 13;
+												}
+												else if (specificArmorTypeToDisplay == "ScaleMail")
+												{
+													armorClassToDisplay = 14;
+												}
+												else if (specificArmorTypeToDisplay == "Breastplate")
+												{
+													armorClassToDisplay = 14;
+												}
+												else if (specificArmorTypeToDisplay == "HalfPlate")
+												{
+													armorClassToDisplay = 15;
+												}
+												break;
+
+											case ArmorType.Heavy when armor.SpecificHeavyArmorType.HasValue:
+												specificArmorTypeToDisplay = armor.SpecificHeavyArmorType.Value.ToString();
+												if (specificArmorTypeToDisplay == "RingMail")
+												{
+													armorClassToDisplay = 14;
+												}
+												else if (specificArmorTypeToDisplay == "ChainMail")
+												{
+													armorClassToDisplay = 16;
+												}
+												else if (specificArmorTypeToDisplay == "Splint")
+												{
+													armorClassToDisplay = 17;
+												}
+												else if (specificArmorTypeToDisplay == "Plate")
+												{
+													armorClassToDisplay = 18;
+												}
+												
+												break;
+										}
+									}
+								}
+
+								+@armorClassToDisplay
+							
+							</td>
 							</tr>
 
 
