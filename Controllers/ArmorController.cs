@@ -201,7 +201,7 @@ namespace CharacterSheetDnD.Controllers
 				_context.CharacterArmors.Add(newArmor);
 				await _context.SaveChangesAsync();
 				TempData["SuccessMessage"] = "Armor added successfully!";
-				return RedirectToAction("DisplayAddArmorPage"); 
+				return RedirectToAction("DisplayCharacterArmors"); 
 			}
 
 			TempData["ErrorMessage"] = "There was an issue saving the armor. Please check the details and try again.";
@@ -297,8 +297,7 @@ namespace CharacterSheetDnD.Controllers
 					break;
 
 				case ArmorType.Shield:
-					// Assuming Shield does not have a specific type like LightArmorType, MediumArmorType, or HeavyArmorType
-					// But if there's a specific type or category that needs parsing, apply a similar approach as above.
+					// I can eventually add stuff that differienciate the armor here
 
 					armor = new ShieldArmor
 					{
