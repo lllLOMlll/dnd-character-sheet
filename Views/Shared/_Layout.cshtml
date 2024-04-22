@@ -72,8 +72,9 @@
 										<li>
 											<a class="dropdown-item"
 											   asp-area=""
-											   asp-controller=""
-											   asp-action="">
+											   asp-controller="Armor"
+											   asp-action="DisplayCharacterArmors"
+											   asp-route-id="@((int?)Context.Session.GetInt32("SelectedCharacterID"))">
 												Delete Armor
 											</a>
 										</li>
