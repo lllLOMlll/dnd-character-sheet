@@ -300,6 +300,8 @@
 								@{
 									var armorClassToDisplay = 0;
 									var specificArmorTypeToDisplay = string.Empty;
+									var amorClassModifierExplanation = string.Empty;
+									var shieldModifierExplanation = string.Empty;
 
 									if (armor.ArmorType.HasValue)
 									{
@@ -307,6 +309,7 @@
 										{
 											case ArmorType.Shield:
 												armorClassToDisplay = 2;
+												shieldModifierExplanation = "+";
 												break;
 
 											case ArmorType.Light when armor.SpecificLightArmorType.HasValue:
@@ -314,14 +317,18 @@
 												if (specificArmorTypeToDisplay == "Padded")
 												{
 													armorClassToDisplay = 11;
+													amorClassModifierExplanation = "+ Dex modifier";
+
 												}
 												else if (specificArmorTypeToDisplay == "Leather")
 												{
 													armorClassToDisplay = 11;
+													amorClassModifierExplanation = "+ Dex modifier";
 												}
 												else if (specificArmorTypeToDisplay == "StuddedLeather")
 												{
 													armorClassToDisplay = 12;
+													amorClassModifierExplanation = "+ Dex modifier";
 												}
 
 												break;
@@ -331,18 +338,22 @@
 												if (specificArmorTypeToDisplay == "Hide")
 												{
 													armorClassToDisplay = 12;
+													amorClassModifierExplanation = "+ Dex modifier (max 2)";
 												}
 												else if (specificArmorTypeToDisplay == "ChainShirt")
 												{
 													armorClassToDisplay = 13;
+													amorClassModifierExplanation = "+ Dex modifier (max 2)";
 												}
 												else if (specificArmorTypeToDisplay == "ScaleMail")
 												{
 													armorClassToDisplay = 14;
+													amorClassModifierExplanation = "+ Dex modifier (max 2)";
 												}
 												else if (specificArmorTypeToDisplay == "Breastplate")
 												{
 													armorClassToDisplay = 14;
+													amorClassModifierExplanation = "+ Dex modifier (max 2)";
 												}
 												else if (specificArmorTypeToDisplay == "HalfPlate")
 												{
@@ -374,7 +385,8 @@
 									}
 								}
 
-								+@armorClassToDisplay
+								@shieldModifierExplanation@armorClassToDisplay @amorClassModifierExplanation
+							
 							
 							</td>
 							</tr>
