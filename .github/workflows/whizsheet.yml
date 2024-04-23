@@ -42,7 +42,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set Connection String for EF Core
-        run: echo "ConnectionStrings__DefaultConnection=${{ secrets.AZURE_SQL_CONNECTION_STRING }}" | Out-File -FilePath .\path\to\your\appsettings.json -Append -Encoding utf8
+        run: echo "ConnectionStrings__DefaultConnection=${{ secrets.AZURE_SQL_CONNECTION_STRING }}" | Out-File -FilePath ${{ github.workspace }}/CharacterSheetDnD/appsettings.json -Append -Encoding utf8
         shell: pwsh
 
       - name: Apply EF Core Migrations
