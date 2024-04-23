@@ -29,7 +29,6 @@ namespace CharacterSheetDnD.Models
 	public enum MediumArmorType { Hide, ChainShirt, ScaleMail, Breastplate, HalfPlate }
 	public enum HeavyArmorType { RingMail, ChainMail, Splint, Plate }
 
-
 	public abstract class CharacterArmor
 	{
 		[Key]
