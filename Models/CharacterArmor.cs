@@ -59,7 +59,6 @@ namespace CharacterSheetDnD.Models
 	}
 
 
-
 	public class LightArmor : CharacterArmor
 	{
 		public LightArmorType LightArmorType { get; set; }
