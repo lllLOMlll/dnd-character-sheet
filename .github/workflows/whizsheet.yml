@@ -11,56 +11,53 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: .
-  PROJECT_PATH: ./CharacterSheetDnD.csproj
+  PROJECT_PATH: ./CharacterSheetDnD.csproj # Adjust if your DbContext is located in a different project
 
 jobs:
   build_and_deploy:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
-      - name: Install EF Core CLI
-        run: dotnet tool install --global dotnet-ef
+    - name: Install EF Core CLI
+      run: dotnet tool install --global dotnet-ef
 
-      - name: Restore dependencies
-        run: dotnet restore ${{ env.PROJECT_PATH }}
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.WORKING_DIRECTORY }}
 
-      - name: Build
-        run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration ${{ env.CONFIGURATION }}
+    - name: Build
+      run: dotnet build ${{ env.WORKING_DIRECTORY }} --no-restore --configuration ${{ env.CONFIGURATION }}
 
-      - name: Run tests
-        run: dotnet test ${{ env.PROJECT_PATH }} --no-build --verbosity normal
+    - name: Run tests
+      run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build --verbosity normal
 
-      - name: Login to Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Login to Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set Connection String for EF Core
-        run: echo "ConnectionStrings__DefaultConnection=${{ secrets.AZURE_SQL_CONNECTION_STRING }}" | Out-File -FilePath ${{ github.workspace }}/CharacterSheetDnD/appsettings.json -Append -Encoding utf8
-        shell: pwsh
+    - name: Apply EF Core Migrations
+      run: |
+        $env:ConnectionStrings__DefaultConnection = '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+        dotnet ef database update --project ${{ env.PROJECT_PATH }}
+      shell: pwsh
+      env:
+        DOTNET_NOLOGO: true
 
-      - name: Apply EF Core Migrations
-        run: dotnet ef database update --project ${{ env.PROJECT_PATH }}
-        shell: pwsh
-        env:
-          DOTNET_NOLOGO: true
+    - name: Publish
+      run: dotnet publish ${{ env.WORKING_DIRECTORY }} --no-build --configuration ${{ env.CONFIGURATION }} --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Publish
-        run: dotnet publish ${{ env.PROJECT_PATH }} --no-build --configuration ${{ env.CONFIGURATION }} --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-      - name: Deploy to Azure WebApp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
+    - name: Deploy to Azure WebApp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # Ensure this secret is set in your repository's secrets
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
 
 
