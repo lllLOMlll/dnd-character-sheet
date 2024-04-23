@@ -15,13 +15,6 @@ namespace CharacterSheetDnD.Services
 			_context = context;
 		}
 
-		public List<Models.CharacterArmor> GetEquippedArmors(int characterId)
-		{
-			return _context.CharacterArmors
-				.Where(armor => armor.CharacterID == characterId && armor.IsEquipped)
-				.ToList();
-		}
-
 		public int CalculateTotalAC(int characterId, int dexterityModifier)
 		{
 			var equippedArmors = _context.CharacterArmors
