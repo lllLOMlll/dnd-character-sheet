@@ -53,6 +53,7 @@ namespace CharacterSheetDnD.ViewModels
 		public int Intelligence { get; set; }
 		public int Wisdom { get; set; }
 		public int Charisma { get; set; }
+		public int TotalAC {  get; set; }
 
 		// SAVING THROWS
 		public class CharacterSavingThrowViewModel

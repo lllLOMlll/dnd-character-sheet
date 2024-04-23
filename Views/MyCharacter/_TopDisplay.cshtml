@@ -13,7 +13,10 @@
 
 <!-- AC calculator->
 @{
-	var armorClass = 10 + CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity);
+	var characterId = Model.CharacterID;
+	var dexterityModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(Model.Dexterity);
+	//var equippedArmors = CharacterSheetDnD.Utilities.AbilityScoreUtility.Get
+	//var totalAC = armorClassUtility.CalculateTotalAC(characterId, dexterityModifier);
 }
 
 
@@ -26,8 +29,12 @@
 	<!-- Armor class-->
 	<div class="col-md-4 text-center">
 		<p class="text-uppercase mb-0">Armor Class</p>
-		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="black" d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91c4.59-1.15 8-5.86 8-10.91V5zm6 9.09c0 4-2.55 7.7-6 8.83c-3.45-1.13-6-4.82-6-8.83v-4.7l6-2.25l6 2.25z" /></svg>
-		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle=" modal" data-bs-target="#exampleModal" ">@armorClass</button>
+		<svg class="pb-3" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+			<path fill="black" d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91c4.59-1.15 8-5.86 8-10.91V5zm6 9.09c0 4-2.55 7.7-6 8.83c-3.45-1.13-6-4.82-6-8.83v-4.7l6-2.25l6 2.25z" />
+		</svg>
+		<button class="btn btn-secondary fs-3 fw-bold mb-3 ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			@Model.TotalAC
+		</button>
 	</div>
 
 	<!-- Initiative -->
@@ -288,7 +295,7 @@
 
 									if (!string.IsNullOrEmpty(specificTypeDisplay))
 									{
-										@: - @specificTypeDisplay
+										@: / @specificTypeDisplay
 									}
 								}
 								</td>

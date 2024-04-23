@@ -37,6 +37,8 @@ builder.Services.AddAuthentication()
 // I added this to be able to populate scroll down list of classes (Druid, Wizard, Bard, etc.)
 builder.Services.AddScoped<IClassService, ClassService>();
 
+builder.Services.AddScoped<IArmorService, ArmorService>();
+
 // I added this for the Google external login setup
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {

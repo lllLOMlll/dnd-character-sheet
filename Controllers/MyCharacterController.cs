@@ -1,5 +1,6 @@
 using CharacterSheetDnD.Data;
 using CharacterSheetDnD.Models;
+using CharacterSheetDnD.Services;
 using CharacterSheetDnD.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace CharacterSheetDnD.Controllers
 	public class MyCharacterController : Controller
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly IArmorService _armorService;
 
-		public MyCharacterController(ApplicationDbContext context)
+		public MyCharacterController(ApplicationDbContext context, IArmorService armorService)
 		{
 			_context = context;
+			_armorService = armorService;
 		}
 
 		[HttpGet]
@@ -214,9 +217,14 @@ namespace CharacterSheetDnD.Controllers
 
 					return armorViewModel;
 				}).ToList();
+
+
 			}
 
-
+			// Here's an example of using the armor service to calculate total AC
+			int dexterityModifier = CharacterSheetDnD.Utilities.AbilityScoreUtility.CalculateModifier(character.CharacterStatistic?.Dexterity ?? 0);
+			int totalAC = _armorService.CalculateTotalAC(id, dexterityModifier);
+			viewModel.TotalAC = totalAC; // Assuming your viewModel has a TotalAC property
 
 
 			// Return the view viewModel -> MyCharacterViewModel
