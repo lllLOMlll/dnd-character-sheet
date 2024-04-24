@@ -82,4 +82,5 @@ namespace CharacterSheetDnD.Models
 		// Shields might have specific properties that could be added here
 	}
 
+
 	}
