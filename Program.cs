@@ -15,17 +15,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
+//builder.services.adddbcontext<applicationdbcontext>((serviceprovider, options) =>
 //{
-//	var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-//	var connectionString = configuration.GetConnectionString("DefaultConnection");
+//	var configuration = serviceprovider.getrequiredservice<iconfiguration>();
+//	var connectionstring = configuration.getconnectionstring("defaultconnection");
 
-//	var connection = new SqlConnection(connectionString);
-//	var tokenCredential = new DefaultAzureCredential();
-//	var token = tokenCredential.GetToken(new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })).Token;
-//	connection.AccessToken = token;
+//	var connection = new sqlconnection(connectionstring);
+//	var tokencredential = new defaultazurecredential();
+//	var token = tokencredential.gettoken(new azure.core.tokenrequestcontext(new[] { "https://database.windows.net/.default" })).token;
+//	connection.accesstoken = token;
 
-//	options.UseSqlServer(connection);
+//	options.usesqlserver(connection);
 //});
 
 
@@ -43,10 +43,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication()
    .AddGoogle(options =>
    {
-       IConfigurationSection googleAuthNSection =
-       builder.Configuration.GetSection("Authentication:Google");
-       options.ClientId = googleAuthNSection["ClientId"];
-       options.ClientSecret = googleAuthNSection["ClientSecret"];
+	   IConfigurationSection googleAuthNSection =
+	   builder.Configuration.GetSection("Authentication:Google");
+	   options.ClientId = googleAuthNSection["ClientId"];
+	   options.ClientSecret = googleAuthNSection["ClientSecret"];
    });
 
 
